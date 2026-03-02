@@ -6,39 +6,37 @@ module.exports = async function handler(req, res) {
   const { message } = req.body;
 
   if (!message) {
-    return res.status(400).json({ error: 'Mesaj boş.' });
+    return res.status(400).json({ error: 'Mesaj bos.' });
   }
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + process.env.OPENAI_API_KEY
+        'x-api-key': process.env.OPENAI_API_KEY,
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 500,
         messages: [
           {
-            role: 'system',
-            content: 'Sen HukukAI adli bir Turk hukuk bilgi asistanisin. Turk hukukuna gore bilgi veriyorsun. Her zaman Turkce cevap ver. Her cevabın sonuna su uyariyi ekle: Bu bilgi genel amaclidir, avukatlik hizmeti degildir.'
-          },
-          {
             role: 'user',
-            content: message
+            content: 'Sen HukukAI adli bir Turk hukuk bilgi asistanisin. Turk hukukuna gore bilgi veriyorsun. Her zaman Turkce cevap ver. Her cevabın sonuna su uyariyi ekle: Bu bilgi genel amaclidir, avukatlik hizmeti degildir. Soru: ' + message
           }
-        ],
-        max_tokens: 500
+        ]
       })
     });
 
     const data = await response.json();
+    console.log('Claude response:', JSON.stringify(data));
 
-    if (!data.choices || !data.choices[0]) {
+    if (!data.content || !data.content[0]) {
       return res.status(500).json({ error: 'API yanit vermedi: ' + JSON.stringify(data) });
     }
 
-    const reply = data.choices[0].message.content;
+    const reply = data.content[0].text;
     return res.status(200).json({ reply });
 
   } catch (error) {
