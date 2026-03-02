@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: 'system',
-            content: `Sen HukukAI adlı bir Türk hukuk bilgi asistanısın. Türk hukukuna göre bilgi veriyorsun. Her zaman Türkçe cevap ver. Her cevabın sonuna şunu ekle: "⚠️ Bu bilgi genel amaçlıdır, avukatlık hizmeti değildir."`
+            content: 'Sen HukukAI adli bir Turk hukuk bilgi asistanisin. Turk hukukuna gore bilgi veriyorsun. Her zaman Turkce cevap ver. Her cevabın sonuna su uyariyi ekle: Bu bilgi genel amaclidir, avukatlik hizmeti degildir.'
           },
           {
             role: 'user',
@@ -29,12 +29,15 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+
+    if (!data.choices || !data.choices[0]) {
+      return res.status(500).json({ error: 'API yanit vermedi.' });
+    }
+
     const reply = data.choices[0].message.content;
     res.status(200).json({ reply });
 
   } catch (error) {
-    res.status(500).json({ error: 'Bir hata oluştu.' });
+    res.status(500).json({ error: 'Bir hata olustu.' });
   }
 }
-
-
