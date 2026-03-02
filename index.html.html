@@ -796,15 +796,39 @@ function toggleChat(){
   const box = document.getElementById('chat-box');
   box.style.display = box.style.display === 'none' ? 'block' : 'none';
 }
-function sendMessage(){
+async function sendMessage(){
   const input = document.getElementById('chat-input');
   const messages = document.getElementById('chat-messages');
   const text = input.value.trim();
   if(!text) return;
+
+  // Kullanıcı mesajını göster
   messages.innerHTML += `<div style="background:linear-gradient(135deg,#1a2980,#2563eb);color:white;border-radius:12px;padding:12px 14px;font-size:13px;max-width:85%;align-self:flex-end;margin-left:auto;">${text}</div>`;
   input.value = '';
+
+  // Yükleniyor göster
   messages.innerHTML += `<div id="typing" style="background:white;border-radius:12px;padding:12px 14px;font-size:13px;color:#475569;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.06);">⏳ Yanıt hazırlanıyor...</div>`;
   messages.scrollTop = messages.scrollHeight;
+
+  try {
+    // API'ye gönder
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await response.json();
+
+    // Yükleniyoru kaldır, cevabı göster
+    document.getElementById('typing').remove();
+    messages.innerHTML += `<div style="background:white;border-radius:12px;padding:12px 14px;font-size:13px;color:#475569;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.06);">${data.reply}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+  } catch(error) {
+    document.getElementById('typing').remove();
+    messages.innerHTML += `<div style="background:white;border-radius:12px;padding:12px 14px;font-size:13px;color:red;max-width:85%;">❌ Bir hata oluştu, tekrar deneyin.</div>`;
+  }
 }
 </script>
 </body>
