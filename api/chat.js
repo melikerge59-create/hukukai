@@ -5,7 +5,7 @@ module.exports = async function handler(req, res) {
 
   const { message } = req.body;
   if (!message) {
-    return res.status(400).json({ error: 'Mesaj boş.' });
+    return res.status(400).json({ error: 'Mesaj bos.' });
   }
 
   try {
@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
         messages: [
           {
             role: 'system',
-            content: 'Sen HukukAI adli bir Turk hukuk bilgi asistanisin. Turk hukukuna gore bilgi veriyorsun. Her zaman Turkce cevap ver. Her cevabın sonuna su uyariyi ekle: ⚠️ Bu bilgi genel amaclidir, avukatlik hizmeti degildir.'
+            content: 'Sen HukukAI adli bir Turk hukuk bilgi asistanisin. Turk hukukuna gore bilgi veriyorsun. Her zaman Turkce cevap ver. Kisa ve anlasilir cevaplar ver.'
           },
           {
             role: 'user',
