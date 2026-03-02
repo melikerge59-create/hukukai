@@ -819,10 +819,13 @@ async function sendMessage(){
     });
 
     const data = await response.json();
+    console.log('Gelen data:', JSON.stringify(data));
+const reply = data.reply || data.error || 'Cevap alinamadi';
+
 
     // Yükleniyoru kaldır, cevabı göster
     document.getElementById('typing').remove();
-    messages.innerHTML += `<div style="background:white;border-radius:12px;padding:12px 14px;font-size:13px;color:#475569;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.06);">${data.reply}</div>`;
+    messages.innerHTML += `<div style="background:white;border-radius:12px;padding:12px 14px;font-size:13px;color:#475569;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.06);">${reply}</div>`;
     messages.scrollTop = messages.scrollHeight;
 
   } catch(error) {
