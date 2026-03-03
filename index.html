@@ -579,6 +579,7 @@ function closeAuth(){document.getElementById('authOverlay').classList.remove('op
 function switchAuth(mode){
   document.getElementById('loginForm').style.display=mode==='login'?'':'none';
   document.getElementById('registerForm').style.display=mode==='register'?'':'none';
+  document.getElementById('forgotForm').style.display=mode==='forgot'?'':'none';
 }
 
 async function loginUser(){
@@ -594,6 +595,14 @@ async function loginUser(){
   closeAuth();
 }
 
+async function loginGoogle(){
+  const{error}=await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.origin}
+  });
+  if(error)alert('Google girişi başarısız: '+error.message);
+}
+
 async function registerUser(){
   const name=document.getElementById('regName').value.trim();
   const email=document.getElementById('regEmail').value.trim();
@@ -603,11 +612,24 @@ async function registerUser(){
   if(!name||!email||!pass){showErr(errEl,'Tüm alanlar zorunludur.');return;}
   if(pass.length<6){showErr(errEl,'Şifre en az 6 karakter olmalıdır.');return;}
   btn.textContent='Hesap oluşturuluyor...';btn.disabled=true;
-  const{error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
   btn.textContent='Hesap Oluştur';btn.disabled=false;
   if(error){showErr(errEl,error.message);return;}
   closeAuth();
-  alert('Kayıt başarılı! E-postanızı doğrulayın.');
+}
+
+async function resetPassword(){
+  const email=document.getElementById('forgotEmail').value.trim();
+  const errEl=document.getElementById('forgotError');
+  const sucEl=document.getElementById('forgotSuccess');
+  const btn=document.getElementById('forgotBtn');
+  if(!email){showErr(errEl,'E-posta adresi gereklidir.');return;}
+  btn.textContent='Gönderiliyor...';btn.disabled=true;
+  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
+  btn.textContent='Sıfırlama Bağlantısı Gönder';btn.disabled=false;
+  if(error){showErr(errEl,error.message);return;}
+  errEl.style.display='none';
+  sucEl.style.display='block';
 }
 
 async function loginGoogle(){
