@@ -3,722 +3,1277 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HukukAI - 7/24 Yapay Zeka Destekli Hukuk Danışmanı</title>
+<title>HukukAI — Yapay Zeka Destekli Hukuk Platformu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:#0f1729;color:#e2e8f0;}
-:root{--navy:#0f1729;--navy2:#1a2540;--navy3:#243050;--blue:#3b82f6;--blue2:#2563eb;--text:#e2e8f0;--text2:#94a3b8;--border:#2a3a5c;}
+:root{
+  --navy:#0B1F3B;
+  --navy-light:#1a3a6e;
+  --dark:#1E293B;
+  --mid:#475569;
+  --light:#94A3B8;
+  --border:#E2E8F0;
+  --bg:#FFFFFF;
+  --bg-subtle:#F8FAFC;
+  --bg-hover:#F1F5F9;
+  --accent:#2563EB;
+  --success:#16A34A;
+  --warning:#D97706;
+  --danger:#DC2626;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.10);
+  --radius:8px;
+  --radius-sm:6px;
+  --radius-lg:12px;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:'Inter',sans-serif;}
+input,textarea{font-family:'Inter',sans-serif;}
+.page{display:none;}
+.page.active{display:block;}
 
-/* LANDING */
-#landingPage{min-height:100vh;background:#0f1729;}
+/* ───── NAVBAR ───── */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 24px;
+  height:64px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo svg{width:28px;height:28px;color:var(--navy);}
+.nav-logo span{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.3px;}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--mid);transition:color .15s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;transition:all .15s;}
+.btn-ghost{background:transparent;color:var(--mid);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg-hover);color:var(--navy);border-color:var(--navy);}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{background:#0d2648;box-shadow:var(--shadow-md);}
+.btn-sm{padding:7px 14px;font-size:13px;}
 
-/* TOP NAV */
-.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#1a2540;border-bottom:1px solid #2a3a5c;}
-.top-nav-logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:white;}
-.top-nav-logo img{width:32px;height:32px;}
-.top-nav-right{display:flex;gap:8px;align-items:center;}
-.btn-login{background:transparent;color:#94a3b8;border:1px solid #2a3a5c;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;}
-.btn-register{background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
-.user-nav{display:none;align-items:center;gap:10px;}
-.user-nav-name{color:#e2e8f0;font-size:13px;font-weight:600;}
-.btn-logout{background:transparent;color:#94a3b8;border:1px solid #2a3a5c;padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;}
+/* ───── HERO ───── */
+.hero{
+  padding:120px 24px 80px;
+  max-width:1200px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--bg-subtle);border:1px solid var(--border);
+  padding:5px 14px;border-radius:100px;
+  font-size:12px;font-weight:600;color:var(--mid);
+  margin-bottom:28px;letter-spacing:.3px;text-transform:uppercase;
+}
+.hero-badge svg{width:14px;height:14px;color:var(--accent);}
+.hero h1{
+  font-size:clamp(32px,5vw,56px);font-weight:800;
+  color:var(--navy);line-height:1.15;letter-spacing:-1px;
+  max-width:800px;margin-bottom:20px;
+}
+.hero h1 span{color:var(--accent);}
+.hero p{
+  font-size:18px;color:var(--mid);max-width:560px;
+  margin-bottom:36px;font-weight:400;line-height:1.7;
+}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:52px;}
+.btn-hero{padding:14px 28px;font-size:15px;border-radius:var(--radius);}
+.hero-stats{
+  display:flex;gap:48px;flex-wrap:wrap;justify-content:center;
+  padding-top:40px;border-top:1px solid var(--border);
+  width:100%;max-width:680px;
+}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.stat-num{font-size:26px;font-weight:800;color:var(--navy);}
+.stat-label{font-size:13px;color:var(--light);font-weight:500;}
 
-/* HERO */
-.hero{background:linear-gradient(180deg,#1a2540 0%,#0f1729 100%);padding:40px 20px 32px;text-align:center;}
-.hero-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
-.hero-logo-icon{width:52px;height:52px;background:linear-gradient(135deg,#2563eb,#3b82f6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;}
-.hero-logo-text{font-size:28px;font-weight:800;color:white;}
-.hero-logo-text span{color:#3b82f6;}
-.hero h2{font-size:18px;color:#94a3b8;font-weight:400;margin-bottom:28px;}
-.hero-ask-btn{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:50%;width:90px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;margin:0 auto 8px;box-shadow:0 0 30px rgba(59,130,246,0.4);}
-.hero-ask-btn span{font-size:32px;}
-.hero-ask-label{color:#94a3b8;font-size:13px;margin-bottom:28px;}
-.hero-stats{display:flex;justify-content:center;gap:0;}
-.stat-item{flex:1;max-width:120px;text-align:center;padding:12px 8px;background:#1a2540;border-radius:12px;margin:0 4px;}
-.stat-item .num{font-size:16px;font-weight:800;color:white;}
-.stat-item .label{font-size:10px;color:#64748b;margin-top:2px;}
+/* ───── SECTIONS ───── */
+.section{padding:80px 24px;max-width:1200px;margin:0 auto;}
+.section-header{text-align:center;margin-bottom:52px;}
+.section-eyebrow{
+  font-size:12px;font-weight:700;color:var(--accent);
+  letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;
+}
+.section-title{font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:14px;}
+.section-sub{font-size:16px;color:var(--mid);max-width:520px;margin:0 auto;line-height:1.7;}
 
-/* FREE BANNER */
-.free-banner{background:linear-gradient(135deg,#065f46,#047857);margin:0 16px 20px;border-radius:12px;padding:12px 16px;text-align:center;font-size:13px;font-weight:600;color:#6ee7b7;}
+/* ───── CATEGORY CARDS ───── */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:768px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.cat-grid{grid-template-columns:1fr;}}
+.cat-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px 20px;
+  cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;gap:12px;
+}
+.cat-card:hover{
+  border-color:var(--navy);
+  box-shadow:var(--shadow-md);
+  transform:translateY(-1px);
+}
+.cat-icon{
+  width:40px;height:40px;border-radius:var(--radius-sm);
+  background:var(--bg-subtle);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.cat-icon svg{width:20px;height:20px;color:var(--navy);}
+.cat-title{font-size:15px;font-weight:700;color:var(--navy);}
+.cat-desc{font-size:13px;color:var(--light);line-height:1.5;}
+.cat-arrow{
+  display:flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:600;color:var(--accent);margin-top:auto;
+}
+.cat-arrow svg{width:14px;height:14px;}
 
-/* CATEGORIES */
-.section{padding:0 16px 24px;}
-.section-title{font-size:17px;font-weight:800;color:white;margin-bottom:14px;}
-.cat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.cat-card{background:#1a2540;border-radius:14px;padding:16px 8px;text-align:center;cursor:pointer;border:1px solid #2a3a5c;transition:all 0.2s;}
-.cat-card:hover{border-color:#3b82f6;background:#243050;}
-.cat-card:active{transform:scale(0.96);}
-.cat-icon{font-size:26px;margin-bottom:8px;}
-.cat-name{font-size:11px;font-weight:700;color:#e2e8f0;}
-.cat-free{font-size:10px;color:#3b82f6;margin-top:4px;}
+/* ───── RECENT QUESTIONS ───── */
+.bg-subtle{background:var(--bg-subtle);}
+.rq-list{display:flex;flex-direction:column;gap:12px;max-width:680px;margin:0 auto;}
+.rq-item{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px 20px;
+  cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;gap:14px;
+}
+.rq-item:hover{border-color:var(--navy);box-shadow:var(--shadow-sm);}
+.rq-icon{
+  width:36px;height:36px;border-radius:var(--radius-sm);
+  background:var(--bg-subtle);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.rq-icon svg{width:16px;height:16px;color:var(--mid);}
+.rq-text{font-size:14px;color:var(--dark);font-weight:500;flex:1;}
+.rq-tag{font-size:11px;font-weight:600;color:var(--mid);background:var(--bg-subtle);border:1px solid var(--border);padding:3px 8px;border-radius:100px;white-space:nowrap;}
 
-/* RECENT QUESTIONS */
-.recent-list{display:flex;flex-direction:column;gap:10px;}
-.recent-item{background:#1a2540;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1px solid #2a3a5c;cursor:pointer;}
-.recent-avatar{width:36px;height:36px;background:#243050;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.recent-text{flex:1;}
-.recent-q{font-size:13px;color:#e2e8f0;font-weight:500;}
-.recent-time{font-size:11px;color:#64748b;margin-top:2px;}
-.recent-arrow{color:#3b82f6;font-size:16px;}
+/* ───── PRICING ───── */
+.pricing-toggle{
+  display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:44px;
+}
+.toggle-label{font-size:14px;font-weight:500;color:var(--mid);}
+.toggle-switch{
+  width:44px;height:24px;background:var(--border);border-radius:100px;
+  cursor:pointer;position:relative;transition:background .2s;border:none;
+}
+.toggle-switch.on{background:var(--navy);}
+.toggle-thumb{
+  position:absolute;top:2px;left:2px;width:20px;height:20px;
+  background:#fff;border-radius:50%;transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-switch.on .toggle-thumb{transform:translateX(20px);}
+.toggle-badge{font-size:11px;font-weight:700;color:var(--success);background:#DCFCE7;padding:2px 8px;border-radius:100px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start;}
+@media(max-width:900px){.pricing-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.pricing-grid{grid-template-columns:1fr;}}
+.price-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px 24px;
+  display:flex;flex-direction:column;gap:0;
+}
+.price-card.popular{
+  border-color:var(--navy);border-width:2px;
+  box-shadow:var(--shadow-md);position:relative;
+}
+.price-card.elite{
+  background:var(--navy);border-color:var(--navy);color:#fff;
+}
+.popular-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--navy);color:#fff;font-size:11px;font-weight:700;
+  padding:3px 12px;border-radius:100px;white-space:nowrap;letter-spacing:.3px;text-transform:uppercase;
+}
+.price-plan{font-size:13px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.price-card.elite .price-plan{color:rgba(255,255,255,.6);}
+.price-amount{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
+.price-num{font-size:40px;font-weight:800;color:var(--navy);line-height:1;}
+.price-card.elite .price-num{color:#fff;}
+.price-period{font-size:14px;color:var(--light);font-weight:500;}
+.price-card.elite .price-period{color:rgba(255,255,255,.5);}
+.price-desc{font-size:13px;color:var(--light);margin-bottom:24px;line-height:1.5;}
+.price-card.elite .price-desc{color:rgba(255,255,255,.6);}
+.price-divider{border:none;border-top:1px solid var(--border);margin-bottom:20px;}
+.price-card.elite .price-divider{border-color:rgba(255,255,255,.12);}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;flex:1;}
+.price-feature{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--mid);}
+.price-card.elite .price-feature{color:rgba(255,255,255,.8);}
+.price-check{width:16px;height:16px;flex-shrink:0;margin-top:1px;}
+.price-check.yes{color:var(--success);}
+.price-card.elite .price-check.yes{color:#86EFAC;}
+.price-check.no{color:var(--border);}
+.btn-price{width:100%;padding:11px;border-radius:var(--radius);font-size:14px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--navy);transition:all .15s;}
+.btn-price:hover{background:var(--bg-hover);border-color:var(--navy);}
+.price-card.popular .btn-price{background:var(--navy);color:#fff;border-color:var(--navy);}
+.price-card.popular .btn-price:hover{background:#0d2648;}
+.price-card.elite .btn-price{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2);}
+.price-card.elite .btn-price:hover{background:rgba(255,255,255,.2);}
 
-/* PRICING */
-.pricing-section{padding:0 16px 100px;}
-.pricing-title{font-size:17px;font-weight:800;color:white;margin-bottom:14px;text-align:center;}
-.pricing-cards{display:flex;flex-direction:column;gap:12px;}
-.p-card{background:#1a2540;border:1px solid #2a3a5c;border-radius:16px;padding:20px;}
-.p-card.popular{border-color:#3b82f6;background:linear-gradient(135deg,#1e3a6e,#1a2540);}
-.p-popular-badge{background:#3b82f6;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;}
-.p-name{font-size:16px;font-weight:800;color:white;}
-.p-price{font-size:28px;font-weight:800;color:#3b82f6;margin:6px 0;}
-.p-price span{font-size:13px;color:#64748b;font-weight:400;}
-.p-features{list-style:none;margin-top:10px;}
-.p-features li{font-size:12px;color:#94a3b8;padding:3px 0;display:flex;align-items:center;gap:6px;}
-.p-features li::before{content:'✓';color:#10b981;font-weight:700;}
+/* ───── FOOTER ───── */
+.footer{background:var(--bg-subtle);border-top:1px solid var(--border);padding:48px 24px 24px;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+@media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr;gap:32px;}}
+@media(max-width:480px){.footer-top{grid-template-columns:1fr;}}
+.footer-brand{}
+.footer-logo{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.footer-logo svg{width:22px;height:22px;color:var(--navy);}
+.footer-logo span{font-size:16px;font-weight:800;color:var(--navy);}
+.footer-tagline{font-size:13px;color:var(--light);line-height:1.6;max-width:220px;}
+.footer-social{display:flex;gap:10px;margin-top:20px;}
+.social-btn{
+  width:36px;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.social-btn:hover{border-color:var(--navy);background:var(--bg-hover);}
+.social-btn svg{width:16px;height:16px;color:var(--mid);}
+.footer-col h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;letter-spacing:.2px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-col a{font-size:13px;color:var(--light);transition:color .15s;}
+.footer-col a:hover{color:var(--navy);}
+.footer-bottom{
+  border-top:1px solid var(--border);padding-top:20px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-size:12px;color:var(--light);}
+.footer-legal{display:flex;gap:20px;}
+.footer-legal a{font-size:12px;color:var(--light);}
+.footer-legal a:hover{color:var(--navy);}
 
-/* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#1a2540;border-top:1px solid #2a3a5c;display:flex;justify-content:space-around;padding:10px 0 16px;z-index:100;}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 16px;}
-.nav-icon{font-size:20px;}
-.nav-label{font-size:10px;color:#64748b;font-weight:600;}
-.nav-item.active .nav-label{color:#3b82f6;}
-.nav-item.active .nav-icon{filter:brightness(1.5);}
+/* ───── AUTH MODAL ───── */
+.overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(11,31,59,.4);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.overlay.open{display:flex;}
+.modal{
+  background:var(--bg);border-radius:var(--radius-lg);
+  border:1px solid var(--border);box-shadow:var(--shadow-lg);
+  padding:36px;width:100%;max-width:420px;position:relative;
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:30px;height:30px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;
+}
+.modal-close:hover{background:var(--bg-hover);}
+.modal-close svg{width:16px;height:16px;color:var(--mid);}
+.modal h2{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.modal p{font-size:14px;color:var(--mid);margin-bottom:24px;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:6px;display:block;}
+.form-input{
+  width:100%;padding:10px 14px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg);
+  font-size:14px;color:var(--dark);transition:border-color .15s;outline:none;
+}
+.form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,31,59,.06);}
+.form-input::placeholder{color:var(--light);}
+.btn-full{width:100%;padding:12px;font-size:14px;font-weight:600;margin-top:4px;}
+.modal-divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
+.modal-divider span{font-size:12px;color:var(--light);white-space:nowrap;}
+.modal-divider::before,.modal-divider::after{content:'';flex:1;border-top:1px solid var(--border);}
+.btn-google{
+  width:100%;padding:11px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:14px;font-weight:600;color:var(--dark);cursor:pointer;
+  transition:all .15s;font-family:'Inter',sans-serif;
+}
+.btn-google:hover{background:var(--bg-hover);border-color:var(--mid);}
+.modal-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--mid);}
+.modal-switch a{color:var(--navy);font-weight:600;cursor:pointer;}
+.form-error{font-size:12px;color:var(--danger);margin-top:8px;display:none;}
 
-/* CHAT PAGE */
-#chatPage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
+/* ───── LIMIT OVERLAY ───── */
+.limit-modal{max-width:380px;text-align:center;}
+.limit-modal .limit-icon{
+  width:52px;height:52px;border-radius:var(--radius);
+  background:var(--bg-subtle);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+}
+.limit-modal .limit-icon svg{width:24px;height:24px;color:var(--navy);}
+.limit-modal h2{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.limit-modal p{font-size:14px;color:var(--mid);margin-bottom:24px;}
+.limit-actions{display:flex;flex-direction:column;gap:10px;}
+
+/* ───── CHAT PAGE ───── */
+#chatPage{min-height:100vh;display:none;flex-direction:column;background:var(--bg);}
 #chatPage.active{display:flex;}
-.chat-header{background:#1a2540;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a3a5c;}
-.back-btn{background:#243050;border:none;color:#e2e8f0;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;flex-shrink:0;}
-.chat-header-info{flex:1;}
-.chat-header-info h3{color:white;font-size:15px;font-weight:700;}
-.chat-header-info p{color:#64748b;font-size:11px;}
-.chat-expert-badge{background:#1d4ed8;color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;}
-.q-counter{background:#243050;color:#94a3b8;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;margin-left:6px;}
-.q-counter.danger{background:#7f1d1d;color:#fca5a5;}
-.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;}
-.msg{max-width:85%;padding:14px 16px;border-radius:16px;font-size:14px;line-height:1.7;}
-.msg.user{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;align-self:flex-end;border-bottom-right-radius:4px;}
-.msg.ai{background:#1a2540;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:4px;border:1px solid #2a3a5c;}
-.msg.ai strong{color:#3b82f6;}
-.msg-avatar{width:32px;height:32px;background:#243050;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;align-self:flex-end;margin-right:8px;}
-.msg-row{display:flex;align-items:flex-end;gap:0;}
-.chat-input-area{padding:12px 16px;background:#1a2540;border-top:1px solid #2a3a5c;}
-.file-preview{background:#243050;border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#94a3b8;display:none;align-items:center;gap:8px;border:1px solid #2a3a5c;}
-.chat-input-row{display:flex;gap:8px;align-items:center;}
-.file-btn{background:#243050;border:1px solid #2a3a5c;color:#94a3b8;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;}
-#chatInput{flex:1;padding:11px 16px;background:#243050;border:1px solid #2a3a5c;border-radius:25px;font-size:14px;outline:none;color:#e2e8f0;}
-#chatInput::placeholder{color:#4a5568;}
-#chatInput:focus{border-color:#3b82f6;}
-#chatInput:disabled{opacity:0.5;cursor:not-allowed;}
-.send-btn{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;}
-.send-btn:disabled{background:#243050;cursor:not-allowed;}
+.chat-header{
+  position:sticky;top:0;z-index:50;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  padding:0 24px;height:60px;display:flex;align-items:center;gap:14px;
+}
+.chat-back{
+  width:34px;height:34px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;
+}
+.chat-back:hover{background:var(--bg-hover);}
+.chat-back svg{width:16px;height:16px;color:var(--mid);}
+.chat-cat-info{display:flex;align-items:center;gap:10px;flex:1;}
+.chat-cat-icon{
+  width:32px;height:32px;border-radius:var(--radius-sm);
+  background:var(--bg-subtle);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.chat-cat-icon svg{width:16px;height:16px;color:var(--navy);}
+.chat-cat-name{font-size:15px;font-weight:700;color:var(--navy);}
+.chat-cat-sub{font-size:12px;color:var(--light);}
+.chat-counter{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;color:var(--mid);
+  background:var(--bg-subtle);border:1px solid var(--border);
+  padding:5px 10px;border-radius:100px;
+}
+.chat-counter svg{width:13px;height:13px;}
+.chat-messages{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:800px;margin:0 auto;width:100%;}
+.msg{display:flex;gap:10px;align-items:flex-start;}
+.msg.user{flex-direction:row-reverse;}
+.msg-avatar{
+  width:32px;height:32px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.msg-avatar.ai{background:var(--navy);}
+.msg-avatar.user-av{background:var(--bg-subtle);border:1px solid var(--border);}
+.msg-avatar svg{width:16px;height:16px;color:#fff;}
+.msg-avatar.user-av svg{color:var(--mid);}
+.msg-bubble{
+  max-width:75%;padding:12px 16px;border-radius:var(--radius);
+  font-size:14px;line-height:1.7;
+}
+.msg.ai .msg-bubble{background:var(--bg-subtle);border:1px solid var(--border);color:var(--dark);}
+.msg.user .msg-bubble{background:var(--navy);color:#fff;}
+.msg-bubble strong{font-weight:700;}
+.msg-bubble p{margin-bottom:6px;}
+.msg-bubble p:last-child{margin-bottom:0;}
+.typing{display:flex;align-items:center;gap:5px;padding:14px 16px;}
+.typing span{width:7px;height:7px;background:var(--light);border-radius:50%;animation:bounce .9s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+.chat-input-area{
+  border-top:1px solid var(--border);padding:16px 24px;
+  background:var(--bg);
+}
+.chat-input-inner{
+  max-width:800px;margin:0 auto;
+  border:1px solid var(--border);border-radius:var(--radius);
+  display:flex;align-items:flex-end;gap:8px;padding:10px 10px 10px 14px;
+  transition:border-color .15s;
+}
+.chat-input-inner:focus-within{border-color:var(--navy);}
+#chatInput{
+  flex:1;border:none;outline:none;resize:none;
+  font-size:14px;color:var(--dark);background:transparent;
+  line-height:1.5;max-height:120px;font-family:'Inter',sans-serif;
+}
+#chatInput::placeholder{color:var(--light);}
+.chat-toolbar{display:flex;align-items:center;gap:6px;}
+.icon-btn{
+  width:34px;height:34px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:transparent;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;
+}
+.icon-btn:hover{background:var(--bg-hover);}
+.icon-btn svg{width:16px;height:16px;color:var(--mid);}
+.send-btn{
+  width:34px;height:34px;border-radius:var(--radius-sm);
+  border:none;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;
+}
+.send-btn:hover{background:#0d2648;}
+.send-btn svg{width:16px;height:16px;color:#fff;}
+.chat-disclaimer{text-align:center;font-size:11px;color:var(--light);margin-top:10px;}
 
-/* DILEKCE PAGE */
-#dilkcePage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
-#dilkcePage.active{display:flex;}
-.page-header{background:#1a2540;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a3a5c;}
-.page-header h3{color:white;font-size:16px;font-weight:700;}
-.dilekce-content{flex:1;overflow-y:auto;padding:20px 16px;}
-.dilekce-form{background:#1a2540;border-radius:16px;padding:20px;border:1px solid #2a3a5c;margin-bottom:16px;}
-.dilekce-form h4{color:white;font-size:15px;font-weight:700;margin-bottom:16px;}
-.form-group{margin-bottom:14px;}
-.form-group label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;background:#243050;border:1px solid #2a3a5c;border-radius:10px;font-size:14px;color:#e2e8f0;outline:none;}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#3b82f6;}
-.form-group select option{background:#1a2540;}
-.form-group textarea{height:100px;resize:none;}
-.btn-generate{width:100%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
-.premium-lock{background:#243050;border:1px solid #f59e0b;border-radius:12px;padding:16px;text-align:center;margin-top:12px;}
-.premium-lock p{color:#fbbf24;font-size:13px;font-weight:600;margin-bottom:10px;}
-.btn-premium{background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;padding:10px 24px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+/* ───── DISCLAIMER BANNER ───── */
+.disclaimer-bar{
+  background:var(--bg-subtle);border-bottom:1px solid var(--border);
+  padding:10px 24px;text-align:center;font-size:12px;color:var(--mid);
+}
+.disclaimer-bar svg{width:13px;height:13px;vertical-align:-2px;margin-right:4px;}
 
-/* PROFILE PAGE */
-#profilePage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
-#profilePage.active{display:flex;}
-.profile-content{flex:1;overflow-y:auto;padding:20px 16px;}
-.profile-hero{background:#1a2540;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;border:1px solid #2a3a5c;}
-.profile-avatar{width:72px;height:72px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:white;margin:0 auto 12px;}
-.profile-name{font-size:18px;font-weight:800;color:white;}
-.profile-email{font-size:13px;color:#64748b;margin-top:4px;}
-.profile-plan{background:#1d4ed8;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;display:inline-block;margin-top:8px;}
-.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
-.p-stat{background:#1a2540;border-radius:12px;padding:14px;text-align:center;border:1px solid #2a3a5c;}
-.p-stat-num{font-size:20px;font-weight:800;color:#3b82f6;}
-.p-stat-label{font-size:10px;color:#64748b;margin-top:2px;}
-.profile-menu{background:#1a2540;border-radius:16px;overflow:hidden;border:1px solid #2a3a5c;}
-.profile-menu-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid #2a3a5c;cursor:pointer;}
-.profile-menu-item:last-child{border-bottom:none;}
-.menu-icon{font-size:20px;width:32px;text-align:center;}
-.menu-text{flex:1;font-size:14px;color:#e2e8f0;font-weight:500;}
-.menu-arrow{color:#64748b;}
+/* ───── USER MENU ───── */
+.user-menu-wrap{position:relative;}
+.user-btn{
+  display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:transparent;cursor:pointer;transition:all .15s;
+}
+.user-btn:hover{background:var(--bg-hover);}
+.user-avatar{
+  width:28px;height:28px;border-radius:6px;
+  background:var(--navy);display:flex;align-items:center;justify-content:center;
+}
+.user-avatar span{font-size:12px;font-weight:700;color:#fff;}
+.user-name{font-size:13px;font-weight:600;color:var(--dark);}
+.user-dropdown{
+  position:absolute;top:calc(100% + 6px);right:0;
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow-md);min-width:180px;z-index:200;
+  display:none;overflow:hidden;
+}
+.user-dropdown.open{display:block;}
+.dropdown-item{
+  padding:10px 16px;font-size:14px;color:var(--dark);
+  display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .12s;
+}
+.dropdown-item:hover{background:var(--bg-hover);}
+.dropdown-item svg{width:15px;height:15px;color:var(--mid);}
+.dropdown-divider{border:none;border-top:1px solid var(--border);margin:4px 0;}
+.dropdown-item.danger{color:var(--danger);}
+.dropdown-item.danger svg{color:var(--danger);}
 
-/* OVERLAY & POPUPS */
-.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:20px;}
-.overlay.active{display:flex;}
-.popup{background:#1a2540;border-radius:24px;padding:28px;max-width:400px;width:100%;text-align:center;border:1px solid #2a3a5c;}
-.popup-icon{font-size:44px;margin-bottom:14px;}
-.popup h2{font-size:20px;font-weight:800;color:white;margin-bottom:8px;}
-.popup p{font-size:14px;color:#94a3b8;margin-bottom:22px;line-height:1.6;}
-.popup-btns{display:flex;flex-direction:column;gap:10px;}
-.btn-popup-primary{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;}
-.btn-popup-secondary{background:#243050;color:#e2e8f0;border:1px solid #2a3a5c;padding:13px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;}
-.auth-popup{background:#1a2540;border-radius:24px;padding:28px;max-width:420px;width:100%;border:1px solid #2a3a5c;}
-.auth-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.auth-popup-header h2{font-size:20px;font-weight:800;color:white;}
-.close-btn{background:none;border:none;color:#64748b;font-size:22px;cursor:pointer;}
-.auth-tabs{display:flex;background:#243050;border-radius:12px;padding:4px;margin-bottom:18px;}
-.auth-tab{flex:1;padding:9px;text-align:center;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;color:#64748b;border:none;background:none;}
-.auth-tab.active{background:#1d4ed8;color:white;}
-.form-group-auth{margin-bottom:13px;}
-.form-group-auth label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:5px;}
-.form-group-auth input{width:100%;padding:11px 14px;background:#243050;border:1px solid #2a3a5c;border-radius:10px;font-size:14px;color:#e2e8f0;outline:none;}
-.form-group-auth input:focus{border-color:#3b82f6;}
-.btn-auth-primary{width:100%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;}
-.btn-google{width:100%;background:#243050;color:#e2e8f0;border:1px solid #2a3a5c;padding:11px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.divider{text-align:center;color:#4a5568;font-size:12px;margin:10px 0;}
-.error-msg{color:#f87171;font-size:12px;text-align:center;margin-top:6px;}
-.success-msg{color:#34d399;font-size:12px;text-align:center;margin-top:6px;}
+/* ───── FILE PREVIEW ───── */
+.file-preview{
+  background:var(--bg-subtle);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:10px 12px;
+  display:flex;align-items:center;gap:10px;margin-bottom:8px;
+}
+.file-preview svg{width:16px;height:16px;color:var(--navy);}
+.file-preview span{font-size:13px;color:var(--mid);flex:1;}
+.file-remove{background:none;border:none;cursor:pointer;color:var(--light);}
+.file-remove svg{width:14px;height:14px;}
 
-/* DISCLAIMER */
-.disclaimer{background:#1a2540;border-top:1px solid #2a3a5c;padding:12px 16px;margin-bottom:70px;}
-.disclaimer p{font-size:11px;color:#4a5568;text-align:center;line-height:1.5;}
+/* ───── RESPONSIVE ───── */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hero{padding:96px 16px 60px;}
+  .hero-stats{gap:28px;}
+  .section{padding:60px 16px;}
+  .pricing-grid{grid-template-columns:1fr 1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .pricing-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .hero h1{font-size:28px;}
+}
+
+/* ───── MISC ───── */
+.mt-8{margin-top:8px;}
+.mt-16{margin-top:16px;}
+.hidden{display:none!important;}
+.spinning{animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 
-<!-- LANDING PAGE -->
-<div id="landingPage">
-  <div class="top-nav">
-    <div style="width:80px"></div>
-    <div class="top-nav-logo">⚖️ Hukuk<span style="color:#3b82f6">AI</span></div>
-    <div class="top-nav-right" id="navRight">
-      <button class="btn-login" onclick="showAuth('login')">Giriş</button>
-      <button class="btn-register" onclick="showAuth('register')">Üye Ol</button>
-    </div>
-    <div class="user-nav" id="navUser">
-      <span class="user-nav-name" id="navUserName"></span>
-      <button class="btn-logout" onclick="logoutUser()">Çıkış</button>
-    </div>
+<!-- ══════════════════════════════════════════
+     LANDING PAGE
+══════════════════════════════════════════ -->
+<div id="landingPage" class="page active">
+
+  <!-- DISCLAIMER BAR -->
+  <div class="disclaimer-bar">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
+    Bu platform hukuki bilgi sunar; avukatlık hizmeti vermez. Kararlarınız için uzman hukuki danışmanlık alınız.
   </div>
 
-  <div class="hero">
-    <div class="hero-logo">
-      <div class="hero-logo-icon">⚖️</div>
-      <div>
-        <div class="hero-logo-text">Hukuk<span>AI</span></div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+        <span>HukukAI</span>
+      </div>
+      <div class="nav-links">
+        <a href="#categories">Kategoriler</a>
+        <a href="#pricing">Fiyatlar</a>
+        <a href="#faq">SSS</a>
+      </div>
+      <div class="nav-actions" id="navActions">
+        <button class="btn btn-ghost btn-sm" onclick="openAuth('login')">Giriş Yap</button>
+        <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Ücretsiz Dene</button>
       </div>
     </div>
-    <h2>7/24 Yapay Zeka Destekli Hukuk Danışmanı</h2>
-    <button class="hero-ask-btn" onclick="showCategorySelect()">
-      <span>🎤</span>
-    </button>
-    <div class="hero-ask-label">AI'ya Sor</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+      Yapay Zeka Destekli Hukuk Platformu
+    </div>
+    <h1>Hukuki Haklarınızı <span>Yapay Zeka</span> ile Anlayın</h1>
+    <p>Türk hukukunda 9 uzmanlık alanında anlık analiz, risk değerlendirmesi ve adım adım rehberlik. Profesyonel, güvenilir, 7/24 erişilebilir.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary btn-hero" onclick="scrollToSection('categories')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.703 9-8.28s-4.03-8.28-9-8.28-9 3.703-9 8.28c0 2.295.939 4.38 2.463 5.938L2.25 21.75l5.688-.844A9.026 9.026 0 0012 20.25z"/></svg>
+        Yapay Zekaya Danış
+      </button>
+      <button class="btn btn-ghost btn-hero" onclick="scrollToSection('pricing')">
+        Fiyatları İncele
+      </button>
+    </div>
     <div class="hero-stats">
-      <div class="stat-item"><div class="num">50K+</div><div class="label">Soru Cevaplandı</div></div>
-      <div class="stat-item"><div class="num">%98</div><div class="label">Memnuniyet</div></div>
-      <div class="stat-item"><div class="num">7/24</div><div class="label">Destek</div></div>
+      <div class="stat-item">
+        <span class="stat-num">50.000+</span>
+        <span class="stat-label">Analiz Yapıldı</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">%98</span>
+        <span class="stat-label">Memnuniyet</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">7/24</span>
+        <span class="stat-label">Destek</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">9</span>
+        <span class="stat-label">Uzmanlık Alanı</span>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="free-banner">🎁 Giriş yapmadan her kategoride 3 soru ücretsiz! Üye ol → 50 soru kazan!</div>
-
-  <div class="section">
-    <div class="section-title">⚖️ Kategoriler</div>
-    <div class="cat-grid">
-      <div class="cat-card" onclick="openChat('is')"><div class="cat-icon">💼</div><div class="cat-name">İş Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('kira')"><div class="cat-icon">🏠</div><div class="cat-name">Kira Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('tuketici')"><div class="cat-icon">🛒</div><div class="cat-name">Tüketici</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('aile')"><div class="cat-icon">👨‍👩‍👧</div><div class="cat-name">Aile Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('trafik')"><div class="cat-icon">🚗</div><div class="cat-name">Trafik</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('ceza')"><div class="cat-icon">⚖️</div><div class="cat-name">Ceza Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('icra')"><div class="cat-icon">📋</div><div class="cat-name">İcra Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('miras')"><div class="cat-icon">📜</div><div class="cat-name">Miras Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
-      <div class="cat-card" onclick="openChat('vergi')"><div class="cat-icon">💰</div><div class="cat-name">Vergi Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+  <!-- CATEGORIES -->
+  <section class="section" id="categories" style="background:var(--bg-subtle);max-width:100%;padding:80px 24px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="section-header">
+        <div class="section-eyebrow">Uzmanlık Alanları</div>
+        <h2 class="section-title">Hangi Konuda Yardıma İhtiyacınız Var?</h2>
+        <p class="section-sub">Her kategori, ilgili alanda uzmanlaşmış bir yapay zeka ile desteklenmektedir.</p>
+      </div>
+      <div class="cat-grid" id="catGrid"></div>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <div class="section-title">💬 Son Sorular</div>
-    <div class="recent-list">
-      <div class="recent-item" onclick="openChat('kira')">
-        <div class="recent-avatar">👤</div>
-        <div class="recent-text">
-          <div class="recent-q">Kiracım 3 aydır kira ödemiyor, ne yapabilirim?</div>
-          <div class="recent-time">Kira Hukuku • 15 dk önce</div>
+  <!-- RECENT QUESTIONS -->
+  <section class="section" id="recentQ">
+    <div class="section-header">
+      <div class="section-eyebrow">Sık Sorulanlar</div>
+      <h2 class="section-title">Örnek Sorular</h2>
+      <p class="section-sub">Platformumuzda sıkça sorulan ve yanıtlanan hukuki sorulara göz atın.</p>
+    </div>
+    <div class="rq-list">
+      <div class="rq-item" onclick="startChatFromSample('is','İşten haksız yere çıkarıldım, kıdem tazminatı alabilir miyim?')">
+        <div class="rq-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>
         </div>
-        <div class="recent-arrow">›</div>
+        <span class="rq-text">İşten haksız yere çıkarıldım, kıdem tazminatı alabilir miyim?</span>
+        <span class="rq-tag">İş Hukuku</span>
       </div>
-      <div class="recent-item" onclick="openChat('is')">
-        <div class="recent-avatar">👤</div>
-        <div class="recent-text">
-          <div class="recent-q">İşten çıkarıldım, kıdem tazminatı alabilir miyim?</div>
-          <div class="recent-time">İş Hukuku • 42 dk önce</div>
+      <div class="rq-item" onclick="startChatFromSample('kira','Kiracım 3 aydır kira ödemiyor, ne yapabilirim?')">
+        <div class="rq-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
         </div>
-        <div class="recent-arrow">›</div>
+        <span class="rq-text">Kiracım 3 aydır kira ödemiyor, ne yapabilirim?</span>
+        <span class="rq-tag">Kira Hukuku</span>
       </div>
-      <div class="recent-item" onclick="openChat('tuketici')">
-        <div class="recent-avatar">👤</div>
-        <div class="recent-text">
-          <div class="recent-q">Aldığım ürün arızalı, iade etmek istiyorum</div>
-          <div class="recent-time">Tüketici Hakları • 1 sa önce</div>
+      <div class="rq-item" onclick="startChatFromSample('tuketici','Satın aldığım ürün arızalı, iade hakkım var mı?')">
+        <div class="rq-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>
         </div>
-        <div class="recent-arrow">›</div>
+        <span class="rq-text">Satın aldığım ürün arızalı çıktı, iade veya değişim hakkım var mı?</span>
+        <span class="rq-tag">Tüketici Hukuku</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="pricing-section">
-    <div class="pricing-title">💰 Paketler</div>
-    <div class="pricing-cards">
-      <div class="p-card">
-        <div class="p-name">🟢 Ücretsiz</div>
-        <div class="p-price">0₺<span>/ay</span></div>
-        <ul class="p-features">
-          <li>Her kategoride 3 soru</li>
-          <li>Temel yanıt formatı</li>
-          <li>Risk seviyesi gösterimi</li>
-        </ul>
+  <!-- PRICING -->
+  <section class="section" id="pricing" style="background:var(--bg-subtle);max-width:100%;padding:80px 24px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="section-header">
+        <div class="section-eyebrow">Fiyatlandırma</div>
+        <h2 class="section-title">İhtiyacınıza Uygun Plan Seçin</h2>
+        <p class="section-sub">Tüm planlar 1 ay ücretsiz deneme ile başlar. Kredi kartı gerekmez.</p>
       </div>
-      <div class="p-card">
-        <div class="p-name">🔵 Plus</div>
-        <div class="p-price">99₺<span>/ay</span></div>
-        <ul class="p-features">
-          <li>50 soru hakkı</li>
-          <li>Detaylı risk açıklaması</li>
-          <li>Süre uyarıları</li>
-          <li>Geçmiş kayıt</li>
-          <li>Favori sistemi</li>
-        </ul>
+      <div class="pricing-toggle">
+        <span class="toggle-label">Aylık</span>
+        <button class="toggle-switch" id="billingToggle" onclick="toggleBilling()"><div class="toggle-thumb"></div></button>
+        <span class="toggle-label">Yıllık</span>
+        <span class="toggle-badge">%30 İndirim</span>
       </div>
-      <div class="p-card popular">
-        <span class="p-popular-badge">⭐ EN POPÜLER</span>
-        <div class="p-name">🟣 Pro</div>
-        <div class="p-price">349₺<span>/ay</span></div>
-        <ul class="p-features">
-          <li>Sınırsız soru</li>
-          <li>0-100 Risk skoru</li>
-          <li>Senaryo simülasyonu</li>
-          <li>PDF rapor üretimi</li>
-          <li>Dilekçe üretimi</li>
-          <li>Masraf hesaplama</li>
-          <li>Süre alarmı</li>
-        </ul>
+      <div class="pricing-grid" id="pricingGrid"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <div class="section-eyebrow">Sık Sorulan Sorular</div>
+      <h2 class="section-title">Merak Edilenler</h2>
+    </div>
+    <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Bu platform avukatlık hizmeti midir?<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></div>
+        <div class="faq-a">Hayır. HukukAI genel hukuki bilgi sunan bir yapay zeka platformudur. Avukatlık hizmeti değildir ve hukuki tavsiye olarak değerlendirilemez. Önemli hukuki kararlar için mutlaka lisanslı bir avukattan destek alınız.</div>
       </div>
-      <div class="p-card">
-        <div class="p-name">🔴 Elite</div>
-        <div class="p-price">799₺<span>/ay</span></div>
-        <ul class="p-features">
-          <li>Pro'daki her şey</li>
-          <li>Belge analizi</li>
-          <li>Sözleşme risk işaretleme</li>
-          <li>Belge karşılaştırma</li>
-          <li>Olasılık hesaplama</li>
-          <li>Öncelikli işlem</li>
-        </ul>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Verilerim güvende mi?<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></div>
+        <div class="faq-a">Tüm veriler KVKK ve GDPR uyumlu altyapıda işlenmektedir. SSL şifreleme ile korunmakta, üçüncü taraflarla paylaşılmamaktadır.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Ücretsiz deneme nasıl çalışır?<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></div>
+        <div class="faq-a">Kayıt olan tüm kullanıcılar 1 ay boyunca Pro planı ücretsiz kullanabilir. Süre sonunda ücretlendirme otomatik başlamaz; devam etmek için plan seçmeniz gerekir.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Giriş yapmadan soru sorabilir miyim?<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></div>
+        <div class="faq-a">Evet. Giriş yapmadan her kategoride 3 soru hakkınız bulunmaktadır. Daha fazlası için kayıt olmanız yeterlidir.</div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="disclaimer">
-    <p>⚠️ HukukAI genel hukuki bilgi sağlar. Avukatlık hizmeti değildir. Önemli kararlar için avukata danışınız. • KVKK kapsamında verileriniz korunmaktadır.</p>
-  </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+            <span>HukukAI</span>
+          </div>
+          <p class="footer-tagline">Türk hukukunda yapay zeka destekli analiz ve rehberlik platformu.</p>
+          <div class="footer-social">
+            <!-- Instagram -->
+            <a href="#" class="social-btn" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <!-- X / Twitter -->
+            <a href="#" class="social-btn" title="X (Twitter)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63z"/></svg>
+            </a>
+            <!-- LinkedIn -->
+            <a href="#" class="social-btn" title="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="#" class="social-btn" title="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25s.272-1.928 1.106-2.776c1.057-1.107 2.243-1.112 2.794-1.177C8.1 4.125 12 4.125 12 4.125s3.9 0 5.85.172c.55.065 1.737.07 2.794 1.177.834.848 1.106 2.776 1.106 2.776S22 10.443 22 12.636v2.057c0 2.193-.25 4.386-.25 4.386s-.272 1.928-1.106 2.776c-1.057 1.107-2.243 1.112-2.794 1.177C15.9 23.25 12 23.25 12 23.25s-3.9 0-5.85-.218c-.55-.065-1.737-.07-2.794-1.177-.834-.848-1.106-2.776-1.106-2.776S2 16.886 2 14.693v-2.057C2 10.443 2.25 8.25 2.25 8.25z"/><polygon points="10 15 15 12 10 9 10 15"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#categories">Kategoriler</a></li>
+            <li><a href="#pricing">Fiyatlar</a></li>
+            <li><a href="#faq">SSS</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hukuki</h4>
+          <ul>
+            <li><a href="#">Gizlilik Politikası</a></li>
+            <li><a href="#">KVKK</a></li>
+            <li><a href="#">Kullanıcı Sözleşmesi</a></li>
+            <li><a href="#">Çerez Politikası</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Şirket</h4>
+          <ul>
+            <li><a href="#">Hakkımızda</a></li>
+            <li><a href="#">İletişim</a></li>
+            <li><a href="#">Kariyer</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 HukukAI. Tüm hakları saklıdır.</span>
+        <div class="footer-legal">
+          <a href="#">Gizlilik</a>
+          <a href="#">Şartlar</a>
+          <a href="#">KVKK</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div><!-- /landingPage -->
 
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
-    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
-    <div class="nav-item" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
-    <div class="nav-item" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
-  </div>
-</div>
-
-<!-- CHAT PAGE -->
+<!-- ══════════════════════════════════════════
+     CHAT PAGE
+══════════════════════════════════════════ -->
 <div id="chatPage" class="page">
   <div class="chat-header">
-    <button class="back-btn" onclick="goHome()">←</button>
-    <div class="chat-header-info">
-      <h3 id="chatTitle">HukukAI</h3>
-      <p id="chatSubtitle">AI Hukuk Asistanı • Çevrimiçi</p>
+    <button class="chat-back" onclick="backToHome()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    </button>
+    <div class="chat-cat-info">
+      <div class="chat-cat-icon" id="chatCatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+      </div>
+      <div>
+        <div class="chat-cat-name" id="chatCatName">HukukAI</div>
+        <div class="chat-cat-sub" id="chatCatSub">Yapay Zeka Hukuk Asistanı</div>
+      </div>
     </div>
-    <span class="chat-expert-badge" id="expertBadge">Uzman</span>
-    <span class="q-counter" id="qCounter">3 hak</span>
+    <div class="chat-counter" id="chatCounter">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+      <span id="counterText">0 / 3</span>
+    </div>
   </div>
-  <div class="chat-messages" id="chatMessages">
-    <div class="msg ai" id="welcomeMsg">👋 Merhaba! Ben HukukAI Asistanı. Size nasıl yardımcı olabilirim?<br><br><small style="color:#64748b">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small></div>
-  </div>
+
+  <div class="chat-messages" id="chatMessages"></div>
+
   <div class="chat-input-area">
-    <div class="file-preview" id="filePreview">
-      <span>📎</span><span id="fileName">dosya</span>
-      <button onclick="removeFile()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#64748b">✕</button>
+    <div id="filePreviewWrap" style="max-width:800px;margin:0 auto 8px;display:none;">
+      <div class="file-preview" id="filePreview">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
+        <span id="fileName">dosya.pdf</span>
+        <button class="file-remove" onclick="removeFile()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="chat-input-row">
-      <button class="file-btn" onclick="document.getElementById('fileInput').click()">📎</button>
-      <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"/>
-      <input type="text" id="chatInput" placeholder="Hukuki sorunuzu yazın..."/>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    <div class="chat-input-inner">
+      <textarea id="chatInput" rows="1" placeholder="Hukuki sorunuzu yazın..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <div class="chat-toolbar">
+        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)">
+        <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Dosya ekle">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
+        </button>
+        <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        </button>
+      </div>
     </div>
+    <p class="chat-disclaimer">Bu yanıtlar genel bilgi amaçlıdır; avukatlık hizmeti verilmemektedir.</p>
   </div>
 </div>
 
-<!-- DİLEKÇE PAGE -->
-<div id="dilkcePage" class="page">
-  <div class="page-header">
-    <button class="back-btn" onclick="goHome()">←</button>
-    <h3>📄 Dilekçe Oluşturucu</h3>
-  </div>
-  <div class="dilekce-content">
-    <div class="dilekce-form">
-      <h4>Dilekçe Bilgileri</h4>
-      <div class="form-group">
-        <label>Dilekçe Türü</label>
-        <select id="dilekceType">
-          <option value="">Seçiniz...</option>
-          <option>İcra İtiraz Dilekçesi</option>
-          <option>Tahliye Davası Dilekçesi</option>
-          <option>Boşanma Dilekçesi</option>
-          <option>Arabuluculuk Başvurusu</option>
-          <option>İhtarname</option>
-          <option>Tüketici Şikayet Dilekçesi</option>
-          <option>Kıdem Tazminatı Talebi</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Ad Soyad</label>
-        <input type="text" id="dilekceAd" placeholder="Adınız Soyadınız"/>
-      </div>
-      <div class="form-group">
-        <label>TC Kimlik No</label>
-        <input type="text" id="dilkeceTc" placeholder="TC Kimlik Numaranız"/>
-      </div>
-      <div class="form-group">
-        <label>Açıklama</label>
-        <textarea id="dilekceAciklama" placeholder="Durumunuzu kısaca açıklayın..."></textarea>
-      </div>
-      <button class="btn-generate" onclick="checkDilekce()">⚡ Dilekçe Oluştur</button>
-    </div>
-    <div class="premium-lock">
-      <p>🔒 Dilekçe üretimi PRO pakette mevcuttur</p>
-      <button class="btn-premium" onclick="showAuth('register')">PRO'ya Geç → 349₺/ay</button>
-    </div>
-  </div>
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
-    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
-    <div class="nav-item active" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
-    <div class="nav-item" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
-  </div>
-</div>
-
-<!-- PROFİL PAGE -->
-<div id="profilePage" class="page">
-  <div class="page-header">
-    <button class="back-btn" onclick="goHome()">←</button>
-    <h3>👤 Profilim</h3>
-  </div>
-  <div class="profile-content">
-    <div id="profileGuest" style="text-align:center;padding:40px 20px;">
-      <div style="font-size:60px;margin-bottom:16px;">👤</div>
-      <h3 style="color:white;margin-bottom:8px;">Henüz giriş yapmadınız</h3>
-      <p style="color:#64748b;font-size:14px;margin-bottom:20px;">Giriş yaparak sorularınızı kaydedin</p>
-      <button class="btn-auth-primary" onclick="showAuth('login')" style="max-width:200px;margin:0 auto;">Giriş Yap</button>
-    </div>
-    <div id="profileLoggedIn" style="display:none">
-      <div class="profile-hero">
-        <div class="profile-avatar" id="profileInitial">?</div>
-        <div class="profile-name" id="profileName">Kullanıcı</div>
-        <div class="profile-email" id="profileEmail">email</div>
-        <div class="profile-plan">🆓 Ücretsiz Plan</div>
-      </div>
-      <div class="profile-stats">
-        <div class="p-stat"><div class="p-stat-num" id="totalQuestions">0</div><div class="p-stat-label">Soru</div></div>
-        <div class="p-stat"><div class="p-stat-num">3</div><div class="p-stat-label">Kategori</div></div>
-        <div class="p-stat"><div class="p-stat-num">0</div><div class="p-stat-label">Belge</div></div>
-      </div>
-      <div class="profile-menu">
-        <div class="profile-menu-item"><span class="menu-icon">⭐</span><span class="menu-text">PRO'ya Yükselt</span><span class="menu-arrow">›</span></div>
-        <div class="profile-menu-item"><span class="menu-icon">💬</span><span class="menu-text">Sorularım</span><span class="menu-arrow">›</span></div>
-        <div class="profile-menu-item"><span class="menu-icon">📄</span><span class="menu-text">Belgelerim</span><span class="menu-arrow">›</span></div>
-        <div class="profile-menu-item" onclick="logoutUser()"><span class="menu-icon">🚪</span><span class="menu-text">Çıkış Yap</span><span class="menu-arrow">›</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
-    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
-    <div class="nav-item" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
-    <div class="nav-item active" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
-  </div>
-</div>
-
-<!-- LİMİT POPUP -->
-<div class="overlay" id="limitOverlay">
-  <div class="popup">
-    <div class="popup-icon">🔒</div>
-    <h2>Soru Hakkınız Doldu!</h2>
-    <p>Bu kategorideki ücretsiz soru hakkınızı kullandınız.<br><br>Üye olun ve <strong style="color:#3b82f6">50 soru hakkı</strong> kazanın!</p>
-    <div class="popup-btns">
-      <button class="btn-popup-primary" onclick="closeLimit();showAuth('register')">🚀 Ücretsiz Üye Ol</button>
-      <button class="btn-popup-secondary" onclick="closeLimit();showAuth('login')">Giriş Yap</button>
-      <button class="btn-popup-secondary" onclick="closeLimit()">Kapat</button>
-    </div>
-  </div>
-</div>
-
-<!-- AUTH POPUP -->
+<!-- ══════════════════════════════════════════
+     OVERLAYS
+══════════════════════════════════════════ -->
+<!-- Auth Modal -->
 <div class="overlay" id="authOverlay">
-  <div class="auth-popup">
-    <div class="auth-popup-header">
-      <h2>⚖️ HukukAI</h2>
-      <button class="close-btn" onclick="closeAuth()">✕</button>
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Giriş Yap</button>
-      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Kayıt Ol</button>
-    </div>
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuth()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <!-- LOGIN -->
     <div id="loginForm">
-      <div class="form-group-auth"><label>E-posta</label><input type="email" id="loginEmail" placeholder="ornek@email.com"/></div>
-      <div class="form-group-auth"><label>Şifre</label><input type="password" id="loginPassword" placeholder="••••••••"/></div>
-      <button class="btn-auth-primary" onclick="loginUser()">Giriş Yap</button>
-      <div class="divider">— veya —</div>
+      <h2>Hesabınıza Giriş Yapın</h2>
+      <p>Platforma erişmek için giriş yapın.</p>
       <button class="btn-google" onclick="loginGoogle()">
-        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ile Giriş
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google ile Giriş Yap
       </button>
-      <div id="loginError" class="error-msg"></div>
+      <div class="modal-divider"><span>veya</span></div>
+      <div class="form-group">
+        <label class="form-label">E-posta Adresi</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="ornek@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginUser()">
+      </div>
+      <div id="loginError" class="form-error"></div>
+      <button class="btn btn-primary btn-full" onclick="loginUser()" id="loginBtn">Giriş Yap</button>
+      <div class="modal-switch">Hesabınız yok mu? <a onclick="switchAuth('register')">Kayıt Olun</a></div>
     </div>
-    <div id="registerForm" style="display:none">
-      <div class="form-group-auth"><label>Ad Soyad</label><input type="text" id="regName" placeholder="Adınız Soyadınız"/></div>
-      <div class="form-group-auth"><label>E-posta</label><input type="email" id="regEmail" placeholder="ornek@email.com"/></div>
-      <div class="form-group-auth"><label>Şifre</label><input type="password" id="regPassword" placeholder="En az 6 karakter"/></div>
-      <button class="btn-auth-primary" onclick="registerUser()">Kayıt Ol 🎉</button>
-      <div class="divider">— veya —</div>
+    <!-- REGISTER -->
+    <div id="registerForm" style="display:none;">
+      <h2>Ücretsiz Hesap Oluşturun</h2>
+      <p>1 ay ücretsiz Pro deneme ile başlayın.</p>
       <button class="btn-google" onclick="loginGoogle()">
-        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ile Kayıt
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google ile Kayıt Ol
       </button>
-      <div id="registerError" class="error-msg"></div>
-      <div id="registerSuccess" class="success-msg"></div>
+      <div class="modal-divider"><span>veya</span></div>
+      <div class="form-group">
+        <label class="form-label">Ad Soyad</label>
+        <input type="text" class="form-input" id="regName" placeholder="Adınız Soyadınız">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-posta Adresi</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="ornek@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" id="regPass" placeholder="En az 6 karakter" onkeydown="if(event.key==='Enter')registerUser()">
+      </div>
+      <div id="regError" class="form-error"></div>
+      <button class="btn btn-primary btn-full" onclick="registerUser()" id="regBtn">Hesap Oluştur</button>
+      <div class="modal-switch">Zaten hesabınız var mı? <a onclick="switchAuth('login')">Giriş Yapın</a></div>
     </div>
   </div>
 </div>
 
+<!-- Limit Modal -->
+<div class="overlay" id="limitOverlay">
+  <div class="modal limit-modal">
+    <div class="limit-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+    </div>
+    <h2>Soru Limitinize Ulaştınız</h2>
+    <p>Ücretsiz kullanım limitini doldurdunuz. Devam etmek için giriş yapın veya hesap oluşturun.</p>
+    <div class="limit-actions">
+      <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="closeLimitModal();openAuth('register')">Ücretsiz Hesap Oluştur</button>
+      <button class="btn btn-ghost" style="width:100%;padding:12px;" onclick="closeLimitModal();openAuth('login')">Giriş Yap</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ STYLES -->
+<style>
+.faq-item{background:var(--bg);border-bottom:1px solid var(--border);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{
+  padding:18px 20px;font-size:14px;font-weight:600;color:var(--navy);
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transition:background .12s;
+}
+.faq-q:hover{background:var(--bg-subtle);}
+.faq-q svg{width:16px;height:16px;color:var(--mid);flex-shrink:0;transition:transform .2s;}
+.faq-item.open .faq-q svg{transform:rotate(180deg);}
+.faq-a{
+  padding:0 20px;max-height:0;overflow:hidden;
+  font-size:14px;color:var(--mid);line-height:1.7;
+  transition:max-height .25s ease,padding .25s ease;
+}
+.faq-item.open .faq-a{padding:0 20px 16px;max-height:200px;}
+</style>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
 <script>
-const{createClient}=supabase;
-const sb=createClient('https://exngptvoqibkbigjsxwb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI');
+const { createClient } = supabase;
+const sb = createClient(
+  'https://exngptvoqibkbigjsxwb.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI'
+);
 
-let currentUser=null,currentCategory=null,conversationHistory=[],uploadedFile=null;
-let qCounts=JSON.parse(localStorage.getItem('hukukai_q')||'{}');
+/* ─── STATE ─── */
+let currentUser = null;
+let currentCategory = null;
+let conversationHistory = [];
+let uploadedFile = null;
+let isAnnual = false;
 
-const cats={
-  'genel':{name:'Genel Hukuk',icon:'⚖️',prompt:'Sen HukukAI adlı bir Türk hukuk bilgi asistanısın. Her alanda genel hukuki bilgi veriyorsun.'},
-  'is':{name:'İş Hukuku',icon:'💼',prompt:'Sen bir İş Hukuku uzmanısın. Türk İş Kanunu, kıdem tazminatı, ihbar tazminatı, işten çıkarma, fazla mesai, yıllık izin, iş kazası konularında derin uzmanlığın var.'},
-  'kira':{name:'Kira Hukuku',icon:'🏠',prompt:'Sen bir Kira Hukuku uzmanısın. Türk Borçlar Kanunu kira hükümleri, kiracı hakları, ev sahibi hakları, kira artışı, tahliye, depozito, kira sözleşmesi konularında derin uzmanlığın var.'},
-  'tuketici':{name:'Tüketici Hakları',icon:'🛒',prompt:'Sen bir Tüketici Hakları uzmanısın. 6502 sayılı Tüketicinin Korunması Hakkında Kanun, ayıplı mal, garanti, iade, tüketici mahkemesi, mesafeli satış konularında derin uzmanlığın var.'},
-  'aile':{name:'Aile Hukuku',icon:'👨‍👩‍👧',prompt:'Sen bir Aile Hukuku uzmanısın. Türk Medeni Kanunu aile hükümleri, boşanma, nafaka, velayet, mal rejimi, evlat edinme konularında derin uzmanlığın var.'},
-  'trafik':{name:'Trafik Hukuku',icon:'🚗',prompt:'Sen bir Trafik Hukuku uzmanısın. Karayolları Trafik Kanunu, trafik kazası tazminatı, sigorta, trafik cezaları, ehliyet iptali konularında derin uzmanlığın var.'},
-  'ceza':{name:'Ceza Hukuku',icon:'⚖️',prompt:'Sen bir Ceza Hukuku uzmanısın. Türk Ceza Kanunu, suç tanımları, ceza türleri, savunma hakları, şikayet ve ihbar süreçleri konularında derin uzmanlığın var.'},
-  'icra':{name:'İcra Hukuku',icon:'📋',prompt:'Sen bir İcra ve İflas Hukuku uzmanısın. İcra takibi, itiraz süreçleri, haciz, icra daireleri, borç yapılandırma konularında derin uzmanlığın var.'},
-  'miras':{name:'Miras Hukuku',icon:'📜',prompt:'Sen bir Miras Hukuku uzmanısın. Türk Medeni Kanunu miras hükümleri, vasiyetname, miras paylaşımı, miras reddi, tenkis davası konularında derin uzmanlığın var.'},
-  'vergi':{name:'Vergi Hukuku',icon:'💰',prompt:'Sen bir Vergi Hukuku uzmanısın. Türk vergi mevzuatı, vergi cezaları, vergi itirazları, gelir vergisi, KDV, kurumlar vergisi konularında derin uzmanlığın var.'}
+/* Question counts stored in localStorage for guests */
+const QK = 'hukukai_qcount_v2';
+function getQCounts() { try { return JSON.parse(localStorage.getItem(QK) || '{}'); } catch(e){ return {}; } }
+function setQCounts(d) { localStorage.setItem(QK, JSON.stringify(d)); }
+
+/* ─── CATEGORIES ─── */
+const CATS = {
+  is:       { name:'İş Hukuku',        sub:'Kıdem, ihbar, fazla mesai', icon:'brief' },
+  kira:     { name:'Kira Hukuku',       sub:'Kiracı ve ev sahibi hakları', icon:'home' },
+  tuketici: { name:'Tüketici Hukuku',   sub:'İade, garanti, ayıplı mal', icon:'shop' },
+  aile:     { name:'Aile Hukuku',       sub:'Boşanma, nafaka, velayet', icon:'users' },
+  trafik:   { name:'Trafik Hukuku',     sub:'Kaza, tazminat, cezalar', icon:'car' },
+  ceza:     { name:'Ceza Hukuku',       sub:'Suç, savunma, şikayet', icon:'shield' },
+  icra:     { name:'İcra Hukuku',       sub:'İcra takibi, itiraz, haciz', icon:'doc' },
+  miras:    { name:'Miras Hukuku',      sub:'Miras paylaşımı, vasiyetname', icon:'scale' },
+  vergi:    { name:'Vergi Hukuku',      sub:'Vergi itirazı, vergi cezası', icon:'calc' }
 };
 
-const systemSuffix=` Her zaman Türkçe cevap ver. Her yanıtta şu 8 bölümü kullan:
-📌 **Durum Analizi** - Kısa özet
-⚖️ **Hukuki Dayanak** - İlgili kanun maddesi (sade anlatım)
-⚠️ **Risk Seviyesi** - 🟢 Düşük / 🟡 Orta / 🔴 Yüksek
-⏳ **Süreler** - Dikkat edilmesi gereken yasal süreler
-💰 **Tahmini Masraf** - Yaklaşık maliyet bilgisi
-🛠 **Yapman Gerekenler** - Adım adım yapılacaklar
-🔄 **Alternatif Senaryo** - Farklı olasılıklar
-❗ **Sık Yapılan Hatalar** - Kaçınılması gerekenler`;
+const CAT_ICONS = {
+  brief:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>`,
+  home:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>`,
+  shop:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>`,
+  users:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>`,
+  car:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>`,
+  shield:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>`,
+  doc:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>`,
+  scale:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>`,
+  calc:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/></svg>`
+};
 
-function showPage(id){
-  ['landingPage','chatPage','dilkcePage','profilePage'].forEach(p=>{
-    const el=document.getElementById(p);
-    if(el){el.style.display='none';el.classList.remove('active');}
+const CAT_PROMPTS = {
+  is:'Sen bir İş Hukuku uzmanısın. 4857 sayılı İş Kanunu, kıdem tazminatı, ihbar tazminatı, işten çıkarma, fazla mesai, yıllık izin, iş güvencesi, sendika hakları konularında derinlemesine bilgi sahibisin.',
+  kira:'Sen bir Kira Hukuku uzmanısın. Türk Borçlar Kanunu kira hükümleri, kiracı hakları, ev sahibi hakları, kira artış oranı, tahliye davaları, depozito, kira tespit davası konularında uzmansın.',
+  tuketici:'Sen bir Tüketici Hakları uzmanısın. 6502 sayılı Tüketicinin Korunması Hakkında Kanun, ayıplı mal ve hizmet, cayma hakkı, garanti belgesi, tüketici mahkemeleri ve hakem heyeti konularında uzmansın.',
+  aile:'Sen bir Aile Hukuku uzmanısın. Türk Medeni Kanunu, anlaşmalı ve çekişmeli boşanma, nafaka, velayet, mal rejimi, miras, evlat edinme, aile içi koruma kararları konularında uzmansın.',
+  trafik:'Sen bir Trafik Hukuku uzmanısın. 2918 sayılı Karayolları Trafik Kanunu, trafik kazası tazminatı, zorunlu trafik sigortası, kasko, trafik cezaları, ehliyet iptali konularında uzmansın.',
+  ceza:'Sen bir Ceza Hukuku uzmanısın. Türk Ceza Kanunu, Ceza Muhakemesi Kanunu, suç türleri, savunma hakları, tutukluluk, şikayet ve dava süreçleri, denetimli serbestlik konularında uzmansın.',
+  icra:'Sen bir İcra ve İflas Hukuku uzmanısın. 2004 sayılı İcra ve İflas Kanunu, icra takibi, borca itiraz, haciz işlemleri, taşınmaz satışı, iflas süreci konularında uzmansın.',
+  miras:'Sen bir Miras Hukuku uzmanısın. Türk Medeni Kanunu miras hükümleri, yasal mirasçılar, saklı pay, vasiyetname, miras reddi, miras paylaşımı ve tenkis davası konularında uzmansın.',
+  vergi:'Sen bir Vergi Hukuku uzmanısın. Türk vergi mevzuatı, vergi cezaları, uzlaşma, vergi mahkemesi, KDV, gelir vergisi, kurumlar vergisi ve vergi incelemesi konularında uzmansın.'
+};
+
+const SYSTEM_SUFFIX = `\n\nHer yanıtta şu 8 bölümü kullan:\n\n📌 **Durum Analizi** — Sorunun kısa özeti\n⚖️ **Hukuki Dayanak** — İlgili kanun maddesi\n⚠️ **Risk Seviyesi** — Düşük / Orta / Yüksek (kısa gerekçe)\n⏳ **Süreler** — Dikkat edilmesi gereken yasal süreler\n💰 **Tahmini Masraf** — Yaklaşık maliyet bilgisi\n🛠 **Yapman Gerekenler** — Adım adım yapılacaklar\n🔄 **Alternatif Senaryo** — Farklı olasılıklar\n❗ **Sık Yapılan Hatalar** — Kaçınılması gerekenler\n\nHer zaman Türkçe, sade ve anlaşılır cevap ver.`;
+
+/* ─── PRICING ─── */
+const PLANS = [
+  { key:'free',  name:'Ücretsiz', monthly:0,   annual:0,   annualTotal:0,  desc:'Temel hukuki bilgi',
+    features:[
+      {t:'3 soru hakkı',yes:true},{t:'Temel yanıt formatı',yes:true},{t:'Risk seviyesi bilgisi',yes:true},
+      {t:'Konuşma geçmişi',yes:false},{t:'PDF/Görsel yükleme',yes:false},{t:'Senaryo simülasyonu',yes:false},{t:'Dilekçe üretimi',yes:false}
+    ]},
+  { key:'plus',  name:'Plus', monthly:99,  annual:69,  annualTotal:829, desc:'Aktif kullanıcılar için',
+    features:[
+      {t:'50 soru / gün',yes:true},{t:'Detaylı risk analizi',yes:true},{t:'Süre uyarıları',yes:true},
+      {t:'Konuşma geçmişi',yes:true},{t:'PDF/Görsel yükleme',yes:false},{t:'Senaryo simülasyonu',yes:false},{t:'Dilekçe üretimi',yes:false}
+    ]},
+  { key:'pro',   name:'Pro',  monthly:349, annual:245, annualTotal:2940, desc:'En popüler plan', popular:true,
+    features:[
+      {t:'Sınırsız soru',yes:true},{t:'Tam risk skoru (0-100)',yes:true},{t:'Süre uyarıları',yes:true},
+      {t:'Konuşma geçmişi',yes:true},{t:'PDF/Görsel yükleme',yes:true},{t:'Senaryo simülasyonu',yes:true},{t:'Dilekçe üretimi',yes:false}
+    ]},
+  { key:'elite', name:'Elite',monthly:799, annual:559, annualTotal:6708, desc:'Tam profesyonel paket', elite:true,
+    features:[
+      {t:'Sınırsız soru',yes:true},{t:'Tam risk skoru (0-100)',yes:true},{t:'Süre uyarıları',yes:true},
+      {t:'Konuşma geçmişi',yes:true},{t:'PDF/Görsel yükleme',yes:true},{t:'Senaryo simülasyonu',yes:true},{t:'Dilekçe üretimi',yes:true}
+    ]}
+];
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', async () => {
+  renderCategories();
+  renderPricing();
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session) setUser(session.user);
+  sb.auth.onAuthStateChange((_event, session) => {
+    if (session) setUser(session.user);
+    else clearUser();
   });
-  const el=document.getElementById(id);
-  if(id==='landingPage'){el.style.display='block';}
-  else{el.style.display='flex';el.classList.add('active');}
+});
+
+/* ─── RENDER CATEGORIES ─── */
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = Object.entries(CATS).map(([k,v]) => `
+    <div class="cat-card" onclick="openChat('${k}')">
+      <div class="cat-icon">${CAT_ICONS[v.icon]}</div>
+      <div>
+        <div class="cat-title">${v.name}</div>
+        <div class="cat-desc">${v.sub}</div>
+      </div>
+      <div class="cat-arrow">
+        Danış
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </div>
+    </div>
+  `).join('');
 }
 
-function showLanding(){showPage('landingPage');}
-function showDilekce(){showPage('dilkcePage');}
-function showProfile(){
-  showPage('profilePage');
-  if(currentUser){
-    const name=currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||currentUser.email.split('@')[0];
-    document.getElementById('profileName').textContent=name;
-    document.getElementById('profileEmail').textContent=currentUser.email;
-    document.getElementById('profileInitial').textContent=name[0].toUpperCase();
-    document.getElementById('profileGuest').style.display='none';
-    document.getElementById('profileLoggedIn').style.display='block';
-  } else {
-    document.getElementById('profileGuest').style.display='block';
-    document.getElementById('profileLoggedIn').style.display='none';
+/* ─── RENDER PRICING ─── */
+function renderPricing() {
+  const grid = document.getElementById('pricingGrid');
+  const chk = `<svg class="price-check yes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`;
+  const xmk = `<svg class="price-check no" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+  grid.innerHTML = PLANS.map(p => {
+    const price = isAnnual ? p.annual : p.monthly;
+    const cls = p.elite ? 'price-card elite' : p.popular ? 'price-card popular' : 'price-card';
+    const badge = p.popular ? `<div class="popular-badge">En Popüler</div>` : '';
+    const features = p.features.map(f=>`<li class="price-feature">${f.yes?chk:xmk}<span>${f.t}</span></li>`).join('');
+    const btnTxt = p.key==='free' ? 'Ücretsiz Başla' : '1 Ay Ücretsiz Dene';
+    return `
+      <div class="${cls}" style="position:relative;">
+        ${badge}
+        <div class="price-plan">${p.name}</div>
+        <div class="price-amount">
+          <span class="price-num">${price === 0 ? '0' : price}</span>
+          <span class="price-period">${price===0?'TL':'TL/ay'}</span>
+        </div>
+        <div class="price-desc">${p.desc}${isAnnual && price>0 ? `<br><small>Yıllık ${p.annualTotal} TL</small>` : ''}</div>
+        <hr class="price-divider">
+        <ul class="price-features">${features}</ul>
+        <button class="btn-price" onclick="openAuth('register')">${btnTxt}</button>
+      </div>`;
+  }).join('');
+}
+
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  const btn = document.getElementById('billingToggle');
+  btn.classList.toggle('on', isAnnual);
+  renderPricing();
+}
+
+/* ─── USER ─── */
+function setUser(user) {
+  currentUser = user;
+  const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Kullanıcı';
+  const initial = name.charAt(0).toUpperCase();
+  document.getElementById('navActions').innerHTML = `
+    <div class="user-menu-wrap">
+      <button class="user-btn" onclick="toggleUserMenu()">
+        <div class="user-avatar"><span>${initial}</span></div>
+        <span class="user-name">${name}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:14px;height:14px;color:var(--light)"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="dropdown-item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Profilim
+        </div>
+        <hr class="dropdown-divider">
+        <div class="dropdown-item danger" onclick="logoutUser()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>
+          Çıkış Yap
+        </div>
+      </div>
+    </div>`;
+}
+
+function clearUser() {
+  currentUser = null;
+  document.getElementById('navActions').innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="openAuth('login')">Giriş Yap</button>
+    <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Ücretsiz Dene</button>`;
+}
+
+function toggleUserMenu() {
+  document.getElementById('userDropdown')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-menu-wrap')) {
+    document.getElementById('userDropdown')?.classList.remove('open');
   }
+});
+
+/* ─── AUTH ─── */
+function openAuth(mode) {
+  document.getElementById('authOverlay').classList.add('open');
+  switchAuth(mode);
+}
+function closeAuth() { document.getElementById('authOverlay').classList.remove('open'); }
+function switchAuth(mode) {
+  document.getElementById('loginForm').style.display = mode==='login' ? '' : 'none';
+  document.getElementById('registerForm').style.display = mode==='register' ? '' : 'none';
 }
 
-function showCategorySelect(){
-  document.querySelector('.section').scrollIntoView({behavior:'smooth'});
+async function loginUser() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  const btn   = document.getElementById('loginBtn');
+  if (!email || !pass) { showErr(errEl,'E-posta ve şifre gereklidir.'); return; }
+  btn.textContent = 'Giriş yapılıyor...'; btn.disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  btn.textContent = 'Giriş Yap'; btn.disabled = false;
+  if (error) { showErr(errEl, error.message === 'Invalid login credentials' ? 'E-posta veya şifre hatalı.' : error.message); return; }
+  closeAuth();
 }
 
-function showAuth(tab){
-  document.getElementById('authOverlay').classList.add('active');
-  switchTab(tab);
-}
-function closeAuth(){document.getElementById('authOverlay').classList.remove('active');}
-function closeLimit(){document.getElementById('limitOverlay').classList.remove('active');}
-
-function switchTab(tab){
-  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
-  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
-  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
-  document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
-}
-
-async function loginUser(){
-  const email=document.getElementById('loginEmail').value;
-  const pass=document.getElementById('loginPassword').value;
-  if(!email||!pass){document.getElementById('loginError').textContent='E-posta ve şifre giriniz.';return;}
-  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){document.getElementById('loginError').textContent='Hatalı e-posta veya şifre.';return;}
-  currentUser=data.user;closeAuth();updateNav();
+async function registerUser() {
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass  = document.getElementById('regPass').value;
+  const errEl = document.getElementById('regError');
+  const btn   = document.getElementById('regBtn');
+  if (!name || !email || !pass) { showErr(errEl,'Tüm alanlar zorunludur.'); return; }
+  if (pass.length < 6) { showErr(errEl,'Şifre en az 6 karakter olmalıdır.'); return; }
+  btn.textContent = 'Hesap oluşturuluyor...'; btn.disabled = true;
+  const { error } = await sb.auth.signUp({ email, password: pass, options:{ data:{ full_name: name } } });
+  btn.textContent = 'Hesap Oluştur'; btn.disabled = false;
+  if (error) { showErr(errEl, error.message); return; }
+  closeAuth();
+  alert('Kayıt başarılı! E-postanızı doğrulayın.');
 }
 
-async function registerUser(){
-  const name=document.getElementById('regName').value;
-  const email=document.getElementById('regEmail').value;
-  const pass=document.getElementById('regPassword').value;
-  if(!name||!email||!pass){document.getElementById('registerError').textContent='Tüm alanları doldurunuz.';return;}
-  if(pass.length<6){document.getElementById('registerError').textContent='Şifre en az 6 karakter.';return;}
-  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
-  if(error){document.getElementById('registerError').textContent=error.message;return;}
-  document.getElementById('registerSuccess').textContent='✅ Kayıt başarılı! E-postanızı doğrulayın.';
+async function loginGoogle() {
+  await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin } });
 }
 
-async function loginGoogle(){
-  await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
+async function logoutUser() {
+  await sb.auth.signOut();
+  backToHome();
 }
 
-async function logoutUser(){
-  await sb.auth.signOut();currentUser=null;updateNav();showLanding();
+function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; setTimeout(()=>el.style.display='none',4000); }
+
+/* ─── CHAT ─── */
+function openChat(catKey) {
+  currentCategory = catKey;
+  conversationHistory = [];
+  uploadedFile = null;
+  const cat = CATS[catKey];
+  const counts = getQCounts();
+  const used = counts[catKey] || 0;
+  const limit = getLimitForUser();
+  document.getElementById('chatCatName').textContent = cat.name;
+  document.getElementById('chatCatSub').textContent = 'Yapay Zeka Uzmanı';
+  document.getElementById('chatCatIcon').innerHTML = CAT_ICONS[cat.icon];
+  updateCounter(used, limit);
+  document.getElementById('chatMessages').innerHTML = '';
+  appendAIMsg(`**${cat.name}** konusunda yardımcı olmaya hazırım.\n\nSorunuzu ayrıntılı biçimde anlatırsanız daha kapsamlı analiz sunabilirim.`);
+  document.getElementById('landingPage').classList.remove('active');
+  document.getElementById('chatPage').classList.add('active');
+  window.scrollTo(0,0);
 }
 
-function updateNav(){
-  if(currentUser){
-    const name=currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||currentUser.email.split('@')[0];
-    document.getElementById('navUserName').textContent='👤 '+name;
-    document.getElementById('navRight').style.display='none';
-    document.getElementById('navUser').style.display='flex';
-  } else {
-    document.getElementById('navRight').style.display='flex';
-    document.getElementById('navUser').style.display='none';
+function startChatFromSample(catKey, question) {
+  openChat(catKey);
+  setTimeout(() => {
+    document.getElementById('chatInput').value = question;
+    sendMessage();
+  }, 300);
+}
+
+function backToHome() {
+  document.getElementById('chatPage').classList.remove('active');
+  document.getElementById('landingPage').classList.add('active');
+}
+
+function getLimitForUser() {
+  if (!currentUser) return 3;
+  return 20; // registered free user; premium: unlimited (handled server side ideally)
+}
+
+function updateCounter(used, limit) {
+  const el = document.getElementById('counterText');
+  el.textContent = `${used} / ${limit}`;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text && !uploadedFile) return;
+
+  const counts = getQCounts();
+  const used = counts[currentCategory] || 0;
+  const limit = getLimitForUser();
+
+  if (used >= limit) {
+    document.getElementById('limitOverlay').classList.add('open');
+    return;
   }
-}
 
-function getLimit(){return currentUser?50:3;}
-function getUsed(cat){const k=currentUser?'u_'+currentUser.id+'_'+cat:cat;return qCounts[k]||0;}
-function addUsed(cat){const k=currentUser?'u_'+currentUser.id+'_'+cat:cat;qCounts[k]=(qCounts[k]||0)+1;localStorage.setItem('hukukai_q',JSON.stringify(qCounts));}
+  // Append user message
+  const displayText = text + (uploadedFile ? `\n\n[Ek: ${uploadedFile.name}]` : '');
+  appendUserMsg(displayText);
+  input.value = '';
+  input.style.height = '';
+  removeFile();
 
-function updateCounter(){
-  const used=getUsed(currentCategory);
-  const limit=getLimit();
-  const rem=Math.max(0,limit-used);
-  const el=document.getElementById('qCounter');
-  el.textContent=rem+' hak';
-  el.className='q-counter'+(rem<=1?' danger':'');
-}
+  // Update count
+  counts[currentCategory] = used + 1;
+  setQCounts(counts);
+  updateCounter(counts[currentCategory], limit);
 
-function openChat(cat){
-  currentCategory=cat;
-  const cfg=cats[cat]||cats['genel'];
-  document.getElementById('chatTitle').textContent=cfg.icon+' '+cfg.name;
-  document.getElementById('chatSubtitle').textContent=cfg.name+' Uzmanı • Çevrimiçi';
-  document.getElementById('expertBadge').textContent=cfg.name+' Uzmanı';
-  document.getElementById('welcomeMsg').innerHTML='👋 Merhaba! Ben HukukAI <strong>'+cfg.name+' Uzmanı</strong>yım.<br><br><small style="color:#64748b">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small>';
-  conversationHistory=[];
-  updateCounter();
-  const locked=getUsed(cat)>=getLimit();
-  document.getElementById('chatInput').disabled=locked;
-  document.getElementById('sendBtn').disabled=locked;
-  if(locked){document.getElementById('limitOverlay').classList.add('active');}
-  showPage('chatPage');
-}
+  // Show typing
+  const typingId = appendTyping();
 
-function goHome(){showPage('landingPage');uploadedFile=null;document.getElementById('filePreview').style.display='none';}
+  // Build history
+  conversationHistory.push({ role:'user', content: text });
 
-function handleFile(input){
-  const file=input.files[0];if(!file)return;
-  uploadedFile=file;
-  document.getElementById('fileName').textContent=file.name;
-  document.getElementById('filePreview').style.display='flex';
-}
-function removeFile(){uploadedFile=null;document.getElementById('fileInput').value='';document.getElementById('filePreview').style.display='none';}
-
-function checkDilekce(){
-  if(!currentUser){showAuth('register');return;}
-  alert('PRO pakete geçerek dilekçe oluşturabilirsiniz!');
-}
-
-async function sendMessage(){
-  const used=getUsed(currentCategory);
-  const limit=getLimit();
-  if(used>=limit){document.getElementById('limitOverlay').classList.add('active');return;}
-  const input=document.getElementById('chatInput');
-  const msgs=document.getElementById('chatMessages');
-  const text=input.value.trim();
-  if(!text&&!uploadedFile)return;
-  let display=text;
-  if(uploadedFile)display='📎 '+uploadedFile.name+(text?': '+text:'');
-  msgs.innerHTML+=`<div class="msg user">${display}</div>`;
-  input.value='';
-  msgs.innerHTML+=`<div class="msg ai" id="typing">⏳ Analiz ediliyor...</div>`;
-  msgs.scrollTop=msgs.scrollHeight;
-  addUsed(currentCategory);
-  updateCounter();
-  conversationHistory.push({role:'user',content:text||'Dosya: '+uploadedFile?.name});
-  try{
-    const cfg=cats[currentCategory]||cats['genel'];
-    const res=await fetch('/api/chat',{
+  // Call API
+  const userName = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || null;
+  try {
+    const res = await fetch('/api/chat', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        message:text,
-        category:currentCategory,
-        history:conversationHistory.slice(-10),
-        userName:currentUser?.user_metadata?.full_name||currentUser?.email,
-        systemPrompt:cfg.prompt+systemSuffix
+      body: JSON.stringify({
+        message: text,
+        category: currentCategory,
+        history: conversationHistory.slice(-10),
+        userName
       })
     });
-    const data=await res.json();
-    document.getElementById('typing')?.remove();
-    const reply=data.reply||data.error||'Cevap alınamadı.';
-    conversationHistory.push({role:'assistant',content:reply});
-    msgs.innerHTML+=`<div class="msg ai">${reply.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>`;
-    msgs.scrollTop=msgs.scrollHeight;
-    uploadedFile=null;
-    document.getElementById('filePreview').style.display='none';
-    if(getUsed(currentCategory)>=getLimit()){
-      document.getElementById('chatInput').disabled=true;
-      document.getElementById('sendBtn').disabled=true;
-      setTimeout(()=>document.getElementById('limitOverlay').classList.add('active'),1500);
+    const data = await res.json();
+    removeTyping(typingId);
+    if (data.reply) {
+      conversationHistory.push({ role:'assistant', content: data.reply });
+      appendAIMsg(data.reply);
+    } else {
+      appendAIMsg('Bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
     }
-  }catch(err){
-    document.getElementById('typing')?.remove();
-    msgs.innerHTML+=`<div class="msg ai" style="color:#f87171">❌ Hata oluştu, tekrar deneyin.</div>`;
+  } catch(e) {
+    removeTyping(typingId);
+    appendAIMsg('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
   }
 }
 
-document.getElementById('chatInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
+function appendUserMsg(text) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar user-av">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+    </div>
+    <div class="msg-bubble">${escHtml(text).replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
 
-window.onload=async()=>{
-  const{data}=await sb.auth.getSession();
-  if(data.session){currentUser=data.session.user;updateNav();}
-  sb.auth.onAuthStateChange((event,session)=>{
-    if(event==='SIGNED_IN'&&session){currentUser=session.user;updateNav();closeAuth();}
-    if(event==='SIGNED_OUT'){currentUser=null;updateNav();}
-  });
-};
+function appendAIMsg(text) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.innerHTML = `
+    <div class="msg-avatar ai">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+    </div>
+    <div class="msg-bubble">${mdToHtml(text)}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  const id = 'typing_' + Date.now();
+  div.id = id;
+  div.innerHTML = `
+    <div class="msg-avatar ai">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+    </div>
+    <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return id;
+}
+
+function removeTyping(id) { document.getElementById(id)?.remove(); }
+
+/* ─── FILE ─── */
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  uploadedFile = file;
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('filePreviewWrap').style.display = 'block';
+}
+
+function removeFile() {
+  uploadedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filePreviewWrap').style.display = 'none';
+}
+
+/* ─── LIMIT MODAL ─── */
+function closeLimitModal() { document.getElementById('limitOverlay').classList.remove('open'); }
+
+/* ─── HELPERS ─── */
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function mdToHtml(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/\n/g,'<br>');
+}
 </script>
 </body>
 </html>
