@@ -153,6 +153,7 @@ input,textarea{font-family:'Inter',sans-serif;}
 .modal-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--mid);}
 .modal-switch a{color:var(--navy);font-weight:600;cursor:pointer;}
 .form-error{font-size:12px;color:var(--danger);margin-top:8px;display:none;}
+.form-success{font-size:13px;color:var(--success);margin-bottom:12px;display:none;padding:10px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--radius);}
 .forgot-link{text-align:right;margin-top:6px;margin-bottom:12px;}
 .forgot-link a{font-size:12px;color:var(--accent);cursor:pointer;font-weight:500;}
 .forgot-link a:hover{text-decoration:underline;}
@@ -343,7 +344,10 @@ input,textarea{font-family:'Inter',sans-serif;}
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-logo"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg><span>HukukAI</span></div>
+        <div class="footer-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>
+          <span>HukukAI</span>
+        </div>
         <p class="footer-tagline">Türk hukukunda yapay zeka destekli analiz ve rehberlik platformu.</p>
         <div class="footer-social">
           <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"/></svg></a>
@@ -389,7 +393,7 @@ input,textarea{font-family:'Inter',sans-serif;}
     </div>
   </div>
 </footer>
-</div>
+</div><!-- /landingPage -->
 
 <!-- CHAT PAGE -->
 <div id="chatPage" class="page">
@@ -480,6 +484,7 @@ input,textarea{font-family:'Inter',sans-serif;}
         <input type="password" class="form-input" id="regPass" placeholder="En az 6 karakter" onkeydown="if(event.key==='Enter')registerUser()">
       </div>
       <div id="regError" class="form-error"></div>
+      <div id="regSuccess" class="form-success">✅ E-posta doğrulama bağlantısı gönderildi. Lütfen gelen kutunuzu kontrol edin.</div>
       <button class="btn btn-primary btn-full" onclick="registerUser()" id="regBtn">Hesap Oluştur</button>
       <div class="modal-switch">Zaten hesabınız var mı? <a onclick="switchAuth('login')">Giriş Yapın</a></div>
     </div>
@@ -493,9 +498,9 @@ input,textarea{font-family:'Inter',sans-serif;}
         <input type="email" class="form-input" id="forgotEmail" placeholder="ornek@email.com" onkeydown="if(event.key==='Enter')resetPassword()">
       </div>
       <div id="forgotError" class="form-error"></div>
-      <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;">Sıfırlama bağlantısı e-postanıza gönderildi.</div>
+      <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;padding:10px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--radius);">✅ Sıfırlama bağlantısı e-postanıza gönderildi. Gelen kutunuzu kontrol edin.</div>
       <button class="btn btn-primary btn-full" onclick="resetPassword()" id="forgotBtn">Sıfırlama Bağlantısı Gönder</button>
-      <div class="modal-switch"><a onclick="switchAuth('login')">Giriş sayfasına dön</a></div>
+      <div class="modal-switch"><a onclick="switchAuth('login')" style="cursor:pointer;">← Giriş sayfasına dön</a></div>
     </div>
   </div>
 </div>
@@ -517,25 +522,16 @@ input,textarea{font-family:'Inter',sans-serif;}
 
 <script>
 const {createClient}=supabase;
-const sb=createClient('https://exngptvoqibkbigjsxwb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI');
+const sb=createClient(
+  'https://exngptvoqibkbigjsxwb.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI'
+);
 
-let currentUser=null,currentCategory=null,conversationHistory=[],uploadedFile=null,isAnnual=false;
+let currentUser=null,currentCategory=null,conversationHistory=[],uploadedFile=null,isAnnual=false,msgId=0;
 window._currentConvId=null;
 const QK='hukukai_qcount_v2';
 function getQCounts(){try{return JSON.parse(localStorage.getItem(QK)||'{}')}catch(e){return{}}}
 function setQCounts(d){localStorage.setItem(QK,JSON.stringify(d))}
-
-const ICONS={
-  brief:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>',
-  home:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>',
-  shop:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>',
-  users:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>',
-  car:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>',
-  shield:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>',
-  doc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>',
-  scale:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>',
-  calc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.616 4.5 4.558V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.558c0-.942-.806-1.858-1.907-1.986A48.507 48.507 0 0012 2.25z"/></svg>'
-};
 
 const CATS={
   is:{name:'İş Hukuku',sub:'Kıdem, ihbar, fazla mesai',icon:'brief'},
@@ -556,40 +552,136 @@ const PLANS=[
   {key:'elite',name:'Elite',monthly:799,annual:559,desc:'Tam profesyonel paket',elite:true,features:[{t:'Sınırsız soru',y:true},{t:'Tam risk skoru',y:true},{t:'Süre uyarıları',y:true},{t:'Konuşma geçmişi',y:true},{t:'Dosya yükleme',y:true},{t:'Senaryo simülasyonu',y:true},{t:'Dilekçe üretimi',y:true}]}
 ];
 
-function renderCategories(){
-  document.getElementById('catGrid').innerHTML=Object.entries(CATS).map(([k,v])=>`
-    <div class="cat-card" onclick="openChat('${k}')">
-      <div class="cat-icon">${ICONS[v.icon]}</div>
-      <div><div class="cat-title">${v.name}</div><div class="cat-desc">${v.sub}</div></div>
-      <div class="cat-arrow">Danış &rarr;</div>
-    </div>`).join('');
+const ICONS={
+  brief:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>',
+  home:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>',
+  shop:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>',
+  users:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>',
+  car:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>',
+  shield:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>',
+  doc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>',
+  scale:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>',
+  calc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.616 4.5 4.558V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.558c0-.942-.806-1.858-1.907-1.986A48.507 48.507 0 0012 2.25z"/></svg>'
+};
+
+/* ── AUTH ── */
+function openAuth(mode){
+  document.getElementById('authOverlay').classList.add('open');
+  switchAuth(mode);
 }
 
-function renderPricing(){
-  const chk=(y)=>y?`<svg class="price-check yes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:`<svg class="price-check no" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
-  document.getElementById('pricingGrid').innerHTML=PLANS.map(p=>{
-    const price=isAnnual?p.annual:p.monthly;
-    const cls=p.elite?'price-card elite':p.popular?'price-card popular':'price-card';
-    return `<div class="${cls}">${p.popular?'<div class="popular-badge">En Popüler</div>':''}
-      <div class="price-plan">${p.name}</div>
-      <div class="price-amount"><span class="price-num">${price===0?'0':price+'₺'}</span><span class="price-period">${price===0?'Ücretsiz':'/ay'}</span></div>
-      <div class="price-desc">${p.desc}</div>
-      <hr class="price-divider">
-      <ul class="price-features">${p.features.map(f=>`<li class="price-feature">${chk(f.y)}<span>${f.t}</span></li>`).join('')}</ul>
-      <button class="btn-price" onclick="openAuth('register')">${price===0?'Hemen Başla':'Planı Seç'}</button>
-    </div>`;
-  }).join('');
+function closeAuth(){
+  document.getElementById('authOverlay').classList.remove('open');
+  // Formları sıfırla
+  ['loginEmail','loginPass','regName','regEmail','regPass','forgotEmail'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  ['loginError','regError','regSuccess','forgotError','forgotSuccess'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  const regBtn=document.getElementById('regBtn');
+  if(regBtn){regBtn.disabled=false;regBtn.textContent='Hesap Oluştur';}
+  const forgotBtn=document.getElementById('forgotBtn');
+  if(forgotBtn){forgotBtn.disabled=false;forgotBtn.textContent='Sıfırlama Bağlantısı Gönder';}
 }
 
-function toggleBilling(){
-  isAnnual=!isAnnual;
-  const t=document.getElementById('billingToggle');
-  t.classList.toggle('on',isAnnual);
-  renderPricing();
+function switchAuth(mode){
+  document.getElementById('loginForm').style.display=mode==='login'?'':'none';
+  document.getElementById('registerForm').style.display=mode==='register'?'':'none';
+  document.getElementById('forgotForm').style.display=mode==='forgot'?'':'none';
 }
 
 function showErr(el,msg){el.textContent=msg;el.style.display='block';}
 
+/* ── GİRİŞ ── */
+async function loginUser(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const errEl=document.getElementById('loginError');
+  const btn=document.getElementById('loginBtn');
+  if(!email||!pass){showErr(errEl,'E-posta ve şifre gereklidir.');return;}
+  btn.textContent='Giriş yapılıyor...';btn.disabled=true;
+  const{error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.textContent='Giriş Yap';btn.disabled=false;
+  if(error){
+    showErr(errEl,
+      error.message==='Invalid login credentials'?'E-posta veya şifre hatalı.':
+      error.message==='Email not confirmed'?'E-postanızı henüz doğrulamadınız. Lütfen gelen kutunuzu kontrol edin.':
+      error.message
+    );
+    return;
+  }
+  closeAuth();
+}
+
+async function loginGoogle(){
+  const{error}=await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.origin}
+  });
+  if(error) alert('Google girişi başarısız: '+error.message);
+}
+
+/* ── KAYIT ── */
+async function registerUser(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pass=document.getElementById('regPass').value;
+  const errEl=document.getElementById('regError');
+  const sucEl=document.getElementById('regSuccess');
+  const btn=document.getElementById('regBtn');
+  if(!name||!email||!pass){showErr(errEl,'Tüm alanlar zorunludur.');return;}
+  if(pass.length<6){showErr(errEl,'Şifre en az 6 karakter olmalıdır.');return;}
+  btn.textContent='Hesap oluşturuluyor...';btn.disabled=true;
+  const{data,error}=await sb.auth.signUp({
+    email,
+    password:pass,
+    options:{data:{full_name:name}}
+  });
+  btn.textContent='Hesap Oluştur';btn.disabled=false;
+  if(error){
+    showErr(errEl,
+      error.message==='User already registered'?'Bu e-posta adresi zaten kayıtlı. Giriş yapmayı deneyin.':
+      error.message==='Email rate limit exceeded'?'Çok fazla deneme yapıldı. Lütfen birkaç dakika bekleyin.':
+      error.message
+    );
+    return;
+  }
+  errEl.style.display='none';
+  if(data.session){
+    // E-posta doğrulama kapalı → direkt giriş yapıldı
+    closeAuth();
+  } else {
+    // E-posta doğrulama açık → mail gönderildi
+    sucEl.style.display='block';
+    btn.disabled=true;
+    btn.textContent='E-posta gönderildi ✓';
+    setTimeout(()=>{
+      closeAuth();
+    },4000);
+  }
+}
+
+/* ── ŞİFRE SIFIRLAMA ── */
+async function resetPassword(){
+  const email=document.getElementById('forgotEmail').value.trim();
+  const errEl=document.getElementById('forgotError');
+  const sucEl=document.getElementById('forgotSuccess');
+  const btn=document.getElementById('forgotBtn');
+  if(!email){showErr(errEl,'E-posta adresi gereklidir.');return;}
+  btn.textContent='Gönderiliyor...';btn.disabled=true;
+  const{error}=await sb.auth.resetPasswordForEmail(email,{
+    redirectTo:window.location.origin
+  });
+  btn.textContent='Sıfırlama Bağlantısı Gönder';btn.disabled=false;
+  if(error){showErr(errEl,error.message);return;}
+  errEl.style.display='none';
+  sucEl.style.display='block';
+}
+
+/* ── KULLANICI YÖNETİMİ ── */
 function setUser(user){
   currentUser=user;
   const name=user.user_metadata?.full_name||user.email?.split('@')[0]||'Kullanıcı';
@@ -622,91 +714,22 @@ function clearUser(){
     <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Ücretsiz Dene</button>`;
 }
 
-function toggleUserMenu(){document.getElementById('userDropdown')?.classList.toggle('open');}
-document.addEventListener('click',e=>{if(!e.target.closest('.user-menu-wrap'))document.getElementById('userDropdown')?.classList.remove('open');});
-
-function openAuth(mode){document.getElementById('authOverlay').classList.add('open');switchAuth(mode);}
-function closeAuth(){
-  document.getElementById('authOverlay').classList.remove('open');
-  document.getElementById('forgotSuccess').style.display='none';
-  document.getElementById('forgotEmail').value='';
-  document.getElementById('forgotError').style.display='none';
-}
-
-function switchAuth(mode){
-  document.getElementById('loginForm').style.display=mode==='login'?'':'none';
-  document.getElementById('registerForm').style.display=mode==='register'?'':'none';
-  document.getElementById('forgotForm').style.display=mode==='forgot'?'':'none';
-}
-
-async function loginUser(){
-  const email=document.getElementById('loginEmail').value.trim();
-  const pass=document.getElementById('loginPass').value;
-  const errEl=document.getElementById('loginError');
-  const btn=document.getElementById('loginBtn');
-  if(!email||!pass){showErr(errEl,'E-posta ve şifre gereklidir.');return;}
-  btn.textContent='Giriş yapılıyor...';btn.disabled=true;
-  const{error}=await sb.auth.signInWithPassword({email,password:pass});
-  btn.textContent='Giriş Yap';btn.disabled=false;
-  if(error){showErr(errEl,error.message==='Invalid login credentials'?'E-posta veya şifre hatalı.':error.message);return;}
-  closeAuth();
-}
-
-async function loginGoogle(){
-  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
-  if(error)alert('Google girişi başarısız: '+error.message);
-}
-
-async function registerUser(){
-  const name=document.getElementById('regName').value.trim();
-  const email=document.getElementById('regEmail').value.trim();
-  const pass=document.getElementById('regPass').value;
-  const errEl=document.getElementById('regError');
-  const btn=document.getElementById('regBtn');
-  if(!name||!email||!pass){showErr(errEl,'Tüm alanlar zorunludur.');return;}
-  if(pass.length<6){showErr(errEl,'Şifre en az 6 karakter olmalıdır.');return;}
-  btn.textContent='Hesap oluşturuluyor...';btn.disabled=true;
-  const{error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
-  btn.textContent='Hesap Oluştur';btn.disabled=false;
-  if(error){showErr(errEl,error.message);return;}
-  closeAuth();
-}
-
-async function resetPassword(){
-  const email=document.getElementById('forgotEmail').value.trim();
-  const errEl=document.getElementById('forgotError');
-  const sucEl=document.getElementById('forgotSuccess');
-  const btn=document.getElementById('forgotBtn');
-  if(!email){showErr(errEl,'E-posta adresi gereklidir.');return;}
-  btn.textContent='Gönderiliyor...';btn.disabled=true;
-  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
-  btn.textContent='Sıfırlama Bağlantısı Gönder';btn.disabled=false;
-  if(error){showErr(errEl,error.message);return;}
-  errEl.style.display='none';
-  sucEl.style.display='block';
-}
-
 async function logoutUser(){
   await sb.auth.signOut();
   clearUser();
   goBack();
 }
 
-function closeLimitModal(){document.getElementById('limitOverlay').classList.remove('open');}
+function toggleUserMenu(){document.getElementById('userDropdown')?.classList.toggle('open');}
 
+/* ── AUTH STATE ── */
+sb.auth.onAuthStateChange((event,session)=>{
+  if(session?.user){setUser(session.user);}
+  else{clearUser();}
+});
+
+/* ── CHAT ── */
 function getLimitForUser(){return currentUser?20:3;}
-
-function updateCounter(used,limit){
-  const el=document.getElementById('counterText');
-  if(el)el.textContent=`${used} / ${limit}`;
-}
-
-function goBack(){
-  document.getElementById('chatPage').classList.remove('active');
-  document.getElementById('landingPage').classList.add('active');
-  conversationHistory=[];
-  window._currentConvId=null;
-}
 
 function openChat(catKey){
   currentCategory=catKey;
@@ -725,39 +748,13 @@ function openChat(catKey){
   appendAIMsg(`Merhaba! ${cat.name} alanında size yardımcı olmaya hazırım. Sorunuzu detaylı şekilde paylaşın, kapsamlı bir analiz sunayım.`);
 }
 
-function startChatFromSample(catKey,question){
-  openChat(catKey);
-  setTimeout(()=>{
-    document.getElementById('chatInput').value=question;
-    sendMessage();
-  },400);
+function goBack(){
+  document.getElementById('chatPage').classList.remove('active');
+  document.getElementById('landingPage').classList.add('active');
+  conversationHistory=[];
+  window._currentConvId=null;
 }
 
-function scrollToSection(id){
-  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
-}
-
-function toggleFaq(el){el.classList.toggle('open');}
-
-function handleFile(input){
-  const file=input.files[0];
-  if(!file)return;
-  uploadedFile=file;
-  document.getElementById('filePreviewArea').innerHTML=`
-    <div class="file-preview">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
-      <span>${file.name}</span>
-      <button class="file-remove" onclick="removeFile()">✕</button>
-    </div>`;
-}
-
-function removeFile(){
-  uploadedFile=null;
-  document.getElementById('fileInput').value='';
-  document.getElementById('filePreviewArea').innerHTML='';
-}
-
-let msgId=0;
 function appendUserMsg(text){
   const id='msg-'+(++msgId);
   const div=document.createElement('div');
@@ -791,6 +788,11 @@ function appendTyping(){
 }
 
 function removeTyping(id){document.getElementById(id)?.remove();}
+
+function updateCounter(used,limit){
+  const el=document.getElementById('counterText');
+  if(el)el.textContent=`${used} / ${limit}`;
+}
 
 async function sendMessage(){
   const input=document.getElementById('chatInput');
@@ -836,16 +838,74 @@ async function sendMessage(){
   }
 }
 
-document.getElementById('chatInput').addEventListener('input',function(){
-  this.style.height='auto';
-  this.style.height=Math.min(this.scrollHeight,120)+'px';
-});
+function startChatFromSample(catKey,question){
+  openChat(catKey);
+  setTimeout(()=>{
+    document.getElementById('chatInput').value=question;
+    sendMessage();
+  },400);
+}
 
-sb.auth.onAuthStateChange((event,session)=>{
-  if(session?.user){setUser(session.user);}
-  else{clearUser();}
-});
+/* ── DOSYA ── */
+function handleFile(input){
+  const file=input.files[0];
+  if(!file)return;
+  uploadedFile=file;
+  document.getElementById('filePreviewArea').innerHTML=`
+    <div class="file-preview">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
+      <span>${file.name}</span>
+      <button class="file-remove" onclick="removeFile()">✕</button>
+    </div>`;
+}
 
+function removeFile(){
+  uploadedFile=null;
+  document.getElementById('fileInput').value='';
+  document.getElementById('filePreviewArea').innerHTML='';
+}
+
+/* ── UI YARDIMCILAR ── */
+function closeLimitModal(){document.getElementById('limitOverlay').classList.remove('open');}
+function toggleFaq(el){el.classList.toggle('open');}
+function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+
+function toggleBilling(){
+  isAnnual=!isAnnual;
+  const t=document.getElementById('billingToggle');
+  t.classList.toggle('on',isAnnual);
+  renderPricing();
+}
+
+/* ── RENDER ── */
+function renderCategories(){
+  document.getElementById('catGrid').innerHTML=Object.entries(CATS).map(([k,v])=>`
+    <div class="cat-card" onclick="openChat('${k}')">
+      <div class="cat-icon">${ICONS[v.icon]}</div>
+      <div><div class="cat-title">${v.name}</div><div class="cat-desc">${v.sub}</div></div>
+      <div class="cat-arrow">Danış &rarr;</div>
+    </div>`).join('');
+}
+
+function renderPricing(){
+  const chk=(y)=>y
+    ?`<svg class="price-check yes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`
+    :`<svg class="price-check no" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+  document.getElementById('pricingGrid').innerHTML=PLANS.map(p=>{
+    const price=isAnnual?p.annual:p.monthly;
+    const cls=p.elite?'price-card elite':p.popular?'price-card popular':'price-card';
+    return `<div class="${cls}">${p.popular?'<div class="popular-badge">En Popüler</div>':''}
+      <div class="price-plan">${p.name}</div>
+      <div class="price-amount"><span class="price-num">${price===0?'0':price+'₺'}</span><span class="price-period">${price===0?'Ücretsiz':'/ay'}</span></div>
+      <div class="price-desc">${p.desc}</div>
+      <hr class="price-divider">
+      <ul class="price-features">${p.features.map(f=>`<li class="price-feature">${chk(f.y)}<span>${f.t}</span></li>`).join('')}</ul>
+      <button class="btn-price" onclick="openAuth('register')">${price===0?'Hemen Başla':'Planı Seç'}</button>
+    </div>`;
+  }).join('');
+}
+
+/* ── INIT ── */
 renderCategories();
 renderPricing();
 </script>
