@@ -420,6 +420,19 @@ input,textarea{font-family:'Inter',sans-serif;}
     </div>
   </div>
 </div>
+<!-- FORGOT FORM -->
+<div id="forgotForm" style="display:none;">
+  <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px;">Şifre Sıfırla</h2>
+  <p style="font-size:14px;color:var(--mid);margin-bottom:24px;">E-posta adresinizi girin, sıfırlama bağlantısı gönderelim.</p>
+  <div class="form-group">
+    <label class="form-label">E-posta Adresi</label>
+    <input type="email" class="form-input" id="forgotEmail" placeholder="ornek@email.com">
+  </div>
+  <div id="forgotError" class="form-error"></div>
+  <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;">Sıfırlama bağlantısı gönderildi. E-postanızı kontrol edin.</div>
+  <button class="btn btn-primary btn-full" onclick="resetPassword()" id="forgotBtn">Sıfırlama Bağlantısı Gönder</button>
+  <div class="modal-switch"><a onclick="switchAuth('login')" style="cursor:pointer;">Giriş sayfasına dön</a></div>
+</div>
 
 <!-- LIMIT MODAL -->
 <div class="overlay" id="limitOverlay">
