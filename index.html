@@ -1140,6 +1140,89 @@ async function sendMessage() {
     return;
   }
 
+  // Kullanıcı mesajını göster
+  const displayText = text + (uploadedFile ? `\n\n[Ek: ${uploadedFile.name}]` : '');
+  appendUserMsg(displayText);
+  input.value = '';
+  input.style.height = '';
+  removeFile();
+
+  // Sayacı güncelle
+  counts[currentCategory] = used + 1;
+  setQCounts(counts);
+  updateCounter(counts[currentCategory], limit);
+
+  // Typing göster
+  const typingId = appendTyping();
+
+  // Konuşma geçmişine ekle
+  conversationHistory.push({ role: 'user', content: text });
+
+  // ── TOKEN AL ──────────────────────────────────
+  let authHeader = '';
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.access_token) {
+      authHeader = `Bearer ${session.access_token}`;
+    }
+  } catch (e) {
+    // Token alınamazsa misafir olarak devam et
+  }
+
+  // ── API İSTEĞİ ────────────────────────────────
+  const userName = currentUser?.user_metadata?.full_name
+    || currentUser?.email?.split('@')[0]
+    || null;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authHeader ? { 'Authorization': authHeader } : {})
+      },
+      body: JSON.stringify({
+        message: text,
+        category: currentCategory,
+        history: conversationHistory.slice(-10),
+        userName,
+        conversationId: window._currentConvId || null
+      })
+    });
+
+    const data = await res.json();
+    removeTyping(typingId);
+
+    if (data.reply) {
+      conversationHistory.push({ role: 'assistant', content: data.reply });
+      appendAIMsg(data.reply);
+      // Konuşma ID'sini sakla
+      if (data.conversationId) {
+        window._currentConvId = data.conversationId;
+      }
+    } else {
+      appendAIMsg('Bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+    }
+
+  } catch (e) {
+    removeTyping(typingId);
+    appendAIMsg('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+  }
+}
+
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text && !uploadedFile) return;
+
+  const counts = getQCounts();
+  const used = counts[currentCategory] || 0;
+  const limit = getLimitForUser();
+
+  if (used >= limit) {
+    document.getElementById('limitOverlay').classList.add('open');
+    return;
+  }
+
   // Append user message
   const displayText = text + (uploadedFile ? `\n\n[Ek: ${uploadedFile.name}]` : '');
   appendUserMsg(displayText);
