@@ -3,228 +3,595 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HukukAI - Hukuki Haklarını AI ile Öğren</title>
+<title>HukukAI - 7/24 Yapay Zeka Destekli Hukuk Danışmanı</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:#f8fafc;}
-nav{background:linear-gradient(135deg,#1a2980,#2563eb);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.logo{color:white;font-size:22px;font-weight:800;}
-.logo span{background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:8px;font-size:12px;margin-left:6px;}
-.nav-btn{background:white;color:#1a2980;border:none;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer;}
-.page{display:none;min-height:100vh;}
-.page.active{display:block;}
-#loginPage{background:linear-gradient(135deg,#1a2980,#2563eb);display:flex;align-items:center;justify-content:center;min-height:100vh;}
-#loginPage.active{display:flex;}
-.auth-card{background:white;border-radius:24px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.auth-logo{text-align:center;margin-bottom:24px;}
-.auth-logo h1{color:#1a2980;font-size:28px;font-weight:800;}
-.auth-logo p{color:#64748b;font-size:14px;margin-top:4px;}
-.auth-tabs{display:flex;background:#f1f5f9;border-radius:12px;padding:4px;margin-bottom:24px;}
-.auth-tab{flex:1;padding:10px;text-align:center;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;color:#64748b;border:none;background:none;}
-.auth-tab.active{background:white;color:#1a2980;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-.form-group{margin-bottom:16px;}
-.form-group label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
-.form-group input{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;}
-.form-group input:focus{border-color:#2563eb;}
-.btn-primary{width:100%;background:linear-gradient(135deg,#1a2980,#2563eb);color:white;border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:12px;}
-.btn-google{width:100%;background:white;color:#374151;border:2px solid #e2e8f0;padding:12px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.divider{text-align:center;color:#94a3b8;font-size:13px;margin:12px 0;}
-.error-msg{color:#ef4444;font-size:13px;text-align:center;margin-top:8px;}
-.success-msg{color:#10b981;font-size:13px;text-align:center;margin-top:8px;}
-.hero{background:linear-gradient(135deg,#1a2980,#2563eb);padding:48px 24px;text-align:center;color:white;}
-.hero h1{font-size:32px;font-weight:800;margin-bottom:12px;}
-.hero h1 span{color:#93c5fd;}
-.hero p{font-size:16px;opacity:0.9;}
-.hero-stats{display:flex;justify-content:center;gap:32px;margin-top:24px;}
-.stat-num{font-size:24px;font-weight:800;}
-.stat-label{font-size:12px;opacity:0.8;}
-.user-welcome{background:rgba(255,255,255,0.15);border-radius:16px;padding:16px 24px;margin:16px 24px 0;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.2);}
-.user-avatar{width:44px;height:44px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#1a2980;}
-.user-info h3{color:white;font-size:15px;font-weight:700;}
-.user-info p{color:rgba(255,255,255,0.8);font-size:12px;}
-.pricing-banner{background:linear-gradient(135deg,#1a2980,#2563eb);margin:16px;border-radius:16px;padding:20px;color:white;text-align:center;}
-.pricing-banner h3{font-size:16px;font-weight:700;margin-bottom:4px;}
-.pricing-banner p{font-size:13px;opacity:0.9;margin-bottom:12px;}
-.trial-badge{background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-.section{padding:24px;}
-.section h2{font-size:20px;font-weight:800;color:#1e293b;margin-bottom:16px;}
-.categories{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.cat-card{background:white;border-radius:16px;padding:20px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
-.cat-card:hover{border-color:#2563eb;transform:translateY(-2px);}
-.cat-icon{font-size:32px;margin-bottom:8px;}
-.cat-name{font-size:14px;font-weight:700;color:#1e293b;}
-.cat-desc{font-size:12px;color:#64748b;margin-top:4px;}
-.cat-count{font-size:11px;color:#2563eb;font-weight:600;margin-top:8px;}
-#chatPage{display:none;flex-direction:column;height:100vh;}
+body{font-family:'Segoe UI',sans-serif;background:#0f1729;color:#e2e8f0;}
+:root{--navy:#0f1729;--navy2:#1a2540;--navy3:#243050;--blue:#3b82f6;--blue2:#2563eb;--text:#e2e8f0;--text2:#94a3b8;--border:#2a3a5c;}
+
+/* LANDING */
+#landingPage{min-height:100vh;background:#0f1729;}
+
+/* TOP NAV */
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#1a2540;border-bottom:1px solid #2a3a5c;}
+.top-nav-logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:white;}
+.top-nav-logo img{width:32px;height:32px;}
+.top-nav-right{display:flex;gap:8px;align-items:center;}
+.btn-login{background:transparent;color:#94a3b8;border:1px solid #2a3a5c;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-register{background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+.user-nav{display:none;align-items:center;gap:10px;}
+.user-nav-name{color:#e2e8f0;font-size:13px;font-weight:600;}
+.btn-logout{background:transparent;color:#94a3b8;border:1px solid #2a3a5c;padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;}
+
+/* HERO */
+.hero{background:linear-gradient(180deg,#1a2540 0%,#0f1729 100%);padding:40px 20px 32px;text-align:center;}
+.hero-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+.hero-logo-icon{width:52px;height:52px;background:linear-gradient(135deg,#2563eb,#3b82f6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hero-logo-text{font-size:28px;font-weight:800;color:white;}
+.hero-logo-text span{color:#3b82f6;}
+.hero h2{font-size:18px;color:#94a3b8;font-weight:400;margin-bottom:28px;}
+.hero-ask-btn{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:50%;width:90px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;margin:0 auto 8px;box-shadow:0 0 30px rgba(59,130,246,0.4);}
+.hero-ask-btn span{font-size:32px;}
+.hero-ask-label{color:#94a3b8;font-size:13px;margin-bottom:28px;}
+.hero-stats{display:flex;justify-content:center;gap:0;}
+.stat-item{flex:1;max-width:120px;text-align:center;padding:12px 8px;background:#1a2540;border-radius:12px;margin:0 4px;}
+.stat-item .num{font-size:16px;font-weight:800;color:white;}
+.stat-item .label{font-size:10px;color:#64748b;margin-top:2px;}
+
+/* FREE BANNER */
+.free-banner{background:linear-gradient(135deg,#065f46,#047857);margin:0 16px 20px;border-radius:12px;padding:12px 16px;text-align:center;font-size:13px;font-weight:600;color:#6ee7b7;}
+
+/* CATEGORIES */
+.section{padding:0 16px 24px;}
+.section-title{font-size:17px;font-weight:800;color:white;margin-bottom:14px;}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.cat-card{background:#1a2540;border-radius:14px;padding:16px 8px;text-align:center;cursor:pointer;border:1px solid #2a3a5c;transition:all 0.2s;}
+.cat-card:hover{border-color:#3b82f6;background:#243050;}
+.cat-card:active{transform:scale(0.96);}
+.cat-icon{font-size:26px;margin-bottom:8px;}
+.cat-name{font-size:11px;font-weight:700;color:#e2e8f0;}
+.cat-free{font-size:10px;color:#3b82f6;margin-top:4px;}
+
+/* RECENT QUESTIONS */
+.recent-list{display:flex;flex-direction:column;gap:10px;}
+.recent-item{background:#1a2540;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;border:1px solid #2a3a5c;cursor:pointer;}
+.recent-avatar{width:36px;height:36px;background:#243050;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.recent-text{flex:1;}
+.recent-q{font-size:13px;color:#e2e8f0;font-weight:500;}
+.recent-time{font-size:11px;color:#64748b;margin-top:2px;}
+.recent-arrow{color:#3b82f6;font-size:16px;}
+
+/* PRICING */
+.pricing-section{padding:0 16px 100px;}
+.pricing-title{font-size:17px;font-weight:800;color:white;margin-bottom:14px;text-align:center;}
+.pricing-cards{display:flex;flex-direction:column;gap:12px;}
+.p-card{background:#1a2540;border:1px solid #2a3a5c;border-radius:16px;padding:20px;}
+.p-card.popular{border-color:#3b82f6;background:linear-gradient(135deg,#1e3a6e,#1a2540);}
+.p-popular-badge{background:#3b82f6;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;}
+.p-name{font-size:16px;font-weight:800;color:white;}
+.p-price{font-size:28px;font-weight:800;color:#3b82f6;margin:6px 0;}
+.p-price span{font-size:13px;color:#64748b;font-weight:400;}
+.p-features{list-style:none;margin-top:10px;}
+.p-features li{font-size:12px;color:#94a3b8;padding:3px 0;display:flex;align-items:center;gap:6px;}
+.p-features li::before{content:'✓';color:#10b981;font-weight:700;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#1a2540;border-top:1px solid #2a3a5c;display:flex;justify-content:space-around;padding:10px 0 16px;z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0 16px;}
+.nav-icon{font-size:20px;}
+.nav-label{font-size:10px;color:#64748b;font-weight:600;}
+.nav-item.active .nav-label{color:#3b82f6;}
+.nav-item.active .nav-icon{filter:brightness(1.5);}
+
+/* CHAT PAGE */
+#chatPage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
 #chatPage.active{display:flex;}
-.chat-header{background:linear-gradient(135deg,#1a2980,#2563eb);padding:16px 20px;display:flex;align-items:center;gap:12px;}
-.back-btn{background:rgba(255,255,255,0.2);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;}
-.chat-header-info h3{color:white;font-size:16px;font-weight:700;}
-.chat-header-info p{color:rgba(255,255,255,0.8);font-size:12px;}
-.chat-expert-badge{background:rgba(255,255,255,0.2);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-left:auto;}
-.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#f8fafc;}
-.msg{max-width:80%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.5;}
-.msg.user{background:linear-gradient(135deg,#1a2980,#2563eb);color:white;align-self:flex-end;}
-.msg.ai{background:white;color:#374151;align-self:flex-start;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
-.chat-input-area{padding:12px 16px;background:white;border-top:1px solid #e2e8f0;}
-.file-preview{background:#f1f5f9;border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#374151;display:none;align-items:center;gap:8px;}
+.chat-header{background:#1a2540;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a3a5c;}
+.back-btn{background:#243050;border:none;color:#e2e8f0;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;flex-shrink:0;}
+.chat-header-info{flex:1;}
+.chat-header-info h3{color:white;font-size:15px;font-weight:700;}
+.chat-header-info p{color:#64748b;font-size:11px;}
+.chat-expert-badge{background:#1d4ed8;color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;}
+.q-counter{background:#243050;color:#94a3b8;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;margin-left:6px;}
+.q-counter.danger{background:#7f1d1d;color:#fca5a5;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;}
+.msg{max-width:85%;padding:14px 16px;border-radius:16px;font-size:14px;line-height:1.7;}
+.msg.user{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;align-self:flex-end;border-bottom-right-radius:4px;}
+.msg.ai{background:#1a2540;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:4px;border:1px solid #2a3a5c;}
+.msg.ai strong{color:#3b82f6;}
+.msg-avatar{width:32px;height:32px;background:#243050;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;align-self:flex-end;margin-right:8px;}
+.msg-row{display:flex;align-items:flex-end;gap:0;}
+.chat-input-area{padding:12px 16px;background:#1a2540;border-top:1px solid #2a3a5c;}
+.file-preview{background:#243050;border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#94a3b8;display:none;align-items:center;gap:8px;border:1px solid #2a3a5c;}
 .chat-input-row{display:flex;gap:8px;align-items:center;}
-.file-btn{background:#f1f5f9;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px;}
-#chatInput{flex:1;padding:10px 16px;border:2px solid #e2e8f0;border-radius:25px;font-size:14px;outline:none;}
-#chatInput:focus{border-color:#2563eb;}
-.send-btn{background:linear-gradient(135deg,#1a2980,#2563eb);color:white;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;}
+.file-btn{background:#243050;border:1px solid #2a3a5c;color:#94a3b8;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;}
+#chatInput{flex:1;padding:11px 16px;background:#243050;border:1px solid #2a3a5c;border-radius:25px;font-size:14px;outline:none;color:#e2e8f0;}
+#chatInput::placeholder{color:#4a5568;}
+#chatInput:focus{border-color:#3b82f6;}
+#chatInput:disabled{opacity:0.5;cursor:not-allowed;}
+.send-btn{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;}
+.send-btn:disabled{background:#243050;cursor:not-allowed;}
+
+/* DILEKCE PAGE */
+#dilkcePage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
+#dilkcePage.active{display:flex;}
+.page-header{background:#1a2540;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a3a5c;}
+.page-header h3{color:white;font-size:16px;font-weight:700;}
+.dilekce-content{flex:1;overflow-y:auto;padding:20px 16px;}
+.dilekce-form{background:#1a2540;border-radius:16px;padding:20px;border:1px solid #2a3a5c;margin-bottom:16px;}
+.dilekce-form h4{color:white;font-size:15px;font-weight:700;margin-bottom:16px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;background:#243050;border:1px solid #2a3a5c;border-radius:10px;font-size:14px;color:#e2e8f0;outline:none;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#3b82f6;}
+.form-group select option{background:#1a2540;}
+.form-group textarea{height:100px;resize:none;}
+.btn-generate{width:100%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.premium-lock{background:#243050;border:1px solid #f59e0b;border-radius:12px;padding:16px;text-align:center;margin-top:12px;}
+.premium-lock p{color:#fbbf24;font-size:13px;font-weight:600;margin-bottom:10px;}
+.btn-premium{background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;padding:10px 24px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* PROFILE PAGE */
+#profilePage{display:none;flex-direction:column;height:100vh;background:#0f1729;}
+#profilePage.active{display:flex;}
+.profile-content{flex:1;overflow-y:auto;padding:20px 16px;}
+.profile-hero{background:#1a2540;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;border:1px solid #2a3a5c;}
+.profile-avatar{width:72px;height:72px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:white;margin:0 auto 12px;}
+.profile-name{font-size:18px;font-weight:800;color:white;}
+.profile-email{font-size:13px;color:#64748b;margin-top:4px;}
+.profile-plan{background:#1d4ed8;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;display:inline-block;margin-top:8px;}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
+.p-stat{background:#1a2540;border-radius:12px;padding:14px;text-align:center;border:1px solid #2a3a5c;}
+.p-stat-num{font-size:20px;font-weight:800;color:#3b82f6;}
+.p-stat-label{font-size:10px;color:#64748b;margin-top:2px;}
+.profile-menu{background:#1a2540;border-radius:16px;overflow:hidden;border:1px solid #2a3a5c;}
+.profile-menu-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid #2a3a5c;cursor:pointer;}
+.profile-menu-item:last-child{border-bottom:none;}
+.menu-icon{font-size:20px;width:32px;text-align:center;}
+.menu-text{flex:1;font-size:14px;color:#e2e8f0;font-weight:500;}
+.menu-arrow{color:#64748b;}
+
+/* OVERLAY & POPUPS */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:20px;}
+.overlay.active{display:flex;}
+.popup{background:#1a2540;border-radius:24px;padding:28px;max-width:400px;width:100%;text-align:center;border:1px solid #2a3a5c;}
+.popup-icon{font-size:44px;margin-bottom:14px;}
+.popup h2{font-size:20px;font-weight:800;color:white;margin-bottom:8px;}
+.popup p{font-size:14px;color:#94a3b8;margin-bottom:22px;line-height:1.6;}
+.popup-btns{display:flex;flex-direction:column;gap:10px;}
+.btn-popup-primary{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-popup-secondary{background:#243050;color:#e2e8f0;border:1px solid #2a3a5c;padding:13px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;}
+.auth-popup{background:#1a2540;border-radius:24px;padding:28px;max-width:420px;width:100%;border:1px solid #2a3a5c;}
+.auth-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.auth-popup-header h2{font-size:20px;font-weight:800;color:white;}
+.close-btn{background:none;border:none;color:#64748b;font-size:22px;cursor:pointer;}
+.auth-tabs{display:flex;background:#243050;border-radius:12px;padding:4px;margin-bottom:18px;}
+.auth-tab{flex:1;padding:9px;text-align:center;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;color:#64748b;border:none;background:none;}
+.auth-tab.active{background:#1d4ed8;color:white;}
+.form-group-auth{margin-bottom:13px;}
+.form-group-auth label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:5px;}
+.form-group-auth input{width:100%;padding:11px 14px;background:#243050;border:1px solid #2a3a5c;border-radius:10px;font-size:14px;color:#e2e8f0;outline:none;}
+.form-group-auth input:focus{border-color:#3b82f6;}
+.btn-auth-primary{width:100%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.btn-google{width:100%;background:#243050;color:#e2e8f0;border:1px solid #2a3a5c;padding:11px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.divider{text-align:center;color:#4a5568;font-size:12px;margin:10px 0;}
+.error-msg{color:#f87171;font-size:12px;text-align:center;margin-top:6px;}
+.success-msg{color:#34d399;font-size:12px;text-align:center;margin-top:6px;}
+
+/* DISCLAIMER */
+.disclaimer{background:#1a2540;border-top:1px solid #2a3a5c;padding:12px 16px;margin-bottom:70px;}
+.disclaimer p{font-size:11px;color:#4a5568;text-align:center;line-height:1.5;}
 </style>
 </head>
 <body>
 
-<div id="loginPage" class="page active">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <h1>⚖️ HukukAI</h1>
-      <p>Hukuki Haklarını AI ile Öğren</p>
+<!-- LANDING PAGE -->
+<div id="landingPage">
+  <div class="top-nav">
+    <div style="width:80px"></div>
+    <div class="top-nav-logo">⚖️ Hukuk<span style="color:#3b82f6">AI</span></div>
+    <div class="top-nav-right" id="navRight">
+      <button class="btn-login" onclick="showAuth('login')">Giriş</button>
+      <button class="btn-register" onclick="showAuth('register')">Üye Ol</button>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login',this)">Giriş Yap</button>
-      <button class="auth-tab" onclick="switchTab('register',this)">Kayıt Ol</button>
+    <div class="user-nav" id="navUser">
+      <span class="user-nav-name" id="navUserName"></span>
+      <button class="btn-logout" onclick="logoutUser()">Çıkış</button>
     </div>
-    <div id="loginForm">
-      <div class="form-group"><label>E-posta</label><input type="email" id="loginEmail" placeholder="ornek@email.com"/></div>
-      <div class="form-group"><label>Şifre</label><input type="password" id="loginPassword" placeholder="••••••••"/></div>
-      <button class="btn-primary" onclick="loginUser()">Giriş Yap</button>
-      <div class="divider">— veya —</div>
-      <button class="btn-google" onclick="loginGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ile Giriş Yap
-      </button>
-      <div id="loginError" class="error-msg"></div>
-    </div>
-    <div id="registerForm" style="display:none">
-      <div class="form-group"><label>Ad Soyad</label><input type="text" id="regName" placeholder="Adınız Soyadınız"/></div>
-      <div class="form-group"><label>E-posta</label><input type="email" id="regEmail" placeholder="ornek@email.com"/></div>
-      <div class="form-group"><label>Şifre</label><input type="password" id="regPassword" placeholder="En az 6 karakter"/></div>
-      <button class="btn-primary" onclick="registerUser()">Kayıt Ol — 1 Ay Ücretsiz</button>
-      <div class="divider">— veya —</div>
-      <button class="btn-google" onclick="loginGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ile Kayıt Ol
-      </button>
-      <div id="registerError" class="error-msg"></div>
-      <div id="registerSuccess" class="success-msg"></div>
-    </div>
-    <p style="text-align:center;font-size:13px;color:#64748b;margin-top:16px;">1 ay ücretsiz deneme • Kredi kartı gerekmez</p>
   </div>
-</div>
 
-<div id="homePage" class="page">
-  <nav>
-    <div class="logo">⚖️ HukukAI<span>AI</span></div>
-    <button class="nav-btn" onclick="logoutUser()">Çıkış</button>
-  </nav>
   <div class="hero">
-    <h1>Hukuki Haklarını<br><span>AI ile Öğren</span></h1>
-    <p>Türkiye'nin ilk yapay zeka destekli hukuk asistanı</p>
-    <div id="welcomeBanner" class="user-welcome" style="display:none">
-      <div class="user-avatar" id="userInitial">?</div>
-      <div class="user-info">
-        <h3 id="userName">Hoş geldin!</h3>
-        <p>Hukuki sorunuzu sormaya hazır mısınız?</p>
+    <div class="hero-logo">
+      <div class="hero-logo-icon">⚖️</div>
+      <div>
+        <div class="hero-logo-text">Hukuk<span>AI</span></div>
       </div>
     </div>
+    <h2>7/24 Yapay Zeka Destekli Hukuk Danışmanı</h2>
+    <button class="hero-ask-btn" onclick="showCategorySelect()">
+      <span>🎤</span>
+    </button>
+    <div class="hero-ask-label">AI'ya Sor</div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Hukuk Alanı</div></div>
-      <div class="stat"><div class="stat-num">7/24</div><div class="stat-label">AI Destek</div></div>
-      <div class="stat"><div class="stat-num">%98</div><div class="stat-label">Memnuniyet</div></div>
+      <div class="stat-item"><div class="num">50K+</div><div class="label">Soru Cevaplandı</div></div>
+      <div class="stat-item"><div class="num">%98</div><div class="label">Memnuniyet</div></div>
+      <div class="stat-item"><div class="num">7/24</div><div class="label">Destek</div></div>
     </div>
   </div>
-  <div class="pricing-banner">
-    <h3>🎁 1 Ay Ücretsiz Dene!</h3>
-    <p>Aylık 50₺ • Yıllık 350₺ (3 ay bedava)</p>
-    <span class="trial-badge">✨ Kredi kartı gerekmez</span>
-  </div>
+
+  <div class="free-banner">🎁 Giriş yapmadan her kategoride 3 soru ücretsiz! Üye ol → 50 soru kazan!</div>
+
   <div class="section">
-    <h2>⚖️ Hukuk Kategorileri</h2>
-    <div class="categories">
-      <div class="cat-card" onclick="openChat('is')"><div class="cat-icon">💼</div><div class="cat-name">İş Hukuku</div><div class="cat-desc">Tazminat, işten çıkarma, haklar</div><div class="cat-count">→ Sormaya başla</div></div>
-      <div class="cat-card" onclick="openChat('kira')"><div class="cat-icon">🏠</div><div class="cat-name">Kira Hukuku</div><div class="cat-desc">Kiracı & ev sahibi hakları</div><div class="cat-count">→ Sormaya başla</div></div>
-      <div class="cat-card" onclick="openChat('tuketici')"><div class="cat-icon">🛒</div><div class="cat-name">Tüketici Hakları</div><div class="cat-desc">İade, garanti, şikayet</div><div class="cat-count">→ Sormaya başla</div></div>
-      <div class="cat-card" onclick="openChat('aile')"><div class="cat-icon">👨‍👩‍👧</div><div class="cat-name">Aile Hukuku</div><div class="cat-desc">Boşanma, nafaka, velayet</div><div class="cat-count">→ Sormaya başla</div></div>
-      <div class="cat-card" onclick="openChat('trafik')"><div class="cat-icon">🚗</div><div class="cat-name">Trafik Hukuku</div><div class="cat-desc">Kaza, tazminat, cezalar</div><div class="cat-count">→ Sormaya başla</div></div>
-      <div class="cat-card" onclick="openChat('ceza')"><div class="cat-icon">⚖️</div><div class="cat-name">Ceza Hukuku</div><div class="cat-desc">Suç, savunma, haklar</div><div class="cat-count">→ Sormaya başla</div></div>
+    <div class="section-title">⚖️ Kategoriler</div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="openChat('is')"><div class="cat-icon">💼</div><div class="cat-name">İş Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('kira')"><div class="cat-icon">🏠</div><div class="cat-name">Kira Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('tuketici')"><div class="cat-icon">🛒</div><div class="cat-name">Tüketici</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('aile')"><div class="cat-icon">👨‍👩‍👧</div><div class="cat-name">Aile Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('trafik')"><div class="cat-icon">🚗</div><div class="cat-name">Trafik</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('ceza')"><div class="cat-icon">⚖️</div><div class="cat-name">Ceza Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('icra')"><div class="cat-icon">📋</div><div class="cat-name">İcra Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('miras')"><div class="cat-icon">📜</div><div class="cat-name">Miras Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
+      <div class="cat-card" onclick="openChat('vergi')"><div class="cat-icon">💰</div><div class="cat-name">Vergi Hukuku</div><div class="cat-free">3 ücretsiz</div></div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💬 Son Sorular</div>
+    <div class="recent-list">
+      <div class="recent-item" onclick="openChat('kira')">
+        <div class="recent-avatar">👤</div>
+        <div class="recent-text">
+          <div class="recent-q">Kiracım 3 aydır kira ödemiyor, ne yapabilirim?</div>
+          <div class="recent-time">Kira Hukuku • 15 dk önce</div>
+        </div>
+        <div class="recent-arrow">›</div>
+      </div>
+      <div class="recent-item" onclick="openChat('is')">
+        <div class="recent-avatar">👤</div>
+        <div class="recent-text">
+          <div class="recent-q">İşten çıkarıldım, kıdem tazminatı alabilir miyim?</div>
+          <div class="recent-time">İş Hukuku • 42 dk önce</div>
+        </div>
+        <div class="recent-arrow">›</div>
+      </div>
+      <div class="recent-item" onclick="openChat('tuketici')">
+        <div class="recent-avatar">👤</div>
+        <div class="recent-text">
+          <div class="recent-q">Aldığım ürün arızalı, iade etmek istiyorum</div>
+          <div class="recent-time">Tüketici Hakları • 1 sa önce</div>
+        </div>
+        <div class="recent-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pricing-section">
+    <div class="pricing-title">💰 Paketler</div>
+    <div class="pricing-cards">
+      <div class="p-card">
+        <div class="p-name">🟢 Ücretsiz</div>
+        <div class="p-price">0₺<span>/ay</span></div>
+        <ul class="p-features">
+          <li>Her kategoride 3 soru</li>
+          <li>Temel yanıt formatı</li>
+          <li>Risk seviyesi gösterimi</li>
+        </ul>
+      </div>
+      <div class="p-card">
+        <div class="p-name">🔵 Plus</div>
+        <div class="p-price">99₺<span>/ay</span></div>
+        <ul class="p-features">
+          <li>50 soru hakkı</li>
+          <li>Detaylı risk açıklaması</li>
+          <li>Süre uyarıları</li>
+          <li>Geçmiş kayıt</li>
+          <li>Favori sistemi</li>
+        </ul>
+      </div>
+      <div class="p-card popular">
+        <span class="p-popular-badge">⭐ EN POPÜLER</span>
+        <div class="p-name">🟣 Pro</div>
+        <div class="p-price">349₺<span>/ay</span></div>
+        <ul class="p-features">
+          <li>Sınırsız soru</li>
+          <li>0-100 Risk skoru</li>
+          <li>Senaryo simülasyonu</li>
+          <li>PDF rapor üretimi</li>
+          <li>Dilekçe üretimi</li>
+          <li>Masraf hesaplama</li>
+          <li>Süre alarmı</li>
+        </ul>
+      </div>
+      <div class="p-card">
+        <div class="p-name">🔴 Elite</div>
+        <div class="p-price">799₺<span>/ay</span></div>
+        <ul class="p-features">
+          <li>Pro'daki her şey</li>
+          <li>Belge analizi</li>
+          <li>Sözleşme risk işaretleme</li>
+          <li>Belge karşılaştırma</li>
+          <li>Olasılık hesaplama</li>
+          <li>Öncelikli işlem</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <p>⚠️ HukukAI genel hukuki bilgi sağlar. Avukatlık hizmeti değildir. Önemli kararlar için avukata danışınız. • KVKK kapsamında verileriniz korunmaktadır.</p>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
+    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
+    <div class="nav-item" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
+    <div class="nav-item" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
   </div>
 </div>
 
+<!-- CHAT PAGE -->
 <div id="chatPage" class="page">
   <div class="chat-header">
     <button class="back-btn" onclick="goHome()">←</button>
     <div class="chat-header-info">
       <h3 id="chatTitle">HukukAI</h3>
-      <p>AI Hukuk Asistanı • Çevrimiçi</p>
+      <p id="chatSubtitle">AI Hukuk Asistanı • Çevrimiçi</p>
     </div>
-    <span class="chat-expert-badge" id="expertBadge">Uzman AI</span>
+    <span class="chat-expert-badge" id="expertBadge">Uzman</span>
+    <span class="q-counter" id="qCounter">3 hak</span>
   </div>
   <div class="chat-messages" id="chatMessages">
-    <div class="msg ai" id="welcomeMsg">👋 Merhaba! Size nasıl yardımcı olabilirim?<br><br><small style="color:#94a3b8">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small></div>
+    <div class="msg ai" id="welcomeMsg">👋 Merhaba! Ben HukukAI Asistanı. Size nasıl yardımcı olabilirim?<br><br><small style="color:#64748b">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small></div>
   </div>
   <div class="chat-input-area">
     <div class="file-preview" id="filePreview">
       <span>📎</span><span id="fileName">dosya</span>
-      <button onclick="removeFile()" style="margin-left:auto;background:none;border:none;cursor:pointer;">✕</button>
+      <button onclick="removeFile()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#64748b">✕</button>
     </div>
     <div class="chat-input-row">
       <button class="file-btn" onclick="document.getElementById('fileInput').click()">📎</button>
       <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"/>
-      <input type="text" id="chatInput" placeholder="Hukuki sorunuzu yazın..." onkeypress="if(event.key==='Enter')sendMessage()"/>
-      <button class="send-btn" onclick="sendMessage()">➤</button>
+      <input type="text" id="chatInput" placeholder="Hukuki sorunuzu yazın..."/>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- DİLEKÇE PAGE -->
+<div id="dilkcePage" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <h3>📄 Dilekçe Oluşturucu</h3>
+  </div>
+  <div class="dilekce-content">
+    <div class="dilekce-form">
+      <h4>Dilekçe Bilgileri</h4>
+      <div class="form-group">
+        <label>Dilekçe Türü</label>
+        <select id="dilekceType">
+          <option value="">Seçiniz...</option>
+          <option>İcra İtiraz Dilekçesi</option>
+          <option>Tahliye Davası Dilekçesi</option>
+          <option>Boşanma Dilekçesi</option>
+          <option>Arabuluculuk Başvurusu</option>
+          <option>İhtarname</option>
+          <option>Tüketici Şikayet Dilekçesi</option>
+          <option>Kıdem Tazminatı Talebi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ad Soyad</label>
+        <input type="text" id="dilekceAd" placeholder="Adınız Soyadınız"/>
+      </div>
+      <div class="form-group">
+        <label>TC Kimlik No</label>
+        <input type="text" id="dilkeceTc" placeholder="TC Kimlik Numaranız"/>
+      </div>
+      <div class="form-group">
+        <label>Açıklama</label>
+        <textarea id="dilekceAciklama" placeholder="Durumunuzu kısaca açıklayın..."></textarea>
+      </div>
+      <button class="btn-generate" onclick="checkDilekce()">⚡ Dilekçe Oluştur</button>
+    </div>
+    <div class="premium-lock">
+      <p>🔒 Dilekçe üretimi PRO pakette mevcuttur</p>
+      <button class="btn-premium" onclick="showAuth('register')">PRO'ya Geç → 349₺/ay</button>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
+    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
+    <div class="nav-item active" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
+    <div class="nav-item" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
+  </div>
+</div>
+
+<!-- PROFİL PAGE -->
+<div id="profilePage" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <h3>👤 Profilim</h3>
+  </div>
+  <div class="profile-content">
+    <div id="profileGuest" style="text-align:center;padding:40px 20px;">
+      <div style="font-size:60px;margin-bottom:16px;">👤</div>
+      <h3 style="color:white;margin-bottom:8px;">Henüz giriş yapmadınız</h3>
+      <p style="color:#64748b;font-size:14px;margin-bottom:20px;">Giriş yaparak sorularınızı kaydedin</p>
+      <button class="btn-auth-primary" onclick="showAuth('login')" style="max-width:200px;margin:0 auto;">Giriş Yap</button>
+    </div>
+    <div id="profileLoggedIn" style="display:none">
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profileInitial">?</div>
+        <div class="profile-name" id="profileName">Kullanıcı</div>
+        <div class="profile-email" id="profileEmail">email</div>
+        <div class="profile-plan">🆓 Ücretsiz Plan</div>
+      </div>
+      <div class="profile-stats">
+        <div class="p-stat"><div class="p-stat-num" id="totalQuestions">0</div><div class="p-stat-label">Soru</div></div>
+        <div class="p-stat"><div class="p-stat-num">3</div><div class="p-stat-label">Kategori</div></div>
+        <div class="p-stat"><div class="p-stat-num">0</div><div class="p-stat-label">Belge</div></div>
+      </div>
+      <div class="profile-menu">
+        <div class="profile-menu-item"><span class="menu-icon">⭐</span><span class="menu-text">PRO'ya Yükselt</span><span class="menu-arrow">›</span></div>
+        <div class="profile-menu-item"><span class="menu-icon">💬</span><span class="menu-text">Sorularım</span><span class="menu-arrow">›</span></div>
+        <div class="profile-menu-item"><span class="menu-icon">📄</span><span class="menu-text">Belgelerim</span><span class="menu-arrow">›</span></div>
+        <div class="profile-menu-item" onclick="logoutUser()"><span class="menu-icon">🚪</span><span class="menu-text">Çıkış Yap</span><span class="menu-arrow">›</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showLanding()"><div class="nav-icon">🏠</div><div class="nav-label">Ana Sayfa</div></div>
+    <div class="nav-item" onclick="openChat('genel')"><div class="nav-icon">💬</div><div class="nav-label">Sor</div></div>
+    <div class="nav-item" onclick="showDilekce()"><div class="nav-icon">📄</div><div class="nav-label">Dilekçe</div></div>
+    <div class="nav-item active" onclick="showProfile()"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
+  </div>
+</div>
+
+<!-- LİMİT POPUP -->
+<div class="overlay" id="limitOverlay">
+  <div class="popup">
+    <div class="popup-icon">🔒</div>
+    <h2>Soru Hakkınız Doldu!</h2>
+    <p>Bu kategorideki ücretsiz soru hakkınızı kullandınız.<br><br>Üye olun ve <strong style="color:#3b82f6">50 soru hakkı</strong> kazanın!</p>
+    <div class="popup-btns">
+      <button class="btn-popup-primary" onclick="closeLimit();showAuth('register')">🚀 Ücretsiz Üye Ol</button>
+      <button class="btn-popup-secondary" onclick="closeLimit();showAuth('login')">Giriş Yap</button>
+      <button class="btn-popup-secondary" onclick="closeLimit()">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH POPUP -->
+<div class="overlay" id="authOverlay">
+  <div class="auth-popup">
+    <div class="auth-popup-header">
+      <h2>⚖️ HukukAI</h2>
+      <button class="close-btn" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Giriş Yap</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Kayıt Ol</button>
+    </div>
+    <div id="loginForm">
+      <div class="form-group-auth"><label>E-posta</label><input type="email" id="loginEmail" placeholder="ornek@email.com"/></div>
+      <div class="form-group-auth"><label>Şifre</label><input type="password" id="loginPassword" placeholder="••••••••"/></div>
+      <button class="btn-auth-primary" onclick="loginUser()">Giriş Yap</button>
+      <div class="divider">— veya —</div>
+      <button class="btn-google" onclick="loginGoogle()">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google ile Giriş
+      </button>
+      <div id="loginError" class="error-msg"></div>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group-auth"><label>Ad Soyad</label><input type="text" id="regName" placeholder="Adınız Soyadınız"/></div>
+      <div class="form-group-auth"><label>E-posta</label><input type="email" id="regEmail" placeholder="ornek@email.com"/></div>
+      <div class="form-group-auth"><label>Şifre</label><input type="password" id="regPassword" placeholder="En az 6 karakter"/></div>
+      <button class="btn-auth-primary" onclick="registerUser()">Kayıt Ol 🎉</button>
+      <div class="divider">— veya —</div>
+      <button class="btn-google" onclick="loginGoogle()">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google ile Kayıt
+      </button>
+      <div id="registerError" class="error-msg"></div>
+      <div id="registerSuccess" class="success-msg"></div>
     </div>
   </div>
 </div>
 
 <script>
-const { createClient } = supabase;
-const sb = createClient('https://exngptvoqibkbigjsxwb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI');
+const{createClient}=supabase;
+const sb=createClient('https://exngptvoqibkbigjsxwb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI');
 
 let currentUser=null,currentCategory=null,conversationHistory=[],uploadedFile=null;
+let qCounts=JSON.parse(localStorage.getItem('hukukai_q')||'{}');
 
-const categoryConfig={
-  'is':{name:'İş Hukuku',icon:'💼',prompt:'Sen bir İş Hukuku uzmanısın. Türk İş Kanunu, kıdem tazminatı, ihbar tazminatı, işten çıkarma, fazla mesai konularında uzman bilgi veriyorsun.'},
-  'kira':{name:'Kira Hukuku',icon:'🏠',prompt:'Sen bir Kira Hukuku uzmanısın. Türk Borçlar Kanunu kira hükümleri, kiracı hakları, ev sahibi hakları, kira artışı, tahliye konularında uzman bilgi veriyorsun.'},
-  'tuketici':{name:'Tüketici Hakları',icon:'🛒',prompt:'Sen bir Tüketici Hakları uzmanısın. 6502 sayılı Kanun, ayıplı mal, garanti, iade, tüketici mahkemesi konularında uzman bilgi veriyorsun.'},
-  'aile':{name:'Aile Hukuku',icon:'👨‍👩‍👧',prompt:'Sen bir Aile Hukuku uzmanısın. Türk Medeni Kanunu, boşanma, nafaka, velayet, mal rejimi konularında uzman bilgi veriyorsun.'},
-  'trafik':{name:'Trafik Hukuku',icon:'🚗',prompt:'Sen bir Trafik Hukuku uzmanısın. Karayolları Trafik Kanunu, trafik kazası tazminatı, sigorta, trafik cezaları konularında uzman bilgi veriyorsun.'},
-  'ceza':{name:'Ceza Hukuku',icon:'⚖️',prompt:'Sen bir Ceza Hukuku uzmanısın. Türk Ceza Kanunu, suç tanımları, savunma hakları, şikayet süreçleri konularında uzman bilgi veriyorsun.'}
+const cats={
+  'genel':{name:'Genel Hukuk',icon:'⚖️',prompt:'Sen HukukAI adlı bir Türk hukuk bilgi asistanısın. Her alanda genel hukuki bilgi veriyorsun.'},
+  'is':{name:'İş Hukuku',icon:'💼',prompt:'Sen bir İş Hukuku uzmanısın. Türk İş Kanunu, kıdem tazminatı, ihbar tazminatı, işten çıkarma, fazla mesai, yıllık izin, iş kazası konularında derin uzmanlığın var.'},
+  'kira':{name:'Kira Hukuku',icon:'🏠',prompt:'Sen bir Kira Hukuku uzmanısın. Türk Borçlar Kanunu kira hükümleri, kiracı hakları, ev sahibi hakları, kira artışı, tahliye, depozito, kira sözleşmesi konularında derin uzmanlığın var.'},
+  'tuketici':{name:'Tüketici Hakları',icon:'🛒',prompt:'Sen bir Tüketici Hakları uzmanısın. 6502 sayılı Tüketicinin Korunması Hakkında Kanun, ayıplı mal, garanti, iade, tüketici mahkemesi, mesafeli satış konularında derin uzmanlığın var.'},
+  'aile':{name:'Aile Hukuku',icon:'👨‍👩‍👧',prompt:'Sen bir Aile Hukuku uzmanısın. Türk Medeni Kanunu aile hükümleri, boşanma, nafaka, velayet, mal rejimi, evlat edinme konularında derin uzmanlığın var.'},
+  'trafik':{name:'Trafik Hukuku',icon:'🚗',prompt:'Sen bir Trafik Hukuku uzmanısın. Karayolları Trafik Kanunu, trafik kazası tazminatı, sigorta, trafik cezaları, ehliyet iptali konularında derin uzmanlığın var.'},
+  'ceza':{name:'Ceza Hukuku',icon:'⚖️',prompt:'Sen bir Ceza Hukuku uzmanısın. Türk Ceza Kanunu, suç tanımları, ceza türleri, savunma hakları, şikayet ve ihbar süreçleri konularında derin uzmanlığın var.'},
+  'icra':{name:'İcra Hukuku',icon:'📋',prompt:'Sen bir İcra ve İflas Hukuku uzmanısın. İcra takibi, itiraz süreçleri, haciz, icra daireleri, borç yapılandırma konularında derin uzmanlığın var.'},
+  'miras':{name:'Miras Hukuku',icon:'📜',prompt:'Sen bir Miras Hukuku uzmanısın. Türk Medeni Kanunu miras hükümleri, vasiyetname, miras paylaşımı, miras reddi, tenkis davası konularında derin uzmanlığın var.'},
+  'vergi':{name:'Vergi Hukuku',icon:'💰',prompt:'Sen bir Vergi Hukuku uzmanısın. Türk vergi mevzuatı, vergi cezaları, vergi itirazları, gelir vergisi, KDV, kurumlar vergisi konularında derin uzmanlığın var.'}
 };
 
+const systemSuffix=` Her zaman Türkçe cevap ver. Her yanıtta şu 8 bölümü kullan:
+📌 **Durum Analizi** - Kısa özet
+⚖️ **Hukuki Dayanak** - İlgili kanun maddesi (sade anlatım)
+⚠️ **Risk Seviyesi** - 🟢 Düşük / 🟡 Orta / 🔴 Yüksek
+⏳ **Süreler** - Dikkat edilmesi gereken yasal süreler
+💰 **Tahmini Masraf** - Yaklaşık maliyet bilgisi
+🛠 **Yapman Gerekenler** - Adım adım yapılacaklar
+🔄 **Alternatif Senaryo** - Farklı olasılıklar
+❗ **Sık Yapılan Hatalar** - Kaçınılması gerekenler`;
+
 function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  ['landingPage','chatPage','dilkcePage','profilePage'].forEach(p=>{
+    const el=document.getElementById(p);
+    if(el){el.style.display='none';el.classList.remove('active');}
+  });
   const el=document.getElementById(id);
-  el.classList.add('active');
+  if(id==='landingPage'){el.style.display='block';}
+  else{el.style.display='flex';el.classList.add('active');}
 }
 
-function switchTab(tab,btn){
-  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
+function showLanding(){showPage('landingPage');}
+function showDilekce(){showPage('dilkcePage');}
+function showProfile(){
+  showPage('profilePage');
+  if(currentUser){
+    const name=currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||currentUser.email.split('@')[0];
+    document.getElementById('profileName').textContent=name;
+    document.getElementById('profileEmail').textContent=currentUser.email;
+    document.getElementById('profileInitial').textContent=name[0].toUpperCase();
+    document.getElementById('profileGuest').style.display='none';
+    document.getElementById('profileLoggedIn').style.display='block';
+  } else {
+    document.getElementById('profileGuest').style.display='block';
+    document.getElementById('profileLoggedIn').style.display='none';
+  }
+}
+
+function showCategorySelect(){
+  document.querySelector('.section').scrollIntoView({behavior:'smooth'});
+}
+
+function showAuth(tab){
+  document.getElementById('authOverlay').classList.add('active');
+  switchTab(tab);
+}
+function closeAuth(){document.getElementById('authOverlay').classList.remove('active');}
+function closeLimit(){document.getElementById('limitOverlay').classList.remove('active');}
+
+function switchTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active',tab==='register');
   document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
   document.getElementById('registerForm').style.display=tab==='register'?'block':'none';
 }
 
 async function loginUser(){
   const email=document.getElementById('loginEmail').value;
-  const password=document.getElementById('loginPassword').value;
-  if(!email||!password){document.getElementById('loginError').textContent='E-posta ve şifre giriniz.';return;}
-  const{data,error}=await sb.auth.signInWithPassword({email,password});
+  const pass=document.getElementById('loginPassword').value;
+  if(!email||!pass){document.getElementById('loginError').textContent='E-posta ve şifre giriniz.';return;}
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){document.getElementById('loginError').textContent='Hatalı e-posta veya şifre.';return;}
-  currentUser=data.user;loadHome();
+  currentUser=data.user;closeAuth();updateNav();
 }
 
 async function registerUser(){
   const name=document.getElementById('regName').value;
   const email=document.getElementById('regEmail').value;
-  const password=document.getElementById('regPassword').value;
-  if(!name||!email||!password){document.getElementById('registerError').textContent='Tüm alanları doldurunuz.';return;}
-  if(password.length<6){document.getElementById('registerError').textContent='Şifre en az 6 karakter olmalı.';return;}
-  const{data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});
+  const pass=document.getElementById('regPassword').value;
+  if(!name||!email||!pass){document.getElementById('registerError').textContent='Tüm alanları doldurunuz.';return;}
+  if(pass.length<6){document.getElementById('registerError').textContent='Şifre en az 6 karakter.';return;}
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
   if(error){document.getElementById('registerError').textContent=error.message;return;}
   document.getElementById('registerSuccess').textContent='✅ Kayıt başarılı! E-postanızı doğrulayın.';
 }
@@ -234,83 +601,122 @@ async function loginGoogle(){
 }
 
 async function logoutUser(){
-  await sb.auth.signOut();
-  currentUser=null;conversationHistory=[];
-  showPage('loginPage');
+  await sb.auth.signOut();currentUser=null;updateNav();showLanding();
 }
 
-function loadHome(){
-  const meta=currentUser.user_metadata;
-  const name=meta?.full_name||meta?.name||currentUser.email.split('@')[0];
-  document.getElementById('userName').textContent='Hoş geldin, '+name+'! 👋';
-  document.getElementById('userInitial').textContent=name[0].toUpperCase();
-  document.getElementById('welcomeBanner').style.display='flex';
-  showPage('homePage');
+function updateNav(){
+  if(currentUser){
+    const name=currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||currentUser.email.split('@')[0];
+    document.getElementById('navUserName').textContent='👤 '+name;
+    document.getElementById('navRight').style.display='none';
+    document.getElementById('navUser').style.display='flex';
+  } else {
+    document.getElementById('navRight').style.display='flex';
+    document.getElementById('navUser').style.display='none';
+  }
 }
 
-function openChat(category){
-  currentCategory=category;
-  const config=categoryConfig[category];
-  document.getElementById('chatTitle').textContent=config.icon+' '+config.name;
-  document.getElementById('expertBadge').textContent=config.name+' Uzmanı';
-  document.getElementById('welcomeMsg').innerHTML='👋 Merhaba! Ben HukukAI <strong>'+config.name+' Uzmanı</strong>yım. '+config.name+' hakkındaki sorularınızı sorabilirsiniz.<br><br><small style="color:#94a3b8">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small>';
+function getLimit(){return currentUser?50:3;}
+function getUsed(cat){const k=currentUser?'u_'+currentUser.id+'_'+cat:cat;return qCounts[k]||0;}
+function addUsed(cat){const k=currentUser?'u_'+currentUser.id+'_'+cat:cat;qCounts[k]=(qCounts[k]||0)+1;localStorage.setItem('hukukai_q',JSON.stringify(qCounts));}
+
+function updateCounter(){
+  const used=getUsed(currentCategory);
+  const limit=getLimit();
+  const rem=Math.max(0,limit-used);
+  const el=document.getElementById('qCounter');
+  el.textContent=rem+' hak';
+  el.className='q-counter'+(rem<=1?' danger':'');
+}
+
+function openChat(cat){
+  currentCategory=cat;
+  const cfg=cats[cat]||cats['genel'];
+  document.getElementById('chatTitle').textContent=cfg.icon+' '+cfg.name;
+  document.getElementById('chatSubtitle').textContent=cfg.name+' Uzmanı • Çevrimiçi';
+  document.getElementById('expertBadge').textContent=cfg.name+' Uzmanı';
+  document.getElementById('welcomeMsg').innerHTML='👋 Merhaba! Ben HukukAI <strong>'+cfg.name+' Uzmanı</strong>yım.<br><br><small style="color:#64748b">⚠️ Bilgi amaçlıdır, avukatlık hizmeti değildir.</small>';
   conversationHistory=[];
+  updateCounter();
+  const locked=getUsed(cat)>=getLimit();
+  document.getElementById('chatInput').disabled=locked;
+  document.getElementById('sendBtn').disabled=locked;
+  if(locked){document.getElementById('limitOverlay').classList.add('active');}
   showPage('chatPage');
 }
 
-function goHome(){showPage('homePage');uploadedFile=null;document.getElementById('filePreview').style.display='none';}
+function goHome(){showPage('landingPage');uploadedFile=null;document.getElementById('filePreview').style.display='none';}
 
 function handleFile(input){
-  const file=input.files[0];
-  if(!file)return;
+  const file=input.files[0];if(!file)return;
   uploadedFile=file;
   document.getElementById('fileName').textContent=file.name;
   document.getElementById('filePreview').style.display='flex';
 }
+function removeFile(){uploadedFile=null;document.getElementById('fileInput').value='';document.getElementById('filePreview').style.display='none';}
 
-function removeFile(){
-  uploadedFile=null;
-  document.getElementById('fileInput').value='';
-  document.getElementById('filePreview').style.display='none';
+function checkDilekce(){
+  if(!currentUser){showAuth('register');return;}
+  alert('PRO pakete geçerek dilekçe oluşturabilirsiniz!');
 }
 
 async function sendMessage(){
+  const used=getUsed(currentCategory);
+  const limit=getLimit();
+  if(used>=limit){document.getElementById('limitOverlay').classList.add('active');return;}
   const input=document.getElementById('chatInput');
-  const messages=document.getElementById('chatMessages');
+  const msgs=document.getElementById('chatMessages');
   const text=input.value.trim();
   if(!text&&!uploadedFile)return;
-  let displayText=text;
-  if(uploadedFile)displayText='📎 '+uploadedFile.name+(text?': '+text:'');
-  messages.innerHTML+=`<div class="msg user">${displayText}</div>`;
+  let display=text;
+  if(uploadedFile)display='📎 '+uploadedFile.name+(text?': '+text:'');
+  msgs.innerHTML+=`<div class="msg user">${display}</div>`;
   input.value='';
-  messages.innerHTML+=`<div class="msg ai" id="typing">⏳ Yanıt hazırlanıyor...</div>`;
-  messages.scrollTop=messages.scrollHeight;
-  conversationHistory.push({role:'user',content:text||'Bu dosyayı analiz et: '+uploadedFile?.name});
+  msgs.innerHTML+=`<div class="msg ai" id="typing">⏳ Analiz ediliyor...</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  addUsed(currentCategory);
+  updateCounter();
+  conversationHistory.push({role:'user',content:text||'Dosya: '+uploadedFile?.name});
   try{
-    const response=await fetch('/api/chat',{
+    const cfg=cats[currentCategory]||cats['genel'];
+    const res=await fetch('/api/chat',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:text,category:currentCategory,history:conversationHistory.slice(-10),userName:currentUser?.user_metadata?.full_name||currentUser?.email})
+      body:JSON.stringify({
+        message:text,
+        category:currentCategory,
+        history:conversationHistory.slice(-10),
+        userName:currentUser?.user_metadata?.full_name||currentUser?.email,
+        systemPrompt:cfg.prompt+systemSuffix
+      })
     });
-    const data=await response.json();
+    const data=await res.json();
     document.getElementById('typing')?.remove();
     const reply=data.reply||data.error||'Cevap alınamadı.';
     conversationHistory.push({role:'assistant',content:reply});
-    messages.innerHTML+=`<div class="msg ai">${reply}</div>`;
-    messages.scrollTop=messages.scrollHeight;
+    msgs.innerHTML+=`<div class="msg ai">${reply.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
     uploadedFile=null;
     document.getElementById('filePreview').style.display='none';
+    if(getUsed(currentCategory)>=getLimit()){
+      document.getElementById('chatInput').disabled=true;
+      document.getElementById('sendBtn').disabled=true;
+      setTimeout(()=>document.getElementById('limitOverlay').classList.add('active'),1500);
+    }
   }catch(err){
     document.getElementById('typing')?.remove();
-    messages.innerHTML+=`<div class="msg ai" style="color:red">❌ Bir hata oluştu.</div>`;
+    msgs.innerHTML+=`<div class="msg ai" style="color:#f87171">❌ Hata oluştu, tekrar deneyin.</div>`;
   }
 }
 
+document.getElementById('chatInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
+
 window.onload=async()=>{
   const{data}=await sb.auth.getSession();
-  if(data.session){currentUser=data.session.user;loadHome();}
+  if(data.session){currentUser=data.session.user;updateNav();}
   sb.auth.onAuthStateChange((event,session)=>{
-    if(session&&event==='SIGNED_IN'){currentUser=session.user;loadHome();}
+    if(event==='SIGNED_IN'&&session){currentUser=session.user;updateNav();closeAuth();}
+    if(event==='SIGNED_OUT'){currentUser=null;updateNav();}
   });
 };
 </script>
