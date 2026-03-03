@@ -1,11 +1,11 @@
+const { createClient } = require('@supabase/supabase-js');
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { createClient } = require('@supabase/supabase-js');
-
-  // ── SUPABASE İSTEMCİSİ (tek seferlik) ──────────────
+  // ── SUPABASE İSTEMCİSİ ──────────────────────────────
   const sb = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY
@@ -44,10 +44,8 @@ module.exports = async function handler(req, res) {
 
   // ── SUNUCU TARAFLI LİMİT KONTROLÜ ──────────────────
   const limits = { free: 20, plus: 50, pro: 999999, elite: 999999 };
-  const guestLimit = 3;
 
   if (userId) {
-    // Giriş yapmış kullanıcı → veritabanından kontrol
     const today = new Date().toISOString().split('T')[0];
     const { data: usage } = await sb
       .from('usage_counts')
@@ -67,7 +65,6 @@ module.exports = async function handler(req, res) {
       });
     }
   }
-  // Misafir limiti → client-side korunuyor (IP kontrolü ödeme aşamasında eklenecek)
 
   // ── KATEGORİ PROMPT'LARI ────────────────────────────
   const categoryPrompts = {
@@ -121,17 +118,16 @@ Her zaman Türkçe, sade ve anlaşılır cevap ver.${userName ? ' Kullanıcını
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]) {
-      return res.status(500).json({ error: 'API yanıt vermedi: ' + JSON.stringify(data) });
+      return res.status(500).json({ error: 'OpenAI yanıt vermedi: ' + JSON.stringify(data) });
     }
 
     const reply = data.choices[0].message.content;
 
-    // ── VERİTABANINA KAYDET (giriş yapmış kullanıcılar) ─
+    // ── VERİTABANINA KAYDET ─────────────────────────────
     let activeConvId = conversationId || null;
 
     if (userId) {
       try {
-        // Yeni konuşma oluştur veya mevcutu kullan
         if (!activeConvId) {
           const { data: conv } = await sb
             .from('conversations')
@@ -164,12 +160,9 @@ Her zaman Türkçe, sade ve anlaşılır cevap ver.${userName ? ' Kullanıcını
       }
     }
 
-    return res.status(200).json({
-      reply,
-      conversationId: activeConvId
-    });
+    return res.status(200).json({ reply, conversationId: activeConvId });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Hata: ' + error.message });
+    return res.status(500).json({ error: 'Sunucu hatası: ' + error.message });
   }
 };
