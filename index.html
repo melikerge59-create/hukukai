@@ -412,6 +412,10 @@ input,textarea{font-family:'Inter',sans-serif;}
       <div class="form-group"><label class="form-label">Şifre</label><input type="password" class="form-input" id="regPass" placeholder="En az 6 karakter" onkeydown="if(event.key==='Enter')registerUser()"></div>
       <div id="regError" class="form-error"></div>
       <button class="btn btn-primary btn-full" onclick="registerUser()" id="regBtn">Hesap Oluştur</button>
+      <div style="text-align:right;margin-bottom:8px;">
+  <a onclick="switchAuth('forgot')" style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:500;">Şifremi Unuttum</a>
+</div>
+
       <div class="modal-switch">Zaten hesabınız var mı? <a onclick="switchAuth('login')">Giriş Yapın</a></div>
     </div>
   </div>
