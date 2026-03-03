@@ -64,7 +64,6 @@ input,textarea{font-family:'Inter',sans-serif;}
 .cat-title{font-size:15px;font-weight:700;color:var(--navy);}
 .cat-desc{font-size:13px;color:var(--light);line-height:1.5;}
 .cat-arrow{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--accent);margin-top:auto;}
-.cat-arrow svg{width:14px;height:14px;}
 .rq-list{display:flex;flex-direction:column;gap:12px;max-width:680px;margin:0 auto;}
 .rq-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:14px;}
 .rq-item:hover{border-color:var(--navy);box-shadow:var(--shadow-sm);}
@@ -154,6 +153,9 @@ input,textarea{font-family:'Inter',sans-serif;}
 .modal-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--mid);}
 .modal-switch a{color:var(--navy);font-weight:600;cursor:pointer;}
 .form-error{font-size:12px;color:var(--danger);margin-top:8px;display:none;}
+.forgot-link{text-align:right;margin-top:6px;margin-bottom:12px;}
+.forgot-link a{font-size:12px;color:var(--accent);cursor:pointer;font-weight:500;}
+.forgot-link a:hover{text-decoration:underline;}
 .limit-modal{max-width:380px;text-align:center;}
 .limit-icon{width:52px;height:52px;border-radius:var(--radius);background:var(--bg-subtle);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
 .limit-icon svg{width:24px;height:24px;color:var(--navy);}
@@ -344,19 +346,46 @@ input,textarea{font-family:'Inter',sans-serif;}
         <div class="footer-logo"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg><span>HukukAI</span></div>
         <p class="footer-tagline">Türk hukukunda yapay zeka destekli analiz ve rehberlik platformu.</p>
         <div class="footer-social">
-          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
-          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63z"/></svg></a>
-          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z"/></svg></a>
+          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"/></svg></a>
+          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg></a>
+          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg></a>
+          <a href="#" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125h-1.5m2.625-13.125c0-.621-.504-1.125-1.125-1.125H4.5A1.125 1.125 0 003.375 5.625m16.5 0v1.5c0 .621-.504 1.125-1.125 1.125m0 0h-1.5m1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m-18 0h16.5"/></svg></a>
         </div>
       </div>
-      <div class="footer-col"><h4>Platform</h4><ul><li><a href="#categories">Kategoriler</a></li><li><a href="#pricing">Fiyatlar</a></li><li><a href="#faq">SSS</a></li><li><a href="#">Blog</a></li></ul></div>
-      <div class="footer-col"><h4>Hukuki</h4><ul><li><a href="#">Gizlilik Politikası</a></li><li><a href="#">KVKK</a></li><li><a href="#">Kullanıcı Sözleşmesi</a></li><li><a href="#">Çerez Politikası</a></li></ul></div>
-      <div class="footer-col"><h4>Şirket</h4><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">İletişim</a></li><li><a href="#">Kariyer</a></li></ul></div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#categories">Kategoriler</a></li>
+          <li><a href="#pricing">Fiyatlandırma</a></li>
+          <li><a href="#faq">SSS</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hukuki</h4>
+        <ul>
+          <li><a href="#">Kullanım Koşulları</a></li>
+          <li><a href="#">Gizlilik Politikası</a></li>
+          <li><a href="#">KVKK</a></li>
+          <li><a href="#">Çerez Politikası</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Destek</h4>
+        <ul>
+          <li><a href="#">İletişim</a></li>
+          <li><a href="#">Yardım Merkezi</a></li>
+          <li><a href="#">Hakkımızda</a></li>
+        </ul>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 HukukAI. Tüm hakları saklıdır.</span>
-      <div class="footer-legal"><a href="#">Gizlilik</a><a href="#">Şartlar</a><a href="#">KVKK</a></div>
+      <span class="footer-copy">© 2024 HukukAI. Tüm hakları saklıdır.</span>
+      <div class="footer-legal">
+        <a href="#">Gizlilik</a>
+        <a href="#">Koşullar</a>
+        <a href="#">KVKK</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -365,93 +394,119 @@ input,textarea{font-family:'Inter',sans-serif;}
 <!-- CHAT PAGE -->
 <div id="chatPage" class="page">
   <div class="chat-header">
-    <button class="chat-back" onclick="backToHome()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+    <button class="chat-back" onclick="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+    </button>
     <div class="chat-cat-info">
-      <div class="chat-cat-icon" id="chatCatIcon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg></div>
-      <div><div class="chat-cat-name" id="chatCatName">HukukAI</div><div class="chat-cat-sub" id="chatCatSub">Yapay Zeka Hukuk Asistanı</div></div>
+      <div class="chat-cat-icon" id="chatCatIcon"></div>
+      <div>
+        <div class="chat-cat-name" id="chatCatName"></div>
+        <div class="chat-cat-sub">Yapay Zeka Destekli Analiz</div>
+      </div>
     </div>
-    <div class="chat-counter" id="chatCounter"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg><span id="counterText">0 / 3</span></div>
+    <div class="chat-counter" id="chatCounter">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+      <span id="counterText">0 / 3</span>
+    </div>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-input-area">
-    <div id="filePreviewWrap" style="max-width:800px;margin:0 auto 8px;display:none;">
-      <div class="file-preview"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg><span id="fileName">dosya.pdf</span><button class="file-remove" onclick="removeFile()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></div>
-    </div>
+    <div id="filePreviewArea"></div>
     <div class="chat-input-inner">
-      <textarea id="chatInput" rows="1" placeholder="Hukuki sorunuzu yazın..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <textarea id="chatInput" rows="1" placeholder="Hukuki sorunuzu yazın..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
       <div class="chat-toolbar">
-        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)">
-        <button class="icon-btn" onclick="document.getElementById('fileInput').click()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg></button>
-        <button class="send-btn" onclick="sendMessage()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg></button>
+        <label class="icon-btn" for="fileInput" title="Dosya ekle">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
+        </label>
+        <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this)">
+        <button class="send-btn" onclick="sendMessage()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        </button>
       </div>
     </div>
-    <p class="chat-disclaimer">Bu yanıtlar genel bilgi amaçlıdır; avukatlık hizmeti verilmemektedir.</p>
+    <div class="chat-disclaimer">Bu yanıtlar hukuki tavsiye niteliği taşımaz. Önemli kararlar için avukat danışmanlığı alınız.</div>
   </div>
 </div>
 
 <!-- AUTH MODAL -->
 <div class="overlay" id="authOverlay">
   <div class="modal">
-    <button class="modal-close" onclick="closeAuth()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    <button class="modal-close" onclick="closeAuth()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    <!-- GİRİŞ FORMU -->
     <div id="loginForm">
-      <h2>Hesabınıza Giriş Yapın</h2><p>Platforma erişmek için giriş yapın.</p>
-      <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google ile Giriş Yap</button>
+      <h2>Hesabınıza Giriş Yapın</h2>
+      <p>Platforma erişmek için giriş yapın.</p>
+      <button class="btn-google" onclick="loginGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google ile Giriş Yap
+      </button>
       <div class="modal-divider"><span>veya</span></div>
-      <div class="form-group"><label class="form-label">E-posta</label><input type="email" class="form-input" id="loginEmail" placeholder="ornek@email.com"></div>
-      <div class="form-group"><label class="form-label">Şifre</label><input type="password" class="form-input" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginUser()"></div>
+      <div class="form-group">
+        <label class="form-label">E-posta</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="ornek@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginUser()">
+      </div>
       <div id="loginError" class="form-error"></div>
+      <div class="forgot-link"><a onclick="switchAuth('forgot')">Şifremi Unuttum</a></div>
       <button class="btn btn-primary btn-full" onclick="loginUser()" id="loginBtn">Giriş Yap</button>
       <div class="modal-switch">Hesabınız yok mu? <a onclick="switchAuth('register')">Kayıt Olun</a></div>
     </div>
+
+    <!-- KAYIT FORMU -->
     <div id="registerForm" style="display:none;">
-      <h2>Ücretsiz Hesap Oluşturun</h2><p>1 ay ücretsiz Pro deneme ile başlayın.</p>
-      <button class="btn-google" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google ile Kayıt Ol</button>
+      <h2>Ücretsiz Hesap Oluşturun</h2>
+      <p>1 ay ücretsiz Pro deneme ile başlayın.</p>
+      <button class="btn-google" onclick="loginGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google ile Kayıt Ol
+      </button>
       <div class="modal-divider"><span>veya</span></div>
-      <div class="form-group"><label class="form-label">Ad Soyad</label><input type="text" class="form-input" id="regName" placeholder="Adınız Soyadınız"></div>
-      <div class="form-group"><label class="form-label">E-posta</label><input type="email" class="form-input" id="regEmail" placeholder="ornek@email.com"></div>
-      <div class="form-group"><label class="form-label">Şifre</label><input type="password" class="form-input" id="regPass" placeholder="En az 6 karakter" onkeydown="if(event.key==='Enter')registerUser()"></div>
+      <div class="form-group">
+        <label class="form-label">Ad Soyad</label>
+        <input type="text" class="form-input" id="regName" placeholder="Adınız Soyadınız">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-posta</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="ornek@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifre</label>
+        <input type="password" class="form-input" id="regPass" placeholder="En az 6 karakter" onkeydown="if(event.key==='Enter')registerUser()">
+      </div>
       <div id="regError" class="form-error"></div>
       <button class="btn btn-primary btn-full" onclick="registerUser()" id="regBtn">Hesap Oluştur</button>
-      <div style="text-align:right;margin-bottom:8px;">
-  <a onclick="switchAuth('forgot')" style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:500;">Şifremi Unuttum</a>
-</div>
-
       <div class="modal-switch">Zaten hesabınız var mı? <a onclick="switchAuth('login')">Giriş Yapın</a></div>
     </div>
+
+    <!-- ŞİFREMİ UNUTTUM FORMU -->
+    <div id="forgotForm" style="display:none;">
+      <h2>Şifre Sıfırla</h2>
+      <p>E-posta adresinizi girin, sıfırlama bağlantısı gönderelim.</p>
+      <div class="form-group">
+        <label class="form-label">E-posta Adresi</label>
+        <input type="email" class="form-input" id="forgotEmail" placeholder="ornek@email.com" onkeydown="if(event.key==='Enter')resetPassword()">
+      </div>
+      <div id="forgotError" class="form-error"></div>
+      <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;">Sıfırlama bağlantısı e-postanıza gönderildi.</div>
+      <button class="btn btn-primary btn-full" onclick="resetPassword()" id="forgotBtn">Sıfırlama Bağlantısı Gönder</button>
+      <div class="modal-switch"><a onclick="switchAuth('login')">Giriş sayfasına dön</a></div>
+    </div>
   </div>
-</div>
-<!-- FORGOT FORM -->
-<div id="forgotForm" style="display:none;">
-  <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px;">Şifre Sıfırla</h2>
-  <p style="font-size:14px;color:var(--mid);margin-bottom:24px;">E-posta adresinizi girin, sıfırlama bağlantısı gönderelim.</p>
-  <div class="form-group">
-    <label class="form-label">E-posta Adresi</label>
-    <input type="email" class="form-input" id="forgotEmail" placeholder="ornek@email.com">
-  </div>
-  <div id="forgotError" class="form-error"></div>
-  <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;">Sıfırlama bağlantısı gönderildi. E-postanızı kontrol edin.</div>
-  <button class="btn btn-primary btn-full" onclick="resetPassword()" id="forgotBtn">Sıfırlama Bağlantısı Gönder</button>
-  <div class="modal-switch"><a onclick="switchAuth('login')" style="cursor:pointer;">Giriş sayfasına dön</a></div>
-</div>
-<!-- FORGOT FORM -->
-<div id="forgotForm" style="display:none;">
-  <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px;">Şifre Sıfırla</h2>
-  <p style="font-size:14px;color:var(--mid);margin-bottom:24px;">E-posta adresinizi girin, sıfırlama bağlantısı gönderelim.</p>
-  <div class="form-group">
-    <label class="form-label">E-posta Adresi</label>
-    <input type="email" class="form-input" id="forgotEmail" placeholder="ornek@email.com">
-  </div>
-  <div id="forgotError" class="form-error"></div>
-  <div id="forgotSuccess" style="font-size:13px;color:var(--success);margin-bottom:12px;display:none;">Sıfırlama bağlantısı gönderildi. E-postanızı kontrol edin.</div>
-  <button class="btn btn-primary btn-full" onclick="resetPassword()" id="forgotBtn">Sıfırlama Bağlantısı Gönder</button>
-  <div class="modal-switch"><a onclick="switchAuth('login')" style="cursor:pointer;">Giriş sayfasına dön</a></div>
 </div>
 
 <!-- LIMIT MODAL -->
 <div class="overlay" id="limitOverlay">
   <div class="modal limit-modal">
-    <div class="limit-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg></div>
-    <h2>Soru Limitinize Ulaştınız</h2>
+    <div class="limit-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+    </div>
+    <h2>Soru Limitine Ulaştınız</h2>
     <p>Devam etmek için giriş yapın veya hesap oluşturun.</p>
     <div class="limit-actions">
       <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="closeLimitModal();openAuth('register')">Ücretsiz Hesap Oluştur</button>
@@ -470,6 +525,18 @@ const QK='hukukai_qcount_v2';
 function getQCounts(){try{return JSON.parse(localStorage.getItem(QK)||'{}')}catch(e){return{}}}
 function setQCounts(d){localStorage.setItem(QK,JSON.stringify(d))}
 
+const ICONS={
+  brief:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>',
+  home:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>',
+  shop:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>',
+  users:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>',
+  car:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>',
+  shield:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>',
+  doc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>',
+  scale:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>',
+  calc:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.616 4.5 4.558V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.558c0-.942-.806-1.858-1.907-1.986A48.507 48.507 0 0012 2.25z"/></svg>'
+};
+
 const CATS={
   is:{name:'İş Hukuku',sub:'Kıdem, ihbar, fazla mesai',icon:'brief'},
   kira:{name:'Kira Hukuku',sub:'Kiracı ve ev sahibi hakları',icon:'home'},
@@ -482,32 +549,6 @@ const CATS={
   vergi:{name:'Vergi Hukuku',sub:'Vergi itirazı, vergi cezası',icon:'calc'}
 };
 
-const ICONS={
-  brief:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>`,
-  home:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>`,
-  shop:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>`,
-  users:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>`,
-  car:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>`,
-  shield:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>`,
-  doc:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>`,
-  scale:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg>`,
-  calc:`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/></svg>`
-};
-
-const CAT_PROMPTS={
-  is:'Sen bir İş Hukuku uzmanısın. 4857 sayılı İş Kanunu, kıdem tazminatı, ihbar tazminatı, işten çıkarma, fazla mesai, yıllık izin konularında derinlemesine bilgi sahibisin.',
-  kira:'Sen bir Kira Hukuku uzmanısın. Türk Borçlar Kanunu kira hükümleri, kiracı ve ev sahibi hakları, kira artışı, tahliye, depozito konularında uzmansın.',
-  tuketici:'Sen bir Tüketici Hakları uzmanısın. 6502 sayılı Kanun, ayıplı mal, garanti, iade, tüketici mahkemesi konularında uzmansın.',
-  aile:'Sen bir Aile Hukuku uzmanısın. Türk Medeni Kanunu, boşanma, nafaka, velayet, mal rejimi konularında uzmansın.',
-  trafik:'Sen bir Trafik Hukuku uzmanısın. Karayolları Trafik Kanunu, kaza tazminatı, sigorta, trafik cezaları konularında uzmansın.',
-  ceza:'Sen bir Ceza Hukuku uzmanısın. Türk Ceza Kanunu, suç tanımları, savunma hakları, şikayet süreçleri konularında uzmansın.',
-  icra:'Sen bir İcra Hukuku uzmanısın. 2004 sayılı İcra ve İflas Kanunu, icra takibi, borca itiraz, haciz konularında uzmansın.',
-  miras:'Sen bir Miras Hukuku uzmanısın. Türk Medeni Kanunu miras hükümleri, vasiyetname, miras reddi, tenkis davası konularında uzmansın.',
-  vergi:'Sen bir Vergi Hukuku uzmanısın. Türk vergi mevzuatı, vergi cezaları, uzlaşma, vergi mahkemesi konularında uzmansın.'
-};
-
-const SUFFIX=`\n\nHer yanıtta şu 8 bölümü kullan:\n📌 Durum Analizi\n⚖️ Hukuki Dayanak\n⚠️ Risk Seviyesi — Düşük/Orta/Yüksek\n⏳ Süreler\n💰 Tahmini Masraf\n🛠 Yapman Gerekenler\n🔄 Alternatif Senaryo\n❗ Sık Yapılan Hatalar\n\nHer zaman Türkçe, sade ve anlaşılır cevap ver.`;
-
 const PLANS=[
   {key:'free',name:'Ücretsiz',monthly:0,annual:0,desc:'Temel hukuki bilgi',features:[{t:'3 soru hakkı',y:true},{t:'Temel yanıt',y:true},{t:'Risk bilgisi',y:true},{t:'Konuşma geçmişi',y:false},{t:'Dosya yükleme',y:false},{t:'Senaryo simülasyonu',y:false},{t:'Dilekçe üretimi',y:false}]},
   {key:'plus',name:'Plus',monthly:99,annual:69,desc:'Aktif kullanıcılar için',features:[{t:'50 soru / gün',y:true},{t:'Detaylı risk analizi',y:true},{t:'Süre uyarıları',y:true},{t:'Konuşma geçmişi',y:true},{t:'Dosya yükleme',y:false},{t:'Senaryo simülasyonu',y:false},{t:'Dilekçe üretimi',y:false}]},
@@ -515,48 +556,39 @@ const PLANS=[
   {key:'elite',name:'Elite',monthly:799,annual:559,desc:'Tam profesyonel paket',elite:true,features:[{t:'Sınırsız soru',y:true},{t:'Tam risk skoru',y:true},{t:'Süre uyarıları',y:true},{t:'Konuşma geçmişi',y:true},{t:'Dosya yükleme',y:true},{t:'Senaryo simülasyonu',y:true},{t:'Dilekçe üretimi',y:true}]}
 ];
 
-window.addEventListener('DOMContentLoaded',async()=>{
-  renderCategories();
-  renderPricing();
-  const{data:{session}}=await sb.auth.getSession();
-  if(session)setUser(session.user);
-  sb.auth.onAuthStateChange((_,session)=>{
-    if(session)setUser(session.user);else clearUser();
-  });
-});
-
 function renderCategories(){
   document.getElementById('catGrid').innerHTML=Object.entries(CATS).map(([k,v])=>`
     <div class="cat-card" onclick="openChat('${k}')">
       <div class="cat-icon">${ICONS[v.icon]}</div>
       <div><div class="cat-title">${v.name}</div><div class="cat-desc">${v.sub}</div></div>
-      <div class="cat-arrow">Danış <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      <div class="cat-arrow">Danış &rarr;</div>
     </div>`).join('');
 }
 
 function renderPricing(){
-  const chk=`<svg class="price-check yes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`;
-  const xmk=`<svg class="price-check no" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+  const chk=(y)=>y?`<svg class="price-check yes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:`<svg class="price-check no" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
   document.getElementById('pricingGrid').innerHTML=PLANS.map(p=>{
     const price=isAnnual?p.annual:p.monthly;
     const cls=p.elite?'price-card elite':p.popular?'price-card popular':'price-card';
-    return`<div class="${cls}" style="position:relative;">
-      ${p.popular?'<div class="popular-badge">En Popüler</div>':''}
+    return `<div class="${cls}">${p.popular?'<div class="popular-badge">En Popüler</div>':''}
       <div class="price-plan">${p.name}</div>
-      <div class="price-amount"><span class="price-num">${price}</span><span class="price-period">${price===0?'TL':'TL/ay'}</span></div>
+      <div class="price-amount"><span class="price-num">${price===0?'0':price+'₺'}</span><span class="price-period">${price===0?'Ücretsiz':'/ay'}</span></div>
       <div class="price-desc">${p.desc}</div>
       <hr class="price-divider">
-      <ul class="price-features">${p.features.map(f=>`<li class="price-feature">${f.y?chk:xmk}<span>${f.t}</span></li>`).join('')}</ul>
-      <button class="btn-price" onclick="openAuth('register')">${p.key==='free'?'Ücretsiz Başla':'1 Ay Ücretsiz Dene'}</button>
+      <ul class="price-features">${p.features.map(f=>`<li class="price-feature">${chk(f.y)}<span>${f.t}</span></li>`).join('')}</ul>
+      <button class="btn-price" onclick="openAuth('register')">${price===0?'Hemen Başla':'Planı Seç'}</button>
     </div>`;
   }).join('');
 }
 
 function toggleBilling(){
   isAnnual=!isAnnual;
-  document.getElementById('billingToggle').classList.toggle('on',isAnnual);
+  const t=document.getElementById('billingToggle');
+  t.classList.toggle('on',isAnnual);
   renderPricing();
 }
+
+function showErr(el,msg){el.textContent=msg;el.style.display='block';}
 
 function setUser(user){
   currentUser=user;
@@ -570,9 +602,15 @@ function setUser(user){
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:14px;height:14px;color:var(--light)"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
       </button>
       <div class="user-dropdown" id="userDropdown">
-        <div class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Profilim</div>
+        <div class="dropdown-item" onclick="toggleUserMenu()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+          Profilim
+        </div>
         <hr class="dropdown-divider">
-        <div class="dropdown-item danger" onclick="logoutUser()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>Çıkış Yap</div>
+        <div class="dropdown-item danger" onclick="logoutUser()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+          Çıkış Yap
+        </div>
       </div>
     </div>`;
 }
@@ -588,7 +626,13 @@ function toggleUserMenu(){document.getElementById('userDropdown')?.classList.tog
 document.addEventListener('click',e=>{if(!e.target.closest('.user-menu-wrap'))document.getElementById('userDropdown')?.classList.remove('open');});
 
 function openAuth(mode){document.getElementById('authOverlay').classList.add('open');switchAuth(mode);}
-function closeAuth(){document.getElementById('authOverlay').classList.remove('open');}
+function closeAuth(){
+  document.getElementById('authOverlay').classList.remove('open');
+  document.getElementById('forgotSuccess').style.display='none';
+  document.getElementById('forgotEmail').value='';
+  document.getElementById('forgotError').style.display='none';
+}
+
 function switchAuth(mode){
   document.getElementById('loginForm').style.display=mode==='login'?'':'none';
   document.getElementById('registerForm').style.display=mode==='register'?'':'none';
@@ -609,10 +653,7 @@ async function loginUser(){
 }
 
 async function loginGoogle(){
-  const{error}=await sb.auth.signInWithOAuth({
-    provider:'google',
-    options:{redirectTo:window.location.origin}
-  });
+  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
   if(error)alert('Google girişi başarısız: '+error.message);
 }
 
@@ -625,7 +666,7 @@ async function registerUser(){
   if(!name||!email||!pass){showErr(errEl,'Tüm alanlar zorunludur.');return;}
   if(pass.length<6){showErr(errEl,'Şifre en az 6 karakter olmalıdır.');return;}
   btn.textContent='Hesap oluşturuluyor...';btn.disabled=true;
-  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+  const{error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
   btn.textContent='Hesap Oluştur';btn.disabled=false;
   if(error){showErr(errEl,error.message);return;}
   closeAuth();
@@ -645,46 +686,111 @@ async function resetPassword(){
   sucEl.style.display='block';
 }
 
-async function loginGoogle(){
-  await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
+async function logoutUser(){
+  await sb.auth.signOut();
+  clearUser();
+  goBack();
 }
 
-async function logoutUser(){await sb.auth.signOut();backToHome();}
-function showErr(el,msg){el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+function closeLimitModal(){document.getElementById('limitOverlay').classList.remove('open');}
 
 function getLimitForUser(){return currentUser?20:3;}
 
+function updateCounter(used,limit){
+  const el=document.getElementById('counterText');
+  if(el)el.textContent=`${used} / ${limit}`;
+}
+
+function goBack(){
+  document.getElementById('chatPage').classList.remove('active');
+  document.getElementById('landingPage').classList.add('active');
+  conversationHistory=[];
+  window._currentConvId=null;
+}
+
 function openChat(catKey){
   currentCategory=catKey;
-  conversationHistory=[];
-  uploadedFile=null;
-  window._currentConvId=null;
   const cat=CATS[catKey];
+  conversationHistory=[];
+  window._currentConvId=null;
+  document.getElementById('chatCatIcon').innerHTML=ICONS[cat.icon];
+  document.getElementById('chatCatName').textContent=cat.name;
+  document.getElementById('chatMessages').innerHTML='';
   const counts=getQCounts();
   const used=counts[catKey]||0;
   const limit=getLimitForUser();
-  document.getElementById('chatCatName').textContent=cat.name;
-  document.getElementById('chatCatSub').textContent='Yapay Zeka Uzmanı';
-  document.getElementById('chatCatIcon').innerHTML=ICONS[cat.icon];
   updateCounter(used,limit);
-  document.getElementById('chatMessages').innerHTML='';
-  appendAIMsg(`**${cat.name}** konusunda yardımcı olmaya hazırım.\n\nSorunuzu ayrıntılı biçimde anlatırsanız daha kapsamlı analiz sunabilirim.`);
   document.getElementById('landingPage').classList.remove('active');
   document.getElementById('chatPage').classList.add('active');
-  window.scrollTo(0,0);
+  appendAIMsg(`Merhaba! ${cat.name} alanında size yardımcı olmaya hazırım. Sorunuzu detaylı şekilde paylaşın, kapsamlı bir analiz sunayım.`);
 }
 
 function startChatFromSample(catKey,question){
   openChat(catKey);
-  setTimeout(()=>{document.getElementById('chatInput').value=question;sendMessage();},300);
+  setTimeout(()=>{
+    document.getElementById('chatInput').value=question;
+    sendMessage();
+  },400);
 }
 
-function backToHome(){
-  document.getElementById('chatPage').classList.remove('active');
-  document.getElementById('landingPage').classList.add('active');
+function scrollToSection(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
 }
 
-function updateCounter(used,limit){document.getElementById('counterText').textContent=`${used} / ${limit}`;}
+function toggleFaq(el){el.classList.toggle('open');}
+
+function handleFile(input){
+  const file=input.files[0];
+  if(!file)return;
+  uploadedFile=file;
+  document.getElementById('filePreviewArea').innerHTML=`
+    <div class="file-preview">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/></svg>
+      <span>${file.name}</span>
+      <button class="file-remove" onclick="removeFile()">✕</button>
+    </div>`;
+}
+
+function removeFile(){
+  uploadedFile=null;
+  document.getElementById('fileInput').value='';
+  document.getElementById('filePreviewArea').innerHTML='';
+}
+
+let msgId=0;
+function appendUserMsg(text){
+  const id='msg-'+(++msgId);
+  const div=document.createElement('div');
+  div.className='msg user';
+  div.id=id;
+  div.innerHTML=`<div class="msg-avatar user-av"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  document.getElementById('chatMessages').appendChild(div);
+  div.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function appendAIMsg(text){
+  const id='msg-'+(++msgId);
+  const div=document.createElement('div');
+  div.className='msg ai';
+  div.id=id;
+  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="msg-avatar ai"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div><div class="msg-bubble">${formatted}</div>`;
+  document.getElementById('chatMessages').appendChild(div);
+  div.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function appendTyping(){
+  const id='typing-'+(++msgId);
+  const div=document.createElement('div');
+  div.className='msg ai';
+  div.id=id;
+  div.innerHTML=`<div class="msg-avatar ai"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div><div class="msg-bubble typing"><span></span><span></span><span></span></div>`;
+  document.getElementById('chatMessages').appendChild(div);
+  div.scrollIntoView({behavior:'smooth',block:'end'});
+  return id;
+}
+
+function removeTyping(id){document.getElementById(id)?.remove();}
 
 async function sendMessage(){
   const input=document.getElementById('chatInput');
@@ -730,43 +836,18 @@ async function sendMessage(){
   }
 }
 
-function appendUserMsg(text){
-  const msgs=document.getElementById('chatMessages');
-  const div=document.createElement('div');
-  div.className='msg user';
-  div.innerHTML=`<div class="msg-avatar user-av"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div><div class="msg-bubble">${escHtml(text).replace(/\n/g,'<br>')}</div>`;
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
-}
+document.getElementById('chatInput').addEventListener('input',function(){
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,120)+'px';
+});
 
-function appendAIMsg(text){
-  const msgs=document.getElementById('chatMessages');
-  const div=document.createElement('div');
-  div.className='msg ai';
-  div.innerHTML=`<div class="msg-avatar ai"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg></div><div class="msg-bubble">${mdToHtml(text)}</div>`;
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
-}
+sb.auth.onAuthStateChange((event,session)=>{
+  if(session?.user){setUser(session.user);}
+  else{clearUser();}
+});
 
-function appendTyping(){
-  const msgs=document.getElementById('chatMessages');
-  const div=document.createElement('div');
-  div.className='msg ai';
-  const id='typing_'+Date.now();
-  div.id=id;
-  div.innerHTML=`<div class="msg-avatar ai"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.59 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z"/></svg></div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
-  return id;
-}
-
-function removeTyping(id){document.getElementById(id)?.remove();}
-function handleFile(input){const file=input.files[0];if(!file)return;uploadedFile=file;document.getElementById('fileName').textContent=file.name;document.getElementById('filePreviewWrap').style.display='block';}
-function removeFile(){uploadedFile=null;document.getElementById('fileInput').value='';document.getElementById('filePreviewWrap').style.display='none';}
-function closeLimitModal(){document.getElementById('limitOverlay').classList.remove('open');}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
-function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
-function toggleFaq(el){el.classList.toggle('open');}
-function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function mdToHtml(text){return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');}
+renderCategories();
+renderPricing();
 </script>
 </body>
 </html>
