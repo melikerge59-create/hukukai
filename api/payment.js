@@ -1,11 +1,4 @@
-const crypto = require('crypto');
-
-function generateAuthorizationHeader(apiKey, secretKey, randomString, requestBody) {
-  const hash = crypto.createHmac('sha256', secretKey).update(apiKey + randomString + requestBody).digest('base64');
-const authStr = `apiKey:${apiKey}&randomKey:${randomString}&signature:${hash}`;
-return Buffer.from(authStr).toString('base64');
-
-}
+const Iyzipay = require('iyzipay');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,13 +11,15 @@ module.exports = async function handler(req, res) {
   const price = planPrices[plan];
   if (!price) return res.status(400).json({ error: 'Geçersiz plan' });
 
-  const apiKey = process.env.IYZICO_API_KEY;
-  const secretKey = process.env.IYZICO_SECRET_KEY;
-  const randomString = Math.random().toString(36).substring(2, 12);
+  const iyzipay = new Iyzipay({
+    apiKey: process.env.IYZICO_API_KEY,
+    secretKey: process.env.IYZICO_SECRET_KEY,
+    uri: 'https://sandbox-api.iyzipay.com'
+  });
 
-  const requestBody = JSON.stringify({
+  const request = {
     locale: 'tr',
-    conversationId: userId?.substring(0, 36) || 'conv-1',
+    conversationId: (userId || 'user1').substring(0, 36),
     price: price,
     paidPrice: price,
     currency: 'TRY',
@@ -33,7 +28,7 @@ module.exports = async function handler(req, res) {
     callbackUrl: 'https://hukukai-mu.vercel.app/api/payment-callback',
     enabledInstallments: [1, 2, 3],
     buyer: {
-      id: userId?.substring(0, 36) || 'buyer-1',
+      id: (userId || 'buyer1').substring(0, 36),
       name: userName?.split(' ')[0] || 'Ad',
       surname: userName?.split(' ')[1] || 'Soyad',
       email: userEmail || 'test@test.com',
@@ -62,38 +57,33 @@ module.exports = async function handler(req, res) {
       itemType: 'VIRTUAL',
       price: price
     }]
-  });
-
-  const authorization = generateAuthorizationHeader(apiKey, secretKey, randomString, requestBody);
+  };
 
   try {
-    const response = await fetch('https://sandbox-api.iyzipay.com/payment/iyzipos/checkoutform/initialize/auth/ecom', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `IYZWSv2 ${authorization}`,
-        'x-iyzi-rnd': randomString
-      },
-      body: requestBody
+    const result = await new Promise((resolve, reject) => {
+      iyzipay.checkoutFormInitialize.create(request, (err, result) => {
+        console.log('RESULT:', JSON.stringify(result));
+        console.log('ERROR:', JSON.stringify(err));
+        if (err) reject(err);
+        else resolve(result);
+      });
     });
 
-    const data = await response.json();
-    console.log('IYZICO RESPONSE:', JSON.stringify(data));
-
-    if (data.status !== 'success') {
+    if (result.status !== 'success') {
       return res.status(500).json({
-        error: data.errorMessage || 'Ödeme başlatılamadı',
-        errorCode: data.errorCode
+        error: result.errorMessage || 'Ödeme başlatılamadı',
+        errorCode: result.errorCode,
+        raw: result
       });
     }
 
     return res.status(200).json({
-      checkoutFormContent: data.checkoutFormContent,
-      token: data.token
+      checkoutFormContent: result.checkoutFormContent,
+      token: result.token
     });
 
   } catch (e) {
-    console.log('FETCH ERROR:', e.message);
+    console.log('CATCH:', e.message);
     return res.status(500).json({ error: e.message });
   }
 };
