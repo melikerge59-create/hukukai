@@ -169,6 +169,27 @@ const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
 if (authErr || !user) {
   return res.status(401).json({ error: 'Geçersiz oturum' });
 }
+  // Kullanıcı planını ve günlük limiti kontrol et
+const { data: planData } = await supabase
+  .from('user_plans')
+  .select('plan_type, daily_limit')
+  .eq('user_id', user.id)
+  .single();
+
+const dailyLimit = planData?.daily_limit || 5;
+
+// Bugünkü kullanım sayısını kontrol et
+const today = new Date().toISOString().split('T')[0];
+const { count } = await supabase
+  .from('usage_counts')
+  .select('*', { count: 'exact' })
+  .eq('user_id', user.id)
+  .gte('created_at', today);
+
+if (count >= dailyLimit) {
+  return res.status(429).json({ error: 'Günlük limitinize ulaştınız' });
+}
+
 
 
   if (!message) {
@@ -229,4 +250,5 @@ if (authErr || !user) {
     return res.status(500).json({ error: 'Hata: ' + error.message });
   }
 };
+
 
