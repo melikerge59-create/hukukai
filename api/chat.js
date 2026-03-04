@@ -1,3 +1,4 @@
+const { createClient } = require('@supabase/supabase-js');
 const SYSTEM_PROMPT = `# HukukAI — Türk Hukuku Yapay Zeka Danışmanı
 ## Sistem Promptu v5.0 — 2026 Tam Güncel | Bağımsız | Few-Shot | Rakam Gömülü
 
@@ -154,6 +155,21 @@ module.exports = async function handler(req, res) {
   }
 
   const { message, category, history, userName } = req.body;
+  const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SECRET_KEY
+);
+
+const token = req.headers.authorization?.split(' ')[1];
+if (!token) {
+  return res.status(401).json({ error: 'Giriş gerekli' });
+}
+
+const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
+if (authErr || !user) {
+  return res.status(401).json({ error: 'Geçersiz oturum' });
+}
+
 
   if (!message) {
     return res.status(400).json({ error: 'Mesaj boş olamaz' });
@@ -213,3 +229,4 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Hata: ' + error.message });
   }
 };
+
