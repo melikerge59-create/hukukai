@@ -961,57 +961,54 @@ function renderPricing(){
 }
   /* ── ÖDEME ── */
 async function startPayment(plan) {
-  if (!currentUser) {
-    openAuth('login');
-    return;
-  }
+  if (!currentUser) { openAuth('login'); return; }
+  const {data:{session}} = await sb.auth.getSession();
+  const token = session?.access_token;
+  if (!token) { openAuth('login'); return; }
 
-  const planNames = { plus: 'Plus', pro: 'Pro', elite: 'Elite' };
-  const planPrices = { plus: '99', pro: '349', elite: '799' };
-
-  const confirmed = confirm(
-    `${planNames[plan]} planı seçtiniz.\nAylık ${planPrices[plan]}₺ ödeme yapılacak.\nDevam etmek istiyor musunuz?`
-  );
-  if (!confirmed) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'paymentOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:16px;padding:32px;max-width:520px;width:100%;max-height:92vh;overflow-y:auto;position:relative;">
+      <button onclick="document.getElementById('paymentOverlay').remove();document.getElementById('iyziScriptTag')?.remove();"
+        style="position:absolute;top:14px;right:14px;border:none;background:none;font-size:22px;cursor:pointer;color:#666;">✕</button>
+      <h3 style="margin-bottom:20px;font-size:18px;font-weight:700;color:#1a2b4a;">Güvenli Ödeme</h3>
+      <div id="iyzipay-checkout-form" class="responsive">
+        <div style="text-align:center;padding:40px;color:#888;">Yükleniyor...</div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
 
   try {
-    const { data: { session } } = await sb.auth.getSession();
-    const token = session?.access_token;
-
     const res = await fetch('/api/payment', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        plan,
-        userEmail: currentUser.email,
-        userName: currentUser.user_metadata?.full_name || currentUser.email,
-        userId: currentUser.id
-      })
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({plan, userEmail:currentUser.email, userName:currentUser.user_metadata?.full_name||currentUser.email, userId:currentUser.id})
     });
-
     const data = await res.json();
 
     if (data.checkoutFormContent) {
-      // İyzico ödeme formunu aç
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:20px;';
-      overlay.innerHTML = `
-        <div style="background:#fff;border-radius:12px;padding:24px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;position:relative;">
-          <button onclick="this.closest('div').parentElement.remove()" style="position:absolute;top:12px;right:12px;border:none;background:none;font-size:20px;cursor:pointer;">✕</button>
-          <h3 style="margin-bottom:16px;font-size:18px;font-weight:700;">Ödeme</h3>
-          ${data.checkoutFormContent}
-        </div>`;
-      document.body.appendChild(overlay);
+      document.getElementById('iyzipay-checkout-form').innerHTML = '';
+      const tmp = document.createElement('div');
+      tmp.innerHTML = data.checkoutFormContent;
+      tmp.querySelectorAll('script').forEach(old => {
+        const s = document.createElement('script');
+        s.id = 'iyziScriptTag';
+        if (old.src) { s.src = old.src; s.async = true; }
+        else { s.textContent = old.textContent; }
+        document.head.appendChild(s);
+      });
     } else {
-      alert('Ödeme başlatılamadı: ' + (data.error || 'Bilinmeyen hata'));
+      document.getElementById('paymentOverlay').remove();
+      alert('Hata: ' + (data.error || 'Bilinmeyen hata'));
     }
-  } catch (e) {
+  } catch(e) {
+    document.getElementById('paymentOverlay').remove();
     alert('Bağlantı hatası: ' + e.message);
   }
 }
+
 
 /* ── PANEL ── */
 function showPage(pageId){
