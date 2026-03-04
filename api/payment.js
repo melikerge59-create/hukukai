@@ -26,41 +26,42 @@ module.exports = async function handler(req, res) {
 
   const request = {
     locale: Iyzipay.LOCALE.TR,
-    conversationId: userId,
+    conversationId: String(userId).substring(0, 36),
     price: price,
     paidPrice: price,
     currency: Iyzipay.CURRENCY.TRY,
-    basketId: `${userId}-${plan}-${Date.now()}`,
+    basketId: `basket-${Date.now()}`,
     paymentGroup: Iyzipay.PAYMENT_GROUP.SUBSCRIPTION,
-    callbackUrl: `${process.env.SITE_URL}/api/payment-callback`,
+    callbackUrl: `https://hukukai-mu.vercel.app/api/payment-callback`,
     enabledInstallments: [1, 2, 3],
     buyer: {
-      id: userId,
-      name: userName?.split(' ')[0] || 'Ad',
-      surname: userName?.split(' ')[1] || 'Soyad',
+      id: String(userId).substring(0, 36),
+      name: (userName?.split(' ')[0] || 'Ad').substring(0, 30),
+      surname: (userName?.split(' ')[1] || 'Soyad').substring(0, 30),
       email: userEmail,
       identityNumber: '11111111111',
-      registrationAddress: 'Türkiye',
+      registrationAddress: 'Istanbul',
       city: 'Istanbul',
-      country: 'Turkey'
+      country: 'Turkey',
+      ip: '85.34.78.112'
     },
     shippingAddress: {
-      contactName: userName || 'Ad Soyad',
+      contactName: (userName || 'Ad Soyad').substring(0, 60),
       city: 'Istanbul',
       country: 'Turkey',
-      address: 'Türkiye'
+      address: 'Istanbul'
     },
     billingAddress: {
-      contactName: userName || 'Ad Soyad',
+      contactName: (userName || 'Ad Soyad').substring(0, 60),
       city: 'Istanbul',
       country: 'Turkey',
-      address: 'Türkiye'
+      address: 'Istanbul'
     },
     basketItems: [
       {
         id: plan,
         name: `HukukAI ${plan} Plan`,
-        category1: 'Yazılım',
+        category1: 'Yazilim',
         itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
         price: price
       }
@@ -69,11 +70,24 @@ module.exports = async function handler(req, res) {
 
   return new Promise((resolve) => {
     iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-      if (err || result.status !== 'success') {
-        res.status(500).json({ error: err?.message || result?.errorMessage || 'Ödeme başlatılamadı' });
+      console.log('IYZICO RESULT:', JSON.stringify(result));
+      console.log('IYZICO ERROR:', err);
+      
+      if (err) {
+        res.status(500).json({ error: err.message });
         resolve();
         return;
       }
+      
+      if (result.status !== 'success') {
+        res.status(500).json({ 
+          error: result.errorMessage || 'Ödeme başlatılamadı',
+          errorCode: result.errorCode
+        });
+        resolve();
+        return;
+      }
+      
       res.status(200).json({
         checkoutFormContent: result.checkoutFormContent,
         token: result.token
