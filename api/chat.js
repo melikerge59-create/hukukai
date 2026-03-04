@@ -244,11 +244,24 @@ if (count >= dailyLimit) {
     }
 
     const reply = data.choices[0].message.content;
+    // Kullanım sayısını kaydet
+await supabase
+  .from('usage_counts')
+  .upsert({
+    user_id: user.id,
+    category: category || 'genel',
+    count: (count || 0) + 1,
+    date: today
+  }, {
+    onConflict: 'user_id,date,category'
+  });
+
     return res.status(200).json({ reply });
 
   } catch (error) {
     return res.status(500).json({ error: 'Hata: ' + error.message });
   }
 };
+
 
 
