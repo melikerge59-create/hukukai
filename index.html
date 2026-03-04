@@ -1060,6 +1060,28 @@ async function openPanel(){
 }
 
 /* ── INIT ── */
+  // Ödeme sonucu bildir
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  const pay = p.get('payment');
+  const plan = p.get('plan');
+  if(!pay) return;
+  const msgs = {
+    success: '🎉 Ödeme başarılı! ' + (plan ? plan.charAt(0).toUpperCase()+plan.slice(1)+' planına' : 'Plana') + ' geçiş yapıldı.',
+    failed:  '❌ Ödeme başarısız. Lütfen tekrar deneyin.',
+    error:   '⚠️ Bir hata oluştu. Destek ile iletişime geçin.'
+  };
+  const colors = { success:'#16a34a', failed:'#dc2626', error:'#d97706' };
+  if(msgs[pay]){
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:'+colors[pay]+';color:#fff;padding:16px 28px;border-radius:12px;font-weight:700;font-size:15px;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,0.2);';
+    toast.textContent = msgs[pay];
+    document.body.appendChild(toast);
+    setTimeout(()=>toast.remove(), 5000);
+    window.history.replaceState({}, '', '/');
+  }
+})();
+
 renderCategories();
 renderPricing();
 </script>
