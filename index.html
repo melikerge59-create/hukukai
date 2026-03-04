@@ -955,7 +955,7 @@ function renderPricing(){
       <div class="price-desc">${p.desc}</div>
       <hr class="price-divider">
       <ul class="price-features">${p.features.map(f=>`<li class="price-feature">${chk(f.y)}<span>${f.t}</span></li>`).join('')}</ul>
-      <button class="btn-price" onclick="openAuth('register')">${price===0?'Hemen Başla':'Planı Seç'}</button>
+      <button class="btn-price" onclick="${price===0?`openAuth('register')`:`startPayment('${p.key}')`}">${price===0?'Hemen Başla':'Planı Seç'}</button>
     </div>`;
   }).join('');
 }
