@@ -305,7 +305,7 @@ Bugünün tarihi: ${currentDate}. Kullanıcı şu anda ${categoryLabel} kategori
       body: JSON.stringify({
         model: 'gpt-4o',
         messages,
-        max_tokens: 3500,
+        max_tokens: 2500,
         temperature: 0.2
       })
     });
@@ -355,3 +355,4 @@ Bugünün tarihi: ${currentDate}. Kullanıcı şu anda ${categoryLabel} kategori
     return res.status(500).json({ error: 'Sunucu hatası: ' + error.message });
   }
 };
+
