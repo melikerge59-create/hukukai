@@ -1,10 +1,10 @@
 const crypto = require('crypto');
 
 function generateAuthorizationHeader(apiKey, secretKey, randomString, requestBody) {
-  const hashStr = apiKey + randomString + secretKey + requestBody;
-  const hash = crypto.createHash('sha256').update(hashStr).digest('base64');
-  const authStr = `apiKey:${apiKey}&randomKey:${randomString}&signature:${hash}`;
-  return Buffer.from(authStr).toString('base64');
+  const hash = crypto.createHmac('sha256', secretKey).update(apiKey + randomString + requestBody).digest('base64');
+const authStr = `apiKey:${apiKey}&randomKey:${randomString}&signature:${hash}`;
+return Buffer.from(authStr).toString('base64');
+
 }
 
 module.exports = async function handler(req, res) {
