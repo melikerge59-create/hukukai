@@ -1,89 +1,118 @@
-const Iyzipay = require('iyzipay');
+const crypto = require('crypto');
+
+function generateAuth(apiKey, secretKey, rnd, body) {
+  const hashStr = apiKey + rnd + secretKey + body;
+  const hash = crypto.createHash('sha256').update(hashStr, 'utf8').digest('base64');
+  const authStr = 'apiKey:' + apiKey + '&randomKey:' + rnd + '&signature:' + hash;
+  return 'IYZWSv2 ' + Buffer.from(authStr).toString('base64');
+}
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { plan, userEmail, userName, userId } = req.body;
-
   const planPrices = { plus: '99.00', pro: '349.00', elite: '799.00' };
   const price = planPrices[plan];
-  if (!price) return res.status(400).json({ error: 'Geçersiz plan' });
+  if (!price) return res.status(400).json({ error: 'Geçersiz plan: ' + plan });
 
-  const iyzipay = new Iyzipay({
-    apiKey: process.env.IYZICO_API_KEY,
-    secretKey: process.env.IYZICO_SECRET_KEY,
-    uri: 'https://sandbox-api.iyzipay.com'
-  });
+  const apiKey = process.env.IYZICO_API_KEY;
+  const secretKey = process.env.IYZICO_SECRET_KEY;
 
-  const request = {
+  if (!apiKey || !secretKey) {
+    return res.status(500).json({ error: 'API anahtarları eksik', apiKey: !!apiKey, secretKey: !!secretKey });
+  }
+
+  const rnd = Date.now().toString();
+  const safeUserId = String(userId || 'user1').replace(/-/g, '').substring(0, 32) || 'defaultuser';
+  const safeName = (userName?.split(' ')[0] || 'Ad').replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ ]/g, '').substring(0, 30) || 'Ad';
+  const safeSurname = (userName?.split(' ').slice(1).join(' ') || 'Soyad').replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ ]/g, '').substring(0, 30) || 'Soyad';
+
+  const requestBody = {
     locale: 'tr',
-    conversationId: (userId || 'user1').substring(0, 36),
+    conversationId: safeUserId.substring(0, 36),
     price: price,
     paidPrice: price,
     currency: 'TRY',
-    basketId: `basket-${Date.now()}`,
+    basketId: 'bsk' + Date.now(),
     paymentGroup: 'SUBSCRIPTION',
     callbackUrl: 'https://hukukai-mu.vercel.app/api/payment-callback',
     enabledInstallments: [1, 2, 3],
     buyer: {
-      id: (userId || 'buyer1').substring(0, 36),
-      name: userName?.split(' ')[0] || 'Ad',
-      surname: userName?.split(' ')[1] || 'Soyad',
-      email: userEmail || 'test@test.com',
+      id: safeUserId.substring(0, 36),
+      name: safeName,
+      surname: safeSurname,
+      email: userEmail || 'test@hukukai.com',
       identityNumber: '11111111111',
-      registrationAddress: 'Istanbul',
+      registrationAddress: 'Merkez Mah. Istanbul',
       city: 'Istanbul',
       country: 'Turkey',
-      ip: '85.34.78.112'
+      ip: (req.headers['x-forwarded-for'] || '85.34.78.112').split(',')[0].trim()
     },
     shippingAddress: {
-      contactName: userName || 'Ad Soyad',
+      contactName: (safeName + ' ' + safeSurname).substring(0, 60),
       city: 'Istanbul',
       country: 'Turkey',
-      address: 'Istanbul'
+      address: 'Merkez Mah. Istanbul'
     },
     billingAddress: {
-      contactName: userName || 'Ad Soyad',
+      contactName: (safeName + ' ' + safeSurname).substring(0, 60),
       city: 'Istanbul',
       country: 'Turkey',
-      address: 'Istanbul'
+      address: 'Merkez Mah. Istanbul'
     },
     basketItems: [{
       id: plan,
-      name: `HukukAI ${plan} Plan`,
+      name: 'HukukAI ' + plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan',
       category1: 'Yazilim',
       itemType: 'VIRTUAL',
       price: price
     }]
   };
 
+  const bodyStr = JSON.stringify(requestBody);
+  const auth = generateAuth(apiKey, secretKey, rnd, bodyStr);
+
+  console.log('API KEY (ilk 10):', apiKey?.substring(0, 10));
+  console.log('SECRET KEY (ilk 10):', secretKey?.substring(0, 10));
+  console.log('RND:', rnd);
+  console.log('BODY:', bodyStr);
+
   try {
-    const result = await new Promise((resolve, reject) => {
-      iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-        console.log('RESULT:', JSON.stringify(result));
-        console.log('ERROR:', JSON.stringify(err));
-        if (err) reject(err);
-        else resolve(result);
-      });
+    const response = await fetch('https://sandbox-api.iyzipay.com/payment/iyzipos/checkoutform/initialize/auth/ecom', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': auth,
+        'x-iyzi-rnd': rnd,
+        'Accept': 'application/json'
+      },
+      body: bodyStr
     });
 
-    if (result.status !== 'success') {
+    const text = await response.text();
+    console.log('IYZICO RAW:', text);
+
+    let data;
+    try { data = JSON.parse(text); } catch(e) { return res.status(500).json({ error: 'Parse hatası', raw: text }); }
+
+    if (data.status !== 'success') {
       return res.status(500).json({
-        error: result.errorMessage || 'Ödeme başlatılamadı',
-        errorCode: result.errorCode,
-        raw: result
+        error: data.errorMessage || 'Ödeme başlatılamadı',
+        errorCode: data.errorCode,
+        raw: data
       });
     }
 
     return res.status(200).json({
-      checkoutFormContent: result.checkoutFormContent,
-      token: result.token
+      checkoutFormContent: data.checkoutFormContent,
+      token: data.token
     });
-
   } catch (e) {
-    console.log('CATCH:', e.message);
+    console.log('FETCH HATA:', e.message);
     return res.status(500).json({ error: e.message });
   }
 };
