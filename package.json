@@ -2,11 +2,20 @@
   "name": "hukukai",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "iyzipay": "^2.0.48"
   },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
   "engines": {
     "node": "24.x"
+  },
+  "jest": {
+    "testMatch": ["**/tests/**/*.test.js"]
   }
 }

@@ -59,10 +59,23 @@ module.exports = async (req, res) => {
       return res.status(429).json({ error: `Günlük ${dailyLimit} soru limitine ulaştınız`, limitExceeded: true });
     }
 
-    const { message, category = 'default', conversationId, fileContent } = req.body;
+    const { message, conversationId, fileContent } = req.body;
+    let { category = 'default' } = req.body;
 
     if (!message || message.trim().length === 0) return res.status(400).json({ error: 'Mesaj boş olamaz' });
     if (message.length > 1000) return res.status(400).json({ error: 'Mesaj çok uzun (max 1000 karakter)' });
+
+    // Validate category — only allow known slugs
+    const validCategories = ['is', 'kira', 'tuketici', 'aile', 'trafik', 'ceza', 'icra', 'miras', 'vergi', 'default'];
+    if (!validCategories.includes(category)) category = 'default';
+
+    // Validate fileContent: reject oversized or non-string values
+    if (fileContent !== undefined && typeof fileContent !== 'string') {
+      return res.status(400).json({ error: 'Geçersiz dosya içeriği' });
+    }
+    if (fileContent && fileContent.length > 50000) {
+      return res.status(400).json({ error: 'Dosya içeriği çok büyük (max 50.000 karakter)' });
+    }
 
     let conversationHistory = [];
     if (conversationId) {

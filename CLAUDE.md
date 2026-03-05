@@ -289,23 +289,22 @@ git push origin master
 
 ## Known Limitations & Technical Debt
 
-1. **Payment sandbox:** Iyzipay is using `sandbox-api.iyzipay.com` — switch to production endpoint before going live
-2. **No automated tests:** There are no unit tests, integration tests, or test framework configured
-3. **No rate limiting:** API endpoints have no rate limiting beyond the daily plan quota
-4. **Payment auth:** `/api/payment` has no server-side auth — userId is passed in body (acceptable for payment init but worth noting)
-5. **File upload:** File content sent as text in the request body — no server-side file validation
-6. **Single-file frontend:** As the app grows, consider splitting `index.html` into components or using a lightweight framework
-7. **No CI/CD pipeline:** Only Vercel auto-deploy from git, no pre-deploy checks
+1. **Payment sandbox:** Iyzipay URL is controlled by `IYZICO_BASE_URL` env var (defaults to sandbox). Set `IYZICO_BASE_URL=https://api.iyzipay.com` in Vercel for production.
+2. **Tests:** Basic unit tests exist in `api/tests/` covering input validation logic. Integration tests against live services are not yet implemented.
+3. **Rate limiting:** IP-level rate limiting is not yet implemented. Per-user daily quota is enforced via `usage_counts` table.
+4. **Single-file frontend:** As the app grows, consider splitting `index.html` into components or using a lightweight framework.
 
 ---
 
 ## Security Notes
 
-- **Never** commit API keys, Supabase service keys, or Iyzipay secrets
-- Supabase Row Level Security (RLS) should be enabled on all tables — verify in Supabase dashboard
-- The service role key bypasses RLS — only use it server-side in `api/` functions
-- Input validation is minimal — add server-side validation before production scaling
-- OpenAI messages include user-supplied content — the category system prompts provide some guardrails
+- **Never** commit API keys, Supabase service keys, or Iyzipay secrets. Use `.env.example` as a reference.
+- Supabase Row Level Security (RLS) should be enabled on all tables — verify in Supabase dashboard.
+- The service role key (`SUPABASE_SERVICE_KEY`) bypasses RLS — only use it server-side in `api/` functions.
+- `api/payment` now requires a valid Bearer token; `userId` is derived from the JWT, never from the request body.
+- OpenAI messages include user-supplied content — the category system prompts provide guardrails.
+- `api/chat.js` validates category slugs against an allowlist and rejects unknown values.
+- File content is limited to 50,000 characters server-side; must be a string.
 
 ---
 
@@ -314,15 +313,25 @@ git push origin master
 - `master` — Production branch (Vercel auto-deploys from here)
 - `claude/*` — AI assistant working branches (used for PR-based changes)
 
+## CI/CD
+
+GitHub Actions runs on every push to `master` and `claude/**` branches:
+- Installs dependencies (`npm ci`)
+- Runs unit tests (`npm test`)
+
+Workflow file: `.github/workflows/ci.yml`
+
 ---
 
 ## Quick Reference
 
 | Task | How |
 |------|-----|
-| Add a new legal category | Add slug to frontend JS, add system prompt in `api/chat.js` |
+| Add a new legal category | Add slug to `validCategories` in `api/chat.js`, add system prompt to `SYSTEM_PROMPTS`, update frontend JS |
 | Change daily limits | Update `user_plans` table in Supabase and pricing UI in `index.html` |
 | Update AI behavior | Edit system prompts in `api/chat.js` |
 | Add a new page | Add a `div` with a unique ID in `index.html`, toggle visibility via JS |
-| Change payment plans | Update `api/payment.js` pricing map and `index.html` pricing section |
+| Change payment plans | Update `PLAN_PRICES` in `api/payment.js`, `PLAN_LIMITS`/`PLAN_AMOUNTS` in `api/payment-callback.js`, and `index.html` pricing section |
+| Switch to production payments | Set `IYZICO_BASE_URL=https://api.iyzipay.com` in Vercel env vars |
 | Debug a serverless function | Use Vercel dashboard → Functions → Logs |
+| Run tests locally | `npm test` |
