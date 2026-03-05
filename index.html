@@ -806,6 +806,18 @@ input,textarea{font-family:'Inter',sans-serif;}
   </div>
 </div>
 
+<!-- Payment Modal -->
+<div class="overlay" id="paymentOverlay">
+  <div class="modal" style="max-width:520px;padding:0;overflow:hidden;">
+    <button class="modal-close" onclick="closePayment()" style="position:absolute;top:12px;right:12px;z-index:10;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div class="payment-modal-body" style="padding:24px;min-height:200px;display:flex;align-items:center;justify-content:center;">
+      <p style="color:var(--mid);">Ödeme formu yükleniyor...</p>
+    </div>
+  </div>
+</div>
+
 <!-- Limit Modal -->
 <div class="overlay" id="limitOverlay">
   <div class="modal limit-modal">
@@ -839,6 +851,18 @@ input,textarea{font-family:'Inter',sans-serif;}
   transition:max-height .25s ease,padding .25s ease;
 }
 .faq-item.open .faq-a{padding:0 20px 16px;max-height:200px;}
+
+/* ───── TOAST ───── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--dark);color:#fff;padding:12px 20px;border-radius:var(--radius);
+  font-size:14px;font-weight:500;z-index:9999;
+  opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;
+  max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.toast-success{background:var(--success);}
+.toast.toast-error{background:var(--danger);}
 </style>
 
 <!-- ══════════════════════════════════════════
@@ -854,6 +878,7 @@ const sb = createClient(
 /* ─── STATE ─── */
 let currentUser = null;
 let currentCategory = null;
+let currentConversationId = null;
 let conversationHistory = [];
 let uploadedFile = null;
 let isAnnual = false;
@@ -930,6 +955,22 @@ const PLANS = [
 window.addEventListener('DOMContentLoaded', async () => {
   renderCategories();
   renderPricing();
+
+  // Handle payment callback redirect params
+  const params = new URLSearchParams(window.location.search);
+  const paymentStatus = params.get('payment');
+  if (paymentStatus === 'success') {
+    const plan = params.get('plan') || '';
+    showToast(`✅ Ödemeniz başarıyla tamamlandı! ${plan.charAt(0).toUpperCase() + plan.slice(1)} planına geçiş yapıldı.`, 'success');
+    history.replaceState({}, '', '/');
+  } else if (paymentStatus === 'failed') {
+    showToast('❌ Ödeme başarısız oldu. Lütfen tekrar deneyin.', 'error');
+    history.replaceState({}, '', '/');
+  } else if (paymentStatus === 'error') {
+    showToast('⚠️ Ödeme işleminde bir hata oluştu.', 'error');
+    history.replaceState({}, '', '/');
+  }
+
   const { data:{ session } } = await sb.auth.getSession();
   if (session) setUser(session.user);
   sb.auth.onAuthStateChange((_event, session) => {
@@ -966,7 +1007,14 @@ function renderPricing() {
     const cls = p.elite ? 'price-card elite' : p.popular ? 'price-card popular' : 'price-card';
     const badge = p.popular ? `<div class="popular-badge">En Popüler</div>` : '';
     const features = p.features.map(f=>`<li class="price-feature">${f.yes?chk:xmk}<span>${f.t}</span></li>`).join('');
-    const btnTxt = p.key==='free' ? 'Ücretsiz Başla' : '1 Ay Ücretsiz Dene';
+    let btnTxt, btnAction;
+    if (p.key === 'free') {
+      btnTxt = currentUser ? 'Hemen Başla' : 'Ücretsiz Başla';
+      btnAction = currentUser ? `openChat('is')` : `openAuth('register')`;
+    } else {
+      btnTxt = currentUser ? 'Satın Al' : 'Üye Ol ve Satın Al';
+      btnAction = currentUser ? `startPayment('${p.key}')` : `openAuth('register')`;
+    }
     return `
       <div class="${cls}" style="position:relative;">
         ${badge}
@@ -978,7 +1026,7 @@ function renderPricing() {
         <div class="price-desc">${p.desc}${isAnnual && price>0 ? `<br><small>Yıllık ${p.annualTotal} TL</small>` : ''}</div>
         <hr class="price-divider">
         <ul class="price-features">${features}</ul>
-        <button class="btn-price" onclick="openAuth('register')">${btnTxt}</button>
+        <button class="btn-price" data-pay="${p.key}" onclick="${btnAction}">${btnTxt}</button>
       </div>`;
   }).join('');
 }
@@ -993,6 +1041,7 @@ function toggleBilling() {
 /* ─── USER ─── */
 function setUser(user) {
   currentUser = user;
+  renderPricing(); // re-render so pricing buttons reflect logged-in state
   const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Kullanıcı';
   const initial = name.charAt(0).toUpperCase();
   document.getElementById('navActions').innerHTML = `
@@ -1018,6 +1067,7 @@ function setUser(user) {
 
 function clearUser() {
   currentUser = null;
+  renderPricing(); // re-render so pricing buttons reflect logged-out state
   document.getElementById('navActions').innerHTML = `
     <button class="btn btn-ghost btn-sm" onclick="openAuth('login')">Giriş Yap</button>
     <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Ücretsiz Dene</button>`;
@@ -1085,7 +1135,12 @@ function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; se
 
 /* ─── CHAT ─── */
 function openChat(catKey) {
+  if (!currentUser) {
+    openAuth('register');
+    return;
+  }
   currentCategory = catKey;
+  currentConversationId = null; // reset so new conversation is started
   conversationHistory = [];
   uploadedFile = null;
   const cat = CATS[catKey];
@@ -1131,6 +1186,13 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text && !uploadedFile) return;
 
+  // Require login
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    openAuth('login');
+    return;
+  }
+
   const counts = getQCounts();
   const used = counts[currentCategory] || 0;
   const limit = getLimitForUser();
@@ -1140,6 +1202,12 @@ async function sendMessage() {
     return;
   }
 
+  // Read file content if uploaded
+  let fileContent = null;
+  if (uploadedFile) {
+    try { fileContent = await uploadedFile.text(); } catch(e) { fileContent = null; }
+  }
+
   // Append user message
   const displayText = text + (uploadedFile ? `\n\n[Ek: ${uploadedFile.name}]` : '');
   appendUserMsg(displayText);
@@ -1147,32 +1215,38 @@ async function sendMessage() {
   input.style.height = '';
   removeFile();
 
-  // Update count
+  // Update local count
   counts[currentCategory] = used + 1;
   setQCounts(counts);
   updateCounter(counts[currentCategory], limit);
 
-  // Show typing
+  // Show typing indicator
   const typingId = appendTyping();
-
-  // Build history
   conversationHistory.push({ role:'user', content: text });
 
-  // Call API
-  const userName = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || null;
   try {
     const res = await fetch('/api/chat', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
       body: JSON.stringify({
         message: text,
         category: currentCategory,
-        history: conversationHistory.slice(-10),
-        userName
+        conversationId: currentConversationId,
+        fileContent: fileContent || undefined
       })
     });
     const data = await res.json();
     removeTyping(typingId);
+
+    if (data.conversationId) currentConversationId = data.conversationId;
+
+    if (data.limitExceeded) {
+      document.getElementById('limitOverlay').classList.add('open');
+      return;
+    }
     if (data.reply) {
       conversationHistory.push({ role:'assistant', content: data.reply });
       appendAIMsg(data.reply);
@@ -1183,6 +1257,59 @@ async function sendMessage() {
     removeTyping(typingId);
     appendAIMsg('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
   }
+}
+
+/* ─── PAYMENT ─── */
+async function startPayment(plan) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { openAuth('login'); return; }
+
+  // Show loading state on the button
+  const btn = document.querySelector(`[data-pay="${plan}"]`);
+  if (btn) { btn.textContent = 'İşleniyor...'; btn.disabled = true; }
+
+  try {
+    const res = await fetch('/api/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        plan,
+        userEmail: session.user.email,
+        userName: session.user.user_metadata?.full_name || session.user.email
+      })
+    });
+    const data = await res.json();
+
+    if (data.checkoutFormContent) {
+      // Inject iyzipay form into overlay and show it
+      const overlay = document.getElementById('paymentOverlay');
+      overlay.querySelector('.payment-modal-body').innerHTML = data.checkoutFormContent;
+      overlay.classList.add('open');
+    } else {
+      showToast('Ödeme başlatılamadı: ' + (data.error || 'Bilinmeyen hata'), 'error');
+    }
+  } catch(e) {
+    showToast('Bağlantı hatası. Lütfen tekrar deneyin.', 'error');
+  } finally {
+    if (btn) { btn.textContent = 'Satın Al'; btn.disabled = false; }
+  }
+}
+
+function closePayment() {
+  document.getElementById('paymentOverlay').classList.remove('open');
+}
+
+/* ─── TOAST ─── */
+function showToast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 4000);
 }
 
 function appendUserMsg(text) {
