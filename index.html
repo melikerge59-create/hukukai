@@ -1286,7 +1286,15 @@ async function startPayment(plan) {
     if (data.checkoutFormContent) {
       // Inject iyzipay form into overlay and show it
       const overlay = document.getElementById('paymentOverlay');
-      overlay.querySelector('.payment-modal-body').innerHTML = data.checkoutFormContent;
+      const container = overlay.querySelector('.payment-modal-body');
+      container.innerHTML = data.checkoutFormContent;
+      // innerHTML does not execute <script> tags; re-create them so they run
+      Array.from(container.querySelectorAll('script')).forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        newScript.textContent = oldScript.textContent;
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
       overlay.classList.add('open');
     } else {
       showToast('Ödeme başlatılamadı: ' + (data.error || 'Bilinmeyen hata'), 'error');
