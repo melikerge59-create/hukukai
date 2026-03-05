@@ -1,9 +1,12 @@
 {
+  "name": "hukukai",
+  "version": "1.0.0",
+  "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "iyzipay": "^2.0.48"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "24.x"
   }
 }
