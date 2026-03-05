@@ -2655,7 +2655,7 @@ select.form-control { cursor: pointer; appearance: none; }
       <div class="panel-sidebar">
         <div class="panel-user-card">
           <div class="panel-avatar" id="panel-avatar">👤</div>
-          <div class="panel-email" id="panel-email">kullanici@example.com</div>
+          <div class="panel-email" id="panel-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="016a746d6d606f686268416479606c716d642f626e6c">[email&#160;protected]</a></div>
           <div class="panel-plan-name">Aktif Plan</div>
           <div class="panel-plan-badge" id="panel-plan-badge">✨ Ücretsiz Plan</div>
         </div>
@@ -2786,17 +2786,17 @@ select.form-control { cursor: pointer; appearance: none; }
 <!-- ════════════════════════════════════════════
   SCRIPTS
 ════════════════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════
 // CONFIG – Buraya kendi değerlerinizi girin
 // ══════════════════════════════════════════
 const CONFIG = {
-  SUPABASE_URL:     'https://YOUR_PROJECT.supabase.co',
-  SUPABASE_ANON_KEY:'YOUR_ANON_KEY',
+  SUPABASE_URL:     'https://exngptvoqibkbigjsxwb.supabase.co',
+  SUPABASE_ANON_KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4bmdwdHZvcWlia2JpZ2pzeHdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODY4NjMsImV4cCI6MjA4ODA2Mjg2M30.BoTd_2hwUTNq8CGgd0b8lm86IcalCAmfTu4fPJTTCcI',
   // Backend API (Vercel Functions):
   API_BASE:         '/api',
   SITE_URL:         window.location.origin,
-  DEMO_MODE:        true   // true → Supabase olmadan demo çalışır
+  DEMO_MODE:        false   // true → Supabase olmadan demo çalışır
 };
 
 // Supabase init (demo modunda atla)
@@ -3669,12 +3669,4 @@ async function startPayment(plan) {
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('payment') === 'success') {
   const plan = urlParams.get('plan') || 'plus';
-  state.plan = plan;
-  state.dailyLimit = PLAN_LIMITS[plan] || 5;
-  showToast(`🎉 Ödeme başarılı! ${plan.toUpperCase()} planına geçildi.`, 'success');
-  showPage('panel');
-  history.replaceState({}, '', '/');
-}
-</script>
-</body>
-</html>
+  state.plan
