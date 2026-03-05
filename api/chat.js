@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
   try {
     const sb = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_SECRET_KEY
+      process.env.SUPABASE_SERVICE_KEY
     );
 
     const token = (req.headers.authorization || '').replace('Bearer ', '');
