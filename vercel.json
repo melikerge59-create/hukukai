@@ -4,24 +4,6 @@
     "api/chat.js": {
       "memory": 1024,
       "maxDuration": 90
-    },
-    "api/payment.js": {
-      "memory": 512,
-      "maxDuration": 30
-    },
-    "api/payment-callback.js": {
-      "memory": 512,
-      "maxDuration": 30
     }
-  },
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
-      ]
-    }
-  ]
+  }
 }
