@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Scale, Mail, Lock, User as UserIcon, ArrowRight, Loader2 } from 'lucide-react';
 import { Modal } from './Modal';
 import { Input } from './Input';
 import { Button } from './Button';
@@ -56,74 +57,100 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="sm">
-      <div className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            {mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
-          </h2>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            {mode === 'login'
-              ? 'HukukAI hesabınıza giriş yapın'
-              : 'Hemen ücretsiz hesap oluşturun'}
-          </p>
+      {/* Header */}
+      <div className="text-center mb-7">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-navy-500 to-blue-600 rounded-2xl shadow-glow-sm mb-4">
+          <Scale size={26} className="text-white" />
         </div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          {mode === 'login' ? 'Tekrar Hoş Geldiniz' : 'Hesap Oluşturun'}
+        </h2>
+        <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">
+          {mode === 'login'
+            ? 'HukukAI hesabınıza giriş yapın'
+            : 'Ücretsiz hesabınızı oluşturun, hemen başlayın'}
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {mode === 'register' && (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {mode === 'register' && (
+          <div className="relative">
+            <UserIcon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10 mt-[11px]" />
             <Input
               label="Ad Soyad"
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Ahmet Yılmaz"
+              className="pl-10"
               required
             />
-          )}
+          </div>
+        )}
 
+        <div className="relative">
+          <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10 mt-[11px]" />
           <Input
             label="E-posta"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="ornek@email.com"
+            className="pl-10"
             required
           />
+        </div>
 
+        <div className="relative">
+          <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10 mt-[11px]" />
           <Input
             label="Şifre"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
+            className="pl-10"
             required
           />
-
-          {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-            </div>
-          )}
-
-          <Button
-            type="submit"
-            variant="primary"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? 'İşleniyor...' : mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
-          </Button>
-        </form>
-
-        <div className="text-center">
-          <button
-            onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            {mode === 'login'
-              ? 'Hesabınız yok mu? Kayıt olun'
-              : 'Zaten hesabınız var mı? Giriş yapın'}
-          </button>
         </div>
+
+        {error && (
+          <div className="flex items-start space-x-2 p-3.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 shrink-0" />
+            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-full mt-2"
+          disabled={loading}
+          size="lg"
+        >
+          {loading ? (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              İşleniyor...
+            </>
+          ) : (
+            <>
+              {mode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
+              <ArrowRight size={18} />
+            </>
+          )}
+        </Button>
+      </form>
+
+      <div className="mt-5 text-center">
+        <button
+          onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
+          className="text-sm text-navy-500 dark:text-navy-300 hover:text-navy-600 dark:hover:text-navy-200 font-medium transition-colors"
+        >
+          {mode === 'login'
+            ? 'Hesabınız yok mu? Kayıt olun →'
+            : 'Zaten hesabınız var mı? Giriş yapın →'}
+        </button>
       </div>
     </Modal>
   );
