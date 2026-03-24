@@ -1,76 +1,124 @@
-import { Scale, User, LogOut, Sparkles } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, useEffect } from 'react';
+import { Scale, Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { Button } from './Button';
 
 interface NavbarProps {
-  onAuthClick: () => void;
+  onAuthClick: (mode?: 'login' | 'register') => void;
+  onScrollTo?: (section: string) => void;
 }
 
-export function Navbar({ onAuthClick }: NavbarProps) {
-  const { user, userPlan, signOut } = useAuth();
+const NAV_LINKS = [
+  { label: 'Özellikler', href: '#features' },
+  { label: 'Kimler Kullanır', href: '#who-uses' },
+  { label: 'Yorumlar', href: '#testimonials' },
+  { label: 'Fiyatlandırma', href: '#pricing' },
+];
+
+export function Navbar({ onAuthClick, onScrollTo }: NavbarProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  const handleNav = (href: string) => {
+    setMobileOpen(false);
+    if (onScrollTo) {
+      onScrollTo(href.replace('#', ''));
+      return;
+    }
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-navy-950/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-white/5">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-xl
+        border-b border-transparent dark:border-transparent transition-all duration-300
+        ${scrolled ? 'navbar-shadow border-border-light dark:border-border-dark' : ''}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="relative p-2 bg-gradient-to-br from-navy-500 to-blue-600 rounded-xl shadow-glow-sm">
-              <Scale size={22} className="text-white" />
+          <div className="flex items-center space-x-2.5">
+            <div className="p-1.5 bg-primary-DEFAULT rounded-lg">
+              <Scale size={20} className="text-white" />
             </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Hukuk<span className="gradient-text">AI</span>
-              </span>
-              <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500 tracking-widest uppercase">
-                Legal Intelligence
-              </span>
-            </div>
+            <span className="font-serif text-2xl font-bold text-primary-DEFAULT dark:text-white tracking-tight">
+              HukukAI
+            </span>
           </div>
 
-          {/* Right side */}
-          <div className="flex items-center space-x-3">
-            <ThemeToggle />
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center space-x-1">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => handleNav(link.href)}
+                className="relative px-4 py-2 text-sm font-medium text-text-2 dark:text-slate-300
+                  hover:text-primary-DEFAULT dark:hover:text-white transition-colors group"
+              >
+                {link.label}
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-DEFAULT rounded-full
+                  scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+              </button>
+            ))}
+          </div>
 
-            {user ? (
-              <div className="flex items-center space-x-3">
-                <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-navy-500 to-blue-500 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-white">
-                      {user.email?.[0].toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white leading-none">
-                      {user.email?.split('@')[0]}
-                    </p>
-                    <div className="flex items-center space-x-1 mt-0.5">
-                      <Sparkles size={9} className="text-gold-500" />
-                      <p className="text-[10px] text-gold-600 dark:text-gold-400 font-medium leading-none">
-                        {userPlan?.plan_type?.toUpperCase() || 'FREE'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => signOut()}
-                  className="p-2 rounded-xl text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200"
-                  aria-label="Çıkış Yap"
-                >
-                  <LogOut size={18} />
-                </button>
-              </div>
-            ) : (
-              <Button onClick={onAuthClick} size="sm" variant="primary">
-                <User size={15} className="mr-1.5" />
-                Giriş Yap
-              </Button>
-            )}
+          {/* Desktop actions */}
+          <div className="hidden md:flex items-center space-x-2.5">
+            <ThemeToggle />
+            <Button variant="ghost" size="sm" onClick={() => onAuthClick('login')}>
+              Giriş Yap
+            </Button>
+            <Button variant="primary" size="sm" onClick={() => onAuthClick('register')}>
+              Ücretsiz Dene
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex items-center space-x-2 md:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 rounded-xl text-text-2 dark:text-slate-400
+                hover:bg-surface-card2 dark:hover:bg-white/5 transition-colors"
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white dark:bg-surface-dcard border-t border-border-light dark:border-border-dark px-4 py-4 space-y-1">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => handleNav(link.href)}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium
+                text-text-2 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-white/5
+                hover:text-primary-DEFAULT dark:hover:text-white transition-colors"
+            >
+              {link.label}
+            </button>
+          ))}
+          <div className="pt-3 flex flex-col space-y-2">
+            <Button variant="secondary" size="sm" onClick={() => { setMobileOpen(false); onAuthClick('login'); }}>
+              Giriş Yap
+            </Button>
+            <Button variant="primary" size="sm" onClick={() => { setMobileOpen(false); onAuthClick('register'); }}>
+              Ücretsiz Dene
+            </Button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
