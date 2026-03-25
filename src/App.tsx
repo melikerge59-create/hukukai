@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Scale } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 import { AuthModal } from './components/AuthModal';
 import { LandingPage } from './pages/LandingPage';
@@ -41,10 +42,22 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Yükleniyor...</p>
+      <div className="min-h-screen flex items-center justify-center bg-surface-light dark:bg-surface-dark">
+        <div className="flex flex-col items-center space-y-5">
+          {/* Animated logo */}
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-navy-500 to-blue-600 flex items-center justify-center shadow-glow-md animate-glow-pulse">
+              <Scale size={28} className="text-white" />
+            </div>
+            {/* Spinner ring */}
+            <div className="absolute -inset-1.5 rounded-2xl border-2 border-transparent border-t-navy-400 animate-spin" />
+          </div>
+          <div className="text-center">
+            <p className="text-base font-bold text-gray-900 dark:text-white">
+              Hukuk<span className="gradient-text">AI</span>
+            </p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Yükleniyor...</p>
+          </div>
         </div>
       </div>
     );

@@ -1,9 +1,10 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent' | 'gold' | 'danger';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: ReactNode;
+  loading?: boolean;
 }
 
 export function Button({
@@ -11,29 +12,68 @@ export function Button({
   size = 'md',
   className = '',
   children,
+  loading = false,
+  disabled,
   ...props
 }: ButtonProps) {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+  const base =
+    'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 select-none ' +
+    'disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.97] focus-visible:outline-none ' +
+    'focus-visible:ring-2 focus-visible:ring-offset-2';
 
-  const variantClasses = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md',
-    secondary: 'bg-gray-600 hover:bg-gray-700 text-white shadow-sm hover:shadow-md',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-950',
-    ghost: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+  const variants: Record<string, string> = {
+    primary:
+      'bg-primary-600 hover:bg-primary-700 text-white shadow-primary hover:shadow-primary-lg ' +
+      'focus-visible:ring-primary-600',
+    secondary:
+      'bg-white dark:bg-surface-dcard2 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-900 dark:text-white ' +
+      'border border-border-light dark:border-border-dark shadow-card hover:shadow-card-md ' +
+      'focus-visible:ring-gray-400',
+    outline:
+      'border-2 border-primary-600 dark:border-primary-400 text-primary-600 dark:text-primary-300 ' +
+      'hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:ring-primary-600',
+    ghost:
+      'text-gray-500 dark:text-slate-400 hover:bg-surface-card2 dark:hover:bg-white/5 ' +
+      'hover:text-primary-600 dark:hover:text-white focus-visible:ring-gray-400',
+    accent:
+      'bg-accent-500 hover:bg-accent-600 text-white shadow-accent hover:shadow-lg ' +
+      'focus-visible:ring-accent-500',
+    gold:
+      'bg-accent-500 hover:bg-accent-600 text-white shadow-accent hover:shadow-glow-gold ' +
+      'focus-visible:ring-accent-500',
+    danger:
+      'bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-md focus-visible:ring-red-500',
   };
 
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg'
+  const sizes: Record<string, string> = {
+    xs: 'px-2.5 py-1.5 text-xs gap-1',
+    sm: 'px-4 py-2 text-sm gap-1.5',
+    md: 'px-5 py-2.5 text-sm gap-2',
+    lg: 'px-7 py-3 text-base gap-2',
+    xl: 'px-9 py-4 text-lg gap-2.5',
   };
 
   return (
     <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
+      disabled={disabled || loading}
       {...props}
     >
-      {children}
+      {loading ? (
+        <>
+          <svg
+            className="animate-spin h-4 w-4 shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+          </svg>
+          <span>İşleniyor...</span>
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }

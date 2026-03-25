@@ -1,30 +1,47 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { InputHTMLAttributes, forwardRef, ReactNode } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  hint?: string;
+  icon?: ReactNode;
+  suffix?: ReactNode;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', ...props }, ref) => {
+  ({ label, error, hint, icon, suffix, className = '', ...props }, ref) => {
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-semibold text-gray-900 dark:text-white mb-1.5">
             {label}
           </label>
         )}
-        <input
-          ref={ref}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
-            ${error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}
-            bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-            placeholder-gray-400 dark:placeholder-gray-500
-            ${className}`}
-          {...props}
-        />
+        <div className="relative flex items-center">
+          {icon && (
+            <span className="absolute left-3.5 text-gray-400 dark:text-slate-500 pointer-events-none z-10">
+              {icon}
+            </span>
+          )}
+          <input
+            ref={ref}
+            className={`input-base ${error ? 'border-red-400 dark:border-red-500 focus:border-red-400 focus:ring-red-400/10' : ''}
+              ${icon ? 'pl-10' : ''}
+              ${suffix ? 'pr-12' : ''}
+              ${className}`}
+            {...props}
+          />
+          {suffix && (
+            <span className="absolute right-3.5 text-gray-400 dark:text-slate-500 z-10">
+              {suffix}
+            </span>
+          )}
+        </div>
         {error && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+          <p className="mt-1.5 text-xs text-red-500 dark:text-red-400 font-medium">{error}</p>
+        )}
+        {hint && !error && (
+          <p className="mt-1.5 text-xs text-gray-400 dark:text-slate-500">{hint}</p>
         )}
       </div>
     );
