@@ -108,7 +108,7 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
             {stats.map(({ value, label, icon: Icon }) => (
               <div
                 key={label}
-                className="flex flex-col items-center p-5 rounded-2xl bg-white/70 dark:bg-white/5 border border-gray-200/80 dark:border-white/8 backdrop-blur-sm shadow-card"
+                className="flex flex-col items-center p-5 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200/80 dark:border-slate-700 backdrop-blur-sm shadow-card"
               >
                 <div className="p-2 rounded-xl bg-navy-50 dark:bg-navy-500/10 mb-2">
                   <Icon size={18} className="text-navy-500 dark:text-navy-300" />
@@ -122,7 +122,7 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
       </section>
 
       {/* ─── Features ─── */}
-      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02]">
+      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-slate-900/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
@@ -255,7 +255,7 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
       </section>
 
       {/* ─── Testimonials ─── */}
-      <section id="testimonials" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02] overflow-hidden">
+      <section id="testimonials" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-slate-900/30 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
@@ -317,7 +317,7 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
       </section>
 
       {/* ─── Legal Categories ─── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02]">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-slate-900/30">
         <div className="max-w-7xl mx-auto">
           {/* Section header */}
           <div className="text-center mb-14">
@@ -341,8 +341,8 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
                   key={category.id}
                   onClick={() => handleCategoryClick(category.id)}
                   style={{ animationDelay: `${index * 60}ms` }}
-                  className="group relative p-6 rounded-2xl bg-white dark:bg-white/3 border border-gray-200/80 dark:border-white/8
-                    hover:border-navy-400/60 dark:hover:border-navy-400/40
+                  className="group relative p-6 rounded-2xl bg-white dark:bg-slate-800 border border-gray-200/80 dark:border-slate-700
+                    hover:border-navy-400/60 dark:hover:border-navy-500
                     shadow-card hover:shadow-card-hover
                     transition-all duration-300 hover:-translate-y-1
                     text-left overflow-hidden
@@ -383,7 +383,7 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
       </section>
 
       {/* ─── Pricing ─── */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/80 dark:bg-white/2">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/80 dark:bg-slate-900/40">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold text-navy-500 dark:text-navy-300 uppercase tracking-widest mb-3">
@@ -562,7 +562,7 @@ function PricingCard({
       className={`relative flex flex-col p-7 rounded-2xl border transition-all duration-300 ${
         highlighted
           ? 'bg-gradient-to-b from-navy-600 to-blue-700 border-navy-500 shadow-glow-md scale-[1.02]'
-          : 'bg-white dark:bg-white/3 border-gray-200 dark:border-white/8 shadow-card hover:shadow-card-hover hover:-translate-y-1'
+          : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 shadow-card hover:shadow-card-hover hover:-translate-y-1'
       }`}
     >
       {highlighted && (
