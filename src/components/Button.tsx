@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent' | 'gold' | 'danger';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: ReactNode;
   loading?: boolean;
@@ -23,21 +23,24 @@ export function Button({
 
   const variants: Record<string, string> = {
     primary:
-      'bg-primary-DEFAULT hover:bg-primary-hover text-white shadow-primary hover:shadow-primary-lg ' +
-      'focus-visible:ring-primary-DEFAULT',
+      'bg-primary-600 hover:bg-primary-700 text-white shadow-primary hover:shadow-primary-lg ' +
+      'focus-visible:ring-primary-600',
     secondary:
-      'bg-white dark:bg-surface-dcard2 hover:bg-gray-50 dark:hover:bg-slate-700 text-text dark:text-white ' +
+      'bg-white dark:bg-surface-dcard2 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-900 dark:text-white ' +
       'border border-border-light dark:border-border-dark shadow-card hover:shadow-card-md ' +
       'focus-visible:ring-gray-400',
     outline:
-      'border-2 border-primary-DEFAULT dark:border-primary-400 text-primary-DEFAULT dark:text-primary-300 ' +
-      'hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:ring-primary-DEFAULT',
+      'border-2 border-primary-600 dark:border-primary-400 text-primary-600 dark:text-primary-300 ' +
+      'hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:ring-primary-600',
     ghost:
-      'text-text-2 dark:text-slate-400 hover:bg-surface-card2 dark:hover:bg-white/5 ' +
-      'hover:text-primary-DEFAULT dark:hover:text-white focus-visible:ring-gray-400',
+      'text-gray-500 dark:text-slate-400 hover:bg-surface-card2 dark:hover:bg-white/5 ' +
+      'hover:text-primary-600 dark:hover:text-white focus-visible:ring-gray-400',
     accent:
-      'bg-accent-DEFAULT hover:bg-accent-hover text-white shadow-accent hover:shadow-lg ' +
-      'focus-visible:ring-accent-DEFAULT',
+      'bg-accent-500 hover:bg-accent-600 text-white shadow-accent hover:shadow-lg ' +
+      'focus-visible:ring-accent-500',
+    gold:
+      'bg-accent-500 hover:bg-accent-600 text-white shadow-accent hover:shadow-glow-gold ' +
+      'focus-visible:ring-accent-500',
     danger:
       'bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-md focus-visible:ring-red-500',
   };

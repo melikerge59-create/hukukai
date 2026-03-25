@@ -74,19 +74,19 @@
 
   /* Section heading */
   .section-label {
-    @apply text-sm font-semibold tracking-widest uppercase text-accent-DEFAULT mb-3;
+    @apply text-sm font-semibold tracking-widest uppercase text-accent-500 mb-3;
   }
   .section-title {
-    @apply font-serif text-4xl sm:text-5xl font-bold text-primary-DEFAULT dark:text-white leading-tight;
+    @apply font-serif text-4xl sm:text-5xl font-bold text-primary-600 dark:text-white leading-tight;
   }
   .section-subtitle {
-    @apply mt-4 text-lg text-text-2 dark:text-text-muted max-w-2xl;
+    @apply mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl;
   }
 
   /* Primary button */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           bg-primary-DEFAULT hover:bg-primary-hover
+           bg-primary-600 hover:bg-primary-700
            text-white font-semibold
            px-6 py-3 rounded-xl
            shadow-primary hover:shadow-primary-lg
@@ -97,8 +97,8 @@
   /* Outline button */
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2
-           border-2 border-primary-DEFAULT dark:border-primary-300
-           text-primary-DEFAULT dark:text-primary-300
+           border-2 border-primary-600 dark:border-primary-300
+           text-primary-600 dark:text-primary-300
            hover:bg-primary-50 dark:hover:bg-primary-900/20
            font-semibold
            px-6 py-3 rounded-xl
@@ -109,7 +109,7 @@
   /* Accent button */
   .btn-accent {
     @apply inline-flex items-center justify-center gap-2
-           bg-accent-DEFAULT hover:bg-accent-hover
+           bg-accent-500 hover:bg-accent-600
            text-white font-semibold
            px-6 py-3 rounded-xl
            shadow-accent
@@ -120,22 +120,27 @@
   /* Sidebar nav item */
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl
-           text-sm font-medium text-text-2 dark:text-slate-400
+           text-sm font-medium text-gray-500 dark:text-slate-400
            hover:bg-primary-50 dark:hover:bg-white/5
-           hover:text-primary-DEFAULT dark:hover:text-white
+           hover:text-primary-600 dark:hover:text-white
            transition-all duration-150 cursor-pointer;
   }
   .nav-item-active {
     @apply bg-primary-50 dark:bg-primary-900/30
-           text-primary-DEFAULT dark:text-primary-300
-           border-l-[3px] border-primary-DEFAULT dark:border-primary-400;
+           text-primary-600 dark:text-primary-300
+           border-l-[3px] border-primary-600 dark:border-primary-400;
   }
 
   /* Feature card left border hover */
   .feature-card {
     @apply card card-hover p-6 cursor-pointer
-           border-l-4 border-l-transparent
-           hover:border-l-primary-DEFAULT dark:hover:border-l-primary-400;
+           border-l-4 border-l-transparent;
+  }
+  .feature-card:hover {
+    border-left-color: #1e3a5f;
+  }
+  .dark .feature-card:hover {
+    border-left-color: #4d8ac3;
   }
 
   /* Badge */
@@ -148,12 +153,12 @@
   .badge-primary {
     @apply badge border-primary-200 dark:border-primary-700
            bg-primary-50 dark:bg-primary-900/30
-           text-primary-DEFAULT dark:text-primary-300;
+           text-primary-600 dark:text-primary-300;
   }
   .badge-accent {
     @apply badge border-accent-200 dark:border-accent-700
            bg-accent-50 dark:bg-accent-900/20
-           text-accent-DEFAULT;
+           text-accent-500;
   }
 
   /* Input */
@@ -161,11 +166,10 @@
     @apply w-full px-4 py-3 rounded-xl
            border border-border-light dark:border-border-dark
            bg-white dark:bg-surface-dcard2
-           text-text dark:text-white
-           placeholder-text-muted dark:placeholder-slate-600
+           text-gray-900 dark:text-white
+           placeholder-gray-400 dark:placeholder-slate-600
            text-sm font-medium
-           focus:border-primary-DEFAULT dark:focus:border-primary-400
-           focus:ring-2 focus:ring-primary-DEFAULT/10 dark:focus:ring-primary-400/10
+           focus:border-primary-600 dark:focus:border-primary-400
            transition-all duration-200;
   }
 }
@@ -181,7 +185,8 @@
   .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(30,58,95,0.2); border-radius: 2px; }
 
   /* Animation fill */
-  .animate-fill { animation-fill-mode: both; }
+  .animate-fill       { animation-fill-mode: both; }
+  .animate-fill-both  { animation-fill-mode: both; }
 
   /* Delay utilities */
   .delay-75  { animation-delay: 75ms; }
@@ -194,8 +199,13 @@
   .delay-600 { animation-delay: 600ms; }
   .delay-700 { animation-delay: 700ms; }
   .delay-800 { animation-delay: 800ms; }
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
 
   /* Gradient text */
+  .gradient-text,
   .text-gradient-primary {
     background: linear-gradient(135deg, #1e3a5f, #2a6aaa);
     -webkit-background-clip: text;
@@ -208,6 +218,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .dark .gradient-text,
   .dark .text-gradient-primary {
     background: linear-gradient(135deg, #3b82f6, #60a5fa);
     -webkit-background-clip: text;
@@ -226,6 +237,14 @@
   background-color: #0a0f1e;
   background-image: radial-gradient(circle, rgba(30,58,95,0.4) 1px, transparent 1px);
   background-size: 32px 32px;
+}
+
+/* ─── Hero Gradient Overlay ──────────────────────── */
+.hero-gradient {
+  background: linear-gradient(180deg, rgba(240,245,251,0.6) 0%, transparent 100%);
+}
+.dark .hero-gradient {
+  background: linear-gradient(180deg, rgba(30,58,95,0.06) 0%, transparent 100%);
 }
 
 /* ─── Navbar Scroll Shadow ────────────────────────── */

@@ -61,11 +61,11 @@ export function Modal({
       >
         {title && (
           <div className="flex items-center justify-between px-6 py-5 border-b border-border-light dark:border-border-dark">
-            <h2 className="font-serif text-xl font-bold text-text dark:text-white">{title}</h2>
+            <h2 className="font-serif text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
             {closable && (
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-text-muted hover:text-text dark:hover:text-white
+                className="p-1.5 rounded-lg text-gray-400 hover:text-text dark:hover:text-white
                   hover:bg-surface-card2 dark:hover:bg-white/10 transition-all"
               >
                 <X size={18} />
@@ -76,7 +76,7 @@ export function Modal({
         {!title && closable && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-text-muted
+            className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-gray-400
               hover:text-text dark:hover:text-white hover:bg-surface-card2 dark:hover:bg-white/10 transition-all"
           >
             <X size={18} />

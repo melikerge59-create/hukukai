@@ -17,7 +17,7 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
       <div className="relative w-5 h-5">
         <Sun
           size={18}
-          className={`absolute inset-0 text-accent-DEFAULT transition-all duration-300 ${
+          className={`absolute inset-0 text-accent-500 transition-all duration-300 ${
             theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-75'
           }`}
         />

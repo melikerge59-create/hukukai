@@ -46,10 +46,10 @@ export function Navbar({ onAuthClick, onScrollTo }: NavbarProps) {
 
           {/* Logo */}
           <div className="flex items-center space-x-2.5">
-            <div className="p-1.5 bg-primary-DEFAULT rounded-lg">
+            <div className="p-1.5 bg-primary-600 rounded-lg">
               <Scale size={20} className="text-white" />
             </div>
-            <span className="font-serif text-2xl font-bold text-primary-DEFAULT dark:text-white tracking-tight">
+            <span className="font-serif text-2xl font-bold text-primary-600 dark:text-white tracking-tight">
               HukukAI
             </span>
           </div>
@@ -60,11 +60,11 @@ export function Navbar({ onAuthClick, onScrollTo }: NavbarProps) {
               <button
                 key={link.href}
                 onClick={() => handleNav(link.href)}
-                className="relative px-4 py-2 text-sm font-medium text-text-2 dark:text-slate-300
-                  hover:text-primary-DEFAULT dark:hover:text-white transition-colors group"
+                className="relative px-4 py-2 text-sm font-medium text-gray-500 dark:text-slate-300
+                  hover:text-primary-600 dark:hover:text-white transition-colors group"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-DEFAULT rounded-full
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-600 rounded-full
                   scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
               </button>
             ))}
@@ -86,7 +86,7 @@ export function Navbar({ onAuthClick, onScrollTo }: NavbarProps) {
             <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-xl text-text-2 dark:text-slate-400
+              className="p-2 rounded-xl text-gray-500 dark:text-slate-400
                 hover:bg-surface-card2 dark:hover:bg-white/5 transition-colors"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -103,8 +103,8 @@ export function Navbar({ onAuthClick, onScrollTo }: NavbarProps) {
               key={link.href}
               onClick={() => handleNav(link.href)}
               className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium
-                text-text-2 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-white/5
-                hover:text-primary-DEFAULT dark:hover:text-white transition-colors"
+                text-gray-500 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-white/5
+                hover:text-primary-600 dark:hover:text-white transition-colors"
             >
               {link.label}
             </button>

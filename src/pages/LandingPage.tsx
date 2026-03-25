@@ -1,4 +1,9 @@
-import { ArrowRight, Check, Sparkles, Shield, Zap, Users, Star } from 'lucide-react';
+import { useState } from 'react';
+import {
+  ArrowRight, Check, Sparkles, Shield, Zap, Users, Star,
+  Brain, Clock, Lock, FileText, MessageSquare, BarChart3,
+  Building2, Scale, ChevronDown, ChevronUp,
+} from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { Button } from '../components/Button';
 import { legalCategories } from '../lib/categories';
@@ -116,8 +121,203 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
         </div>
       </section>
 
-      {/* ─── Legal Categories ─── */}
+      {/* ─── Features ─── */}
+      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
+              Neden HukukAI?
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+              Yapay Zekanın Gücüyle
+              <span className="gradient-text"> Hukuki Destek</span>
+            </h2>
+            <p className="mt-4 text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
+              Geleneksel hukuk danışmanlığına kıyasla daha hızlı, daha erişilebilir ve daha uygun fiyatlı.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Brain,
+                title: 'Türk Hukukuna Özel AI',
+                desc: 'Türk Medeni Kanunu, İş Kanunu ve diğer mevzuata göre eğitilmiş uzman yapay zeka modeli.',
+              },
+              {
+                icon: Clock,
+                title: 'Anında Yanıt',
+                desc: 'Randevu beklemeye son. Sorularınıza saniyeler içinde kapsamlı ve doğru cevaplar alın.',
+              },
+              {
+                icon: Lock,
+                title: 'Gizlilik Güvencesi',
+                desc: 'Tüm konuşmalarınız şifreli ve gizli. Verileriniz asla üçüncü taraflarla paylaşılmaz.',
+              },
+              {
+                icon: FileText,
+                title: 'Belge Analizi',
+                desc: 'Sözleşme, ihtarname veya hukuki metinlerinizi yükleyin; AI anında analiz etsin.',
+              },
+              {
+                icon: MessageSquare,
+                title: 'Sohbet Geçmişi',
+                desc: 'Önceki danışmalarınıza geri dönün, konuşmaları kategorilere göre organize edin.',
+              },
+              {
+                icon: BarChart3,
+                title: 'Sürekli Güncelleme',
+                desc: 'Kanun değişiklikleri ve yeni Yargıtay kararları ile model sürekli güncellenmektedir.',
+              },
+            ].map(({ icon: Icon, title, desc }, i) => (
+              <div
+                key={title}
+                style={{ animationDelay: `${i * 80}ms` }}
+                className="feature-card animate-fade-up animate-fill-both"
+              >
+                <div className="p-3 rounded-xl bg-primary-50 dark:bg-primary-900/20 w-fit mb-4">
+                  <Icon size={22} className="text-primary-600 dark:text-primary-300" />
+                </div>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Who Uses It ─── */}
+      <section id="who-uses" className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
+              Kimler Kullanır?
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+              Herkese Uygun
+              <span className="gradient-text"> Çözüm</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Users,
+                title: 'Bireyler',
+                color: 'from-blue-500 to-primary-600',
+                items: [
+                  'İş sözleşmesi anlaşmazlıkları',
+                  'Kiracı/ev sahibi hakları',
+                  'Tüketici sorunları',
+                  'Aile hukuku (boşanma, nafaka)',
+                ],
+              },
+              {
+                icon: Building2,
+                title: 'KOBİ & Şirketler',
+                color: 'from-accent-500 to-accent-400',
+                items: [
+                  'Ticari sözleşme incelemesi',
+                  'Çalışan hakları ve yükümlülükleri',
+                  'Vergi cezası itirazları',
+                  'Fikri mülkiyet sorunları',
+                ],
+              },
+              {
+                icon: Scale,
+                title: 'Hukuk Profesyonelleri',
+                color: 'from-primary-500 to-blue-600',
+                items: [
+                  'Hızlı mevzuat araştırması',
+                  'Belge taslağı hazırlama',
+                  'Emsal karar özeti',
+                  'Müvekkil ön değerlendirmesi',
+                ],
+              },
+            ].map(({ icon: Icon, title, color, items }) => (
+              <div key={title} className="card card-hover p-6">
+                <div className={`p-3 rounded-2xl bg-gradient-to-br ${color} w-fit mb-5 shadow-card`}>
+                  <Icon size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">{title}</h3>
+                <ul className="space-y-2.5">
+                  {items.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-gray-400">
+                      <Check size={14} className="text-primary-600 dark:text-primary-300 mt-0.5 shrink-0" strokeWidth={3} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Testimonials ─── */}
+      <section id="testimonials" className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02] overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
+              Kullanıcı Yorumları
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+              Kullanıcılarımız
+              <span className="gradient-text"> Ne Diyor?</span>
+            </h2>
+          </div>
+
+          {/* Marquee */}
+          <div className="relative overflow-hidden">
+            <div className="testimonial-track">
+              {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 w-72 sm:w-80 p-5 rounded-2xl bg-white dark:bg-surface-dcard border border-border-light dark:border-border-dark shadow-card"
+                >
+                  <div className="flex items-center gap-1 mb-3">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star key={s} size={13} className="text-accent-500 fill-accent-500" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">"{t.text}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600 dark:text-primary-300 font-bold text-sm">
+                      {t.name[0]}
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-900 dark:text-white">{t.name}</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Fade edges */}
+            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-gray-50/80 dark:from-surface-dark to-transparent pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-gray-50/80 dark:from-surface-dark to-transparent pointer-events-none" />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FAQ ─── */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm font-semibold text-primary-500 dark:text-primary-300 uppercase tracking-widest mb-3">
+              SSS
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+              Sık Sorulan
+              <span className="gradient-text"> Sorular</span>
+            </h2>
+          </div>
+          <FaqSection />
+        </div>
+      </section>
+
+      {/* ─── Legal Categories ─── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50/60 dark:bg-white/[0.02]">
         <div className="max-w-7xl mx-auto">
           {/* Section header */}
           <div className="text-center mb-14">
@@ -270,6 +470,69 @@ export function LandingPage({ onCategorySelect, onAuthClick }: LandingPageProps)
           </p>
         </div>
       </footer>
+    </div>
+  );
+}
+
+/* ─── Testimonials data ─── */
+const TESTIMONIALS = [
+  { name: 'Ahmet Y.', role: 'Yazılım Mühendisi', text: 'Kira sözleşmemi anlamak için saatler harcıyordum. HukukAI dakikalar içinde her maddeyi açıkladı.' },
+  { name: 'Fatma K.', role: 'İşletme Sahibi', text: 'Çalışanımla yaşadığım iş uyuşmazlığında haklarımı öğrendim. Avukata gitmeye gerek kalmadı.' },
+  { name: 'Murat S.', role: 'Serbest Avukat', text: 'Emsal karar araştırmalarımı çok hızlandırdı. Müvekkil ön değerlendirmelerinde harika bir araç.' },
+  { name: 'Elif D.', role: 'Muhasebeci', text: 'Vergi cezası itirazı için ne yapacağımı bilmiyordum. HukukAI adım adım rehberlik etti.' },
+  { name: 'Kemal A.', role: 'Esnaf', text: 'Müşterimden alacağım için icra takibi sürecini öğrendim. Çok açıklayıcı ve anlaşılır.' },
+  { name: 'Zeynep M.', role: 'Öğretmen', text: 'Boşanma sürecinde haklarım konusunda güvenilir bilgi aldım. Psikolojik olarak da rahatlattı.' },
+];
+
+/* ─── FAQ Section ─── */
+const FAQ_ITEMS = [
+  {
+    q: 'HukukAI gerçek bir avukat hizmeti mi?',
+    a: 'Hayır. HukukAI, Türk hukuku konusunda bilgi sağlayan bir yapay zeka platformudur. Verilen bilgiler genel rehberlik amaçlıdır; hukuki tavsiye niteliği taşımaz. Kritik kararlar için mutlaka bir avukana danışın.',
+  },
+  {
+    q: 'Verilerim güvende mi?',
+    a: 'Evet. Tüm konuşmalarınız uçtan uca şifreli olarak saklanır. Verileriniz hiçbir üçüncü tarafla paylaşılmaz ve reklam amacıyla kullanılmaz.',
+  },
+  {
+    q: 'Ücretsiz planda ne kadar soru sorabilirim?',
+    a: 'Ücretsiz planda günlük 5 soru hakkınız bulunmaktadır. Plus planda 50, Pro planda ise sınırsız soru sorabilirsiniz.',
+  },
+  {
+    q: 'Hangi hukuk alanlarında destek sunuluyor?',
+    a: 'İş hukuku, kira hukuku, tüketici hukuku, aile hukuku, trafik hukuku, ceza hukuku, icra hukuku, miras hukuku ve vergi hukuku olmak üzere 9 temel alanda hizmet sunulmaktadır.',
+  },
+  {
+    q: 'Belge yükleyebilir miyim?',
+    a: 'Evet. Plus ve Pro plan kullanıcıları sözleşme, ihtarname, dilekçe gibi metin belgelerini yükleyerek AI\'ın analiz etmesini sağlayabilir.',
+  },
+];
+
+function FaqSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <div className="space-y-3">
+      {FAQ_ITEMS.map((item, i) => (
+        <div key={i} className="card overflow-hidden">
+          <button
+            onClick={() => setOpen(open === i ? null : i)}
+            className="w-full flex items-center justify-between px-5 py-4 text-left gap-4"
+          >
+            <span className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+              {item.q}
+            </span>
+            {open === i
+              ? <ChevronUp size={18} className="shrink-0 text-primary-600 dark:text-primary-300" />
+              : <ChevronDown size={18} className="shrink-0 text-gray-400 dark:text-gray-500" />
+            }
+          </button>
+          <div className={`accordion-content ${open === i ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <p className="px-5 pb-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              {item.a}
+            </p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
