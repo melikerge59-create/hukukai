@@ -21,32 +21,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUserPlan = async () => {
     if (!user) return;
-
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('user_plans')
         .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
-
-      if (error) throw error;
       setUserPlan(data);
-    } catch (error) {
-      console.error('Error fetching user plan:', error);
+    } catch {
+      // Silently handle plan fetch errors
     }
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user as User || null);
-      setLoading(false);
+    // Add a safety timeout so loading never hangs forever
+    const safetyTimer = setTimeout(() => setLoading(false), 5000);
+
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setUser(session?.user as User ?? null);
+      })
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        clearTimeout(safetyTimer);
+        setLoading(false);
+      });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user as User ?? null);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user as User || null);
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -66,9 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { full_name: fullName }
-      }
+      options: { data: { full_name: fullName } },
     });
     if (error) throw error;
   };
@@ -79,7 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, userPlan, loading, signIn, signUp, signOut, refreshUserPlan }}>
+    <AuthContext.Provider
+      value={{ user, userPlan, loading, signIn, signUp, signOut, refreshUserPlan }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -87,8 +100,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 }
